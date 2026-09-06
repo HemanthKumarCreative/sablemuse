@@ -1,0 +1,145 @@
+export type ProductColor = {
+  name: string
+  hex: string
+}
+
+export type Product = {
+  id: string
+  name: string
+  subtitle: string
+  price: number
+  image: string
+  colors: ProductColor[]
+  isNew?: boolean
+  isBestSeller?: boolean
+}
+
+export type CollectionTile = {
+  id: string
+  name: string
+  href: string
+  image: string
+  heightClass: string
+}
+
+export type ModiWeekDay = {
+  day: string
+  image: string
+}
+
+export const BEST_SELLERS: Product[] = [
+  {
+    id: "1",
+    name: "Tailored Shirt",
+    subtitle: "Classic White",
+    price: 98,
+    image: "/images/products/shirt-black.webp",
+    colors: [
+      { name: "Black", hex: "#0C0C0C" },
+      { name: "White", hex: "#FFFFFF" },
+      { name: "Olive", hex: "#5A6D57" },
+    ],
+    isNew: true,
+    isBestSeller: true,
+  },
+  {
+    id: "2",
+    name: "Wind Down Dress",
+    subtitle: "Coconut",
+    price: 148,
+    image: "/images/products/dress-coconut.webp",
+    colors: [
+      { name: "Coconut", hex: "#E8DFD0" },
+      { name: "Black", hex: "#0C0C0C" },
+      { name: "Sage", hex: "#748C70" },
+    ],
+    isBestSeller: true,
+  },
+  {
+    id: "3",
+    name: "Elba Dress",
+    subtitle: "Off White",
+    price: 168,
+    image: "/images/products/dress-offwhite.webp",
+    colors: [
+      { name: "Off White", hex: "#F5F2EB" },
+      { name: "Khaki", hex: "#8B7E66" },
+      { name: "Navy", hex: "#1F2A44" },
+    ],
+    isBestSeller: true,
+  },
+]
+
+export const COLLECTIONS: CollectionTile[] = [
+  {
+    id: "blouses",
+    name: "Blouses",
+    href: "/collection/blouses",
+    image: "/images/collection/Lifestyle_Detail_Something_Tailored_Shirt_White_1400x.webp",
+    heightClass: "min-h-[280px] md:min-h-[400px]",
+  },
+  {
+    id: "pants",
+    name: "Pants",
+    href: "/collection/pants",
+    image: "/images/collection/Moodboard2_71ade389-dc80-49eb-b7e8-1c90a0273a2a_700x.webp",
+    heightClass: "min-h-[420px] md:min-h-[700px]",
+  },
+  {
+    id: "dresses",
+    name: "Dresses",
+    href: "/collection/dresses",
+    image: "/images/collection/Save_The_Date_Dress_Khaki_Lifestyle_Khaki_Main_720x.webp",
+    heightClass: "min-h-[380px] md:min-h-[600px]",
+  },
+  {
+    id: "outwear",
+    name: "Outwear",
+    href: "/collection/outwear",
+    image: "/images/collection/ezgif-2-f137fd9d7d.png",
+    heightClass: "min-h-[240px] md:min-h-[300px]",
+  },
+]
+
+export const MODIWEEK: ModiWeekDay[] = [
+  { day: "Monday", image: "/images/modiweek/1.webp" },
+  { day: "Tuesday", image: "/images/modiweek/2.webp" },
+  { day: "Wednesday", image: "/images/modiweek/3.webp" },
+  { day: "Thursday", image: "/images/modiweek/4.webp" },
+  { day: "Friday", image: "/images/modiweek/5.webp" },
+  { day: "Saturday", image: "/images/modiweek/6.webp" },
+  { day: "Sunday", image: "/images/modiweek/7.webp" },
+]
+
+export const FOLLOW_US = [
+  {
+    id: "1",
+    image: "/images/followus/follow-1.png",
+    alt: "Modimal lookbook editorial",
+    className: "row-span-2 min-h-[320px] md:min-h-[640px]",
+  },
+  {
+    id: "2",
+    image: "/images/followus/2.jpg",
+    alt: "Modimal style detail",
+    className: "min-h-[160px] md:min-h-[315px]",
+  },
+  {
+    id: "3",
+    image: "/images/followus/3.jpg",
+    alt: "Modimal outfit inspiration",
+    className: "min-h-[160px] md:min-h-[315px]",
+  },
+  {
+    id: "4",
+    image: "/images/followus/4.jpg",
+    alt: "Modimal everyday look",
+    className: "min-h-[160px] md:min-h-[315px]",
+  },
+  {
+    id: "5",
+    image: "/images/followus/5.webp",
+    alt: "Modimal community style",
+    className: "min-h-[160px] md:min-h-[315px]",
+  },
+]
