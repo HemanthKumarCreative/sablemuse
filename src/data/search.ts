@@ -61,7 +61,6 @@ export const SEARCH_FILTERS: SearchFilterGroup[] = [
   {
     id: "fabric",
     label: "Fabric",
-    defaultOpen: true,
     options: [
       { id: "cotton", label: "Cotton", defaultChecked: true },
       { id: "linen", label: "Linen" },

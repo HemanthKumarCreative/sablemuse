@@ -24,10 +24,10 @@ export const ProductAccordions = ({
   const items = [
     { id: "fitting", label: "Fitting", content: product.fitting },
     { id: "fabric", label: "Fabric & Care", content: product.fabricCare },
-    { id: "detail", label: "Product Detail", content: product.productDetail },
+    { id: "detail", label: "Product Details", content: product.productDetail },
     {
       id: "shipping",
-      label: "Shipping And Returns",
+      label: "Shipping & Return",
       content: product.shippingReturns,
     },
   ]

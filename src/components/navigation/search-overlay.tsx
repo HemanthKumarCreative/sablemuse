@@ -72,7 +72,7 @@ export const SearchOverlay = ({
       role="search"
       aria-label="Site search"
     >
-      <div className="mx-auto flex h-[120px] w-full max-w-[1240px] items-start px-5 pt-8 md:h-[152px] md:px-8 lg:px-10">
+      <div className="mx-auto flex h-[96px] w-full max-w-[1240px] items-start px-4 pt-6 sm:px-5 md:h-[152px] md:px-8 md:pt-8 lg:px-10">
         <form
           onSubmit={handleSubmit}
           className="relative flex w-full items-center border-b border-[#adadad] pb-3"
@@ -81,7 +81,7 @@ export const SearchOverlay = ({
             Search products
           </label>
           <Search
-            className="pointer-events-none absolute left-0 size-6 text-ink-muted"
+            className="pointer-events-none absolute left-0 size-5 text-ink-muted md:size-6"
             strokeWidth={1.5}
             aria-hidden="true"
           />
@@ -93,7 +93,7 @@ export const SearchOverlay = ({
             placeholder="Search"
             autoComplete="off"
             defaultValue=""
-            className="h-14 rounded-none border-0 bg-transparent py-0 pr-2 pl-10 text-xl capitalize leading-[1.8] text-ink shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 md:text-[20px]"
+            className="h-11 rounded-none border-0 bg-transparent py-0 pr-2 pl-9 text-lg capitalize leading-[1.8] text-ink shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 md:h-14 md:pl-10 md:text-[20px]"
           />
         </form>
       </div>

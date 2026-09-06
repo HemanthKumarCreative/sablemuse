@@ -21,11 +21,11 @@ export const SiteFooter = () => {
 
   return (
     <footer className="bg-footer text-white">
-      <Container className="py-12 md:py-16">
+      <Container className="py-10 md:py-16">
         <div className="grid gap-10 md:grid-cols-12 md:gap-8">
-          <div className="flex flex-col justify-between gap-10 md:col-span-6">
+          <div className="flex flex-col justify-between gap-8 md:col-span-6 md:gap-10">
             <div className="space-y-5">
-              <h2 className="max-w-md text-xl font-semibold md:text-2xl">
+              <h2 className="max-w-md text-lg font-semibold sm:text-xl md:text-2xl">
                 Join our club, get 15% off for your Birthday
               </h2>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -64,7 +64,7 @@ export const SiteFooter = () => {
               </form>
             </div>
 
-            <div className="space-y-6">
+            <div className="hidden space-y-6 md:block">
               <ul className="flex items-center gap-4" aria-label="Social media">
                 <li>
                   <Link
@@ -118,7 +118,9 @@ export const SiteFooter = () => {
           </div>
 
           <div className="md:col-span-2">
-            <h3 className="mb-4 text-lg font-semibold">Help & Support</h3>
+            <h3 className="mb-4 text-base font-semibold md:text-lg">
+              About Modimal
+            </h3>
             <ul className="space-y-3.5">
               {FOOTER_LINKS.about.map((link) => (
                 <li key={link.label}>
@@ -134,7 +136,9 @@ export const SiteFooter = () => {
           </div>
 
           <div className="md:col-span-2">
-            <h3 className="mb-4 text-lg font-semibold">Help & Support</h3>
+            <h3 className="mb-4 text-base font-semibold md:text-lg">
+              Help & Support
+            </h3>
             <ul className="space-y-3.5">
               {FOOTER_LINKS.help.map((link) => (
                 <li key={link.label}>
@@ -150,7 +154,9 @@ export const SiteFooter = () => {
           </div>
 
           <div className="md:col-span-2">
-            <h3 className="mb-4 text-lg font-semibold">Modimal Club</h3>
+            <h3 className="mb-4 text-base font-semibold md:text-lg">
+              Modimal Club
+            </h3>
             <ul className="space-y-3.5">
               {FOOTER_LINKS.club.map((link) => (
                 <li key={link.label}>
@@ -163,6 +169,58 @@ export const SiteFooter = () => {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="space-y-6 border-t border-white/20 pt-8 md:hidden">
+            <ul className="flex items-center gap-4" aria-label="Social media">
+              <li>
+                <Link
+                  href="https://instagram.com"
+                  aria-label="Instagram"
+                  className="inline-flex transition-opacity hover:opacity-80"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <InstagramIcon className="size-7" />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="https://facebook.com"
+                  aria-label="Facebook"
+                  className="inline-flex transition-opacity hover:opacity-80"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FacebookIcon className="size-7" />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="https://pinterest.com"
+                  aria-label="Pinterest"
+                  className="inline-flex transition-opacity hover:opacity-80"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <PinterestIcon className="size-7" />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="https://twitter.com"
+                  aria-label="Twitter"
+                  className="inline-flex transition-opacity hover:opacity-80"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <TwitterIcon className="size-7" />
+                </Link>
+              </li>
+            </ul>
+            <p className="text-sm text-white/90">
+              © 2023 modimal. All Rights Reserved.
+            </p>
           </div>
         </div>
       </Container>

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ShoppingBag } from "lucide-react"
+import { ShoppingBag, X } from "lucide-react"
 import { CartLineItem } from "@/components/cart/cart-line-item"
 import { useCart } from "@/components/cart/cart-provider"
 import { Button } from "@/components/ui/button"
@@ -56,26 +56,40 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
       </SheetTrigger>
       <SheetContent
         side="right"
+        showCloseButton={false}
         className={cn(
-          "w-[min(100vw,500px)] max-w-none gap-0 rounded-none border-l border-border bg-white p-0 sm:max-w-[500px]",
+          "w-screen max-w-none gap-0 rounded-none border-l border-border bg-white p-0 opacity-100 data-starting-style:opacity-100 data-[side=right]:w-screen data-[side=right]:max-w-none sm:max-w-[500px] sm:data-[side=right]:w-[min(100vw,500px)]",
           className
         )}
       >
+        <SheetClose
+          render={
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Close shopping bag"
+              className="absolute top-3 left-3 z-10 rounded-none text-ink"
+            />
+          }
+        >
+          <X className="size-6" strokeWidth={1.5} />
+        </SheetClose>
+
         {isEmpty ? (
           <>
             <SheetTitle className="sr-only">Shopping bag</SheetTitle>
             <SheetDescription className="sr-only">
               Your shopping bag is currently empty
             </SheetDescription>
-            <div className="flex h-full flex-col items-center px-8 pt-24 pb-10 text-center">
-              <h2 className="text-xl font-semibold capitalize text-ink md:text-2xl">
+            <div className="flex h-full flex-col items-center px-8 pt-24 pb-10 text-center sm:px-10 sm:pt-28">
+              <h2 className="max-w-[280px] text-2xl font-bold capitalize leading-tight text-ink sm:text-[1.75rem]">
                 Your Shopping Bag Is Empty
               </h2>
-              <p className="mt-6 max-w-[250px] text-sm leading-[1.7] text-ink-muted md:text-base">
+              <p className="mt-4 max-w-[260px] text-sm leading-[1.7] capitalize text-ink sm:mt-5 sm:text-base">
                 Discover Modimal And Add Products To Your Bag
               </p>
               <ul
-                className="mt-10 flex w-full max-w-[280px] flex-col gap-6"
+                className="mt-10 flex w-full max-w-[280px] flex-col gap-4 sm:mt-12 sm:gap-5"
                 role="list"
               >
                 {EMPTY_BAG_LINKS.map((link) => (
@@ -102,14 +116,14 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
               Review items in your shopping bag
             </SheetDescription>
             <div className="flex h-full flex-col">
-              <div className="border-b border-border px-6 py-5">
-                <h2 className="text-center text-xl font-semibold text-ink">
+              <div className="px-6 py-5">
+                <h2 className="text-center text-xl font-bold text-ink">
                   Your Cart
                 </h2>
               </div>
 
               <ul
-                className="flex-1 space-y-8 overflow-y-auto px-6 py-8"
+                className="flex-1 space-y-8 overflow-y-auto px-5 py-2 sm:px-6 sm:py-4"
                 role="list"
               >
                 {items.map((item) => (
@@ -124,7 +138,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                 ))}
               </ul>
 
-              <div className="border-t border-border p-6">
+              <div className="p-5 sm:p-6">
                 <SheetClose
                   render={
                     <Link

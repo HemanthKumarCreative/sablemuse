@@ -41,12 +41,15 @@ export const CheckoutOrderSummary = ({
 
   return (
     <aside
-      className={cn("bg-[#F0F2EF] p-6 md:p-8", className)}
+      className={cn(
+        "bg-transparent p-0 lg:bg-[#F0F2EF] lg:p-6 xl:p-8",
+        className
+      )}
       aria-labelledby="checkout-cart-heading"
     >
       <h2
         id="checkout-cart-heading"
-        className="text-xl font-semibold text-ink md:text-2xl"
+        className="text-center text-xl font-semibold text-ink lg:text-left lg:text-2xl"
       >
         Your Cart
       </h2>
@@ -56,8 +59,8 @@ export const CheckoutOrderSummary = ({
       ) : (
         <ul className="mt-6 space-y-6" role="list">
           {items.map((item) => (
-            <li key={item.id} className="relative flex gap-3">
-              <div className="relative size-20 shrink-0 overflow-hidden bg-muted md:size-24">
+            <li key={item.id} className="relative flex gap-3 sm:gap-4">
+              <div className="relative size-[88px] shrink-0 overflow-hidden bg-muted sm:size-24 lg:size-20 xl:size-24">
                 <Image
                   src={item.image}
                   alt={item.name}
@@ -65,22 +68,22 @@ export const CheckoutOrderSummary = ({
                   sizes="96px"
                   className="object-cover"
                 />
+                <span className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center bg-white text-xs font-medium text-ink">
+                  {item.quantity}
+                </span>
               </div>
 
-              <div className="min-w-0 flex-1 pr-6">
-                <h3 className="text-sm font-semibold text-ink md:text-base">
-                  {item.name}
-                </h3>
-                <p className="mt-1 text-xs text-ink-muted md:text-sm">
-                  Size : {item.size}
-                </p>
-                <p className="text-xs text-ink-muted md:text-sm">
-                  Color : {item.color}
-                </p>
+              <div className="flex min-w-0 flex-1 flex-col gap-1.5 pr-7">
+                <h3 className="text-base font-semibold text-ink">{item.name}</h3>
+                <p className="text-sm text-ink-muted">Size: {item.size}</p>
+                <p className="text-sm text-ink-muted">Color: {item.color}</p>
 
-                <div className="mt-3 flex items-center justify-between gap-2">
+                <div className="mt-auto flex items-end justify-between gap-2 pt-2">
+                  <p className="text-base font-semibold text-ink">
+                    $ {item.price}
+                  </p>
                   <div
-                    className="inline-flex h-8 items-center gap-3 bg-[#D1D9CF] px-2"
+                    className="inline-flex h-9 items-center gap-3 bg-[#D1D9CF] px-2.5"
                     role="group"
                     aria-label={`${item.name} quantity`}
                   >
@@ -104,9 +107,6 @@ export const CheckoutOrderSummary = ({
                       <Plus className="size-3" strokeWidth={2} aria-hidden="true" />
                     </button>
                   </div>
-                  <p className="text-sm font-semibold text-ink">
-                    ${item.price}
-                  </p>
                 </div>
               </div>
 
@@ -123,7 +123,7 @@ export const CheckoutOrderSummary = ({
         </ul>
       )}
 
-      <div className="mt-8 space-y-3 border-t border-border pt-6 text-sm text-ink md:text-base">
+      <div className="mt-8 space-y-3 border-t border-border pt-6 text-base text-ink">
         <div className="flex items-center justify-between">
           <span>Subtotal ({itemCount})</span>
           <span>${formatMoney(subtotal)}</span>
@@ -137,14 +137,14 @@ export const CheckoutOrderSummary = ({
           <span>{shippingLabel}</span>
         </div>
         <div className="flex items-center justify-between font-bold">
-          <span>Total Orders :</span>
+          <span>Order Totals</span>
           <span>${formatMoney(orderTotal)}</span>
         </div>
       </div>
 
-      <p className="mt-4 text-xs font-semibold leading-[1.7] text-ink md:text-sm">
-        The total amount you pay includes all applicable customs duties &amp;
-        taxes. We guarantee no additional charges on delivery.
+      <p className="mt-4 text-sm font-semibold leading-[1.7] capitalize text-ink">
+        The Total Amount You Pay Includes All Applicable Customs Duties &amp;
+        Taxes. We Guarantee No Additional Charges On Delivery.
       </p>
     </aside>
   )

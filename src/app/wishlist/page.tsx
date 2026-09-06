@@ -46,12 +46,9 @@ const WishlistPage = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section
-        aria-labelledby="wishlist-heading"
-        className="pb-16 md:pb-24"
-      >
+      <section aria-labelledby="wishlist-heading" className="pb-12 md:pb-24">
         <Container>
-          <div className="mt-10 mb-10 text-center md:mt-16 md:mb-14">
+          <div className="mt-10 mb-10 text-center sm:mt-12 sm:mb-12 md:mt-16 md:mb-14">
             <h1
               id="wishlist-heading"
               className="text-[2rem] font-semibold capitalize leading-[1.4] text-ink md:text-[2.5rem]"
@@ -71,13 +68,13 @@ const WishlistPage = () => {
               Your wish list is empty. Save pieces you love while you browse.
             </p>
           ) : (
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 md:gap-6">
               {WISHLIST_ITEMS.map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}
                   favorited
-                  imageAspectClassName="aspect-[392/438]"
+                  imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
                 />
               ))}
             </div>

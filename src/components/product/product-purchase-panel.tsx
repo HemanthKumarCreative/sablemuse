@@ -68,10 +68,10 @@ export const ProductPurchasePanel = ({
       <h1 className="text-[2rem] font-bold capitalize leading-[1.3] text-ink md:text-[2.5rem]">
         {product.name}
       </h1>
-      {!product.showCtaPrice ? (
+      {!product.showCtaPrice && product.sizeSelector !== "select" ? (
         <p className="mt-3 text-xl font-medium text-ink">${product.price}</p>
       ) : null}
-      <p className="mt-4 text-sm leading-[1.8] text-ink-muted md:text-base">
+      <p className="mt-4 text-sm leading-[1.8] capitalize text-ink md:text-base md:normal-case">
         {product.description}
       </p>
 
@@ -219,8 +219,10 @@ export const ProductPurchasePanel = ({
           )}
         >
           {product.showCtaPrice
-            ? `Add To Cart — $${product.price}`
-            : "Add To Bag"}
+            ? `Add To Cart + $${product.price}`
+            : ctaBrand
+              ? "Add To Cart"
+              : "Add To Bag"}
         </Button>
         {!usesSelect ? (
           <Button
@@ -243,7 +245,14 @@ export const ProductPurchasePanel = ({
       </div>
 
       {product.showEasyReturn || usesSelect ? (
-        <div className="mt-8 flex flex-col gap-4 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between">
+        <div
+          className={cn(
+            "mt-8 flex flex-col gap-4 text-sm text-ink-muted",
+            product.showEasyReturn
+              ? "sm:flex-row sm:items-center sm:justify-between"
+              : "items-center"
+          )}
+        >
           {product.showEasyReturn ? (
             <p className="inline-flex items-center gap-2">
               <RefreshCcw className="size-5 shrink-0" aria-hidden="true" />
@@ -254,7 +263,7 @@ export const ProductPurchasePanel = ({
             type="button"
             onClick={handleToggleWishlist}
             aria-pressed={isWishlisted}
-            className="inline-flex items-center gap-2 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="inline-flex items-center gap-2 capitalize text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             <Heart
               className="size-5 shrink-0"
@@ -262,13 +271,13 @@ export const ProductPurchasePanel = ({
               fill={isWishlisted ? "currentColor" : "none"}
               aria-hidden="true"
             />
-            Add To Wish List
+            Add To Wishlist
           </button>
         </div>
       ) : null}
 
       {product.material ? (
-        <div className="mt-8 bg-[#F0F2EF] p-6 md:p-8">
+        <div className="mt-8 hidden bg-[#F0F2EF] p-6 md:p-8 lg:block">
           <h2 className="border-b border-[#ADADAD] pb-4 text-lg font-semibold text-ink">
             {product.material.title}
           </h2>
@@ -291,7 +300,7 @@ export const ProductPurchasePanel = ({
       {showAccordions ? (
         <ProductAccordions
           product={product}
-          defaultOpen={["fitting"]}
+          defaultOpen={product.accordionDefaultOpen ?? ["fitting"]}
           className="mt-10"
         />
       ) : null}

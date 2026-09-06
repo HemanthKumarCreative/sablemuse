@@ -86,11 +86,11 @@ export const CheckoutShippingForm = ({
       </div>
 
       <h2 className="mt-10 text-xl font-semibold text-ink md:text-2xl">
-        Shipping Method
+        Delivery Options
       </h2>
 
       <fieldset className="mt-4 border border-border">
-        <legend className="sr-only">Shipping method</legend>
+        <legend className="sr-only">Delivery options</legend>
 
         <div
           className={cn(
@@ -112,8 +112,8 @@ export const CheckoutShippingForm = ({
                 <span className="block text-base font-medium text-ink">
                   Express Courier (Air)
                 </span>
-                <span className="mt-1 block text-sm text-ink-muted">
-                  3 to 4 Business Days
+                <span className="mt-1 block text-sm capitalize text-ink-muted">
+                  3 To 4 Business Days
                 </span>
               </span>
               <span className="text-base font-semibold text-ink">Free</span>
@@ -122,8 +122,8 @@ export const CheckoutShippingForm = ({
 
           {deliveryMode === "express" ? (
             <div className="mt-4 border-t border-border pt-4 pl-7">
-              <p className="mb-3 text-sm font-medium text-ink">Expected Date</p>
-              <ul className="grid gap-3 sm:grid-cols-2" role="list">
+              <p className="mb-3 text-sm font-medium text-ink">Expected Date:</p>
+              <ul className="grid grid-cols-2 gap-3" role="list">
                 {EXPRESS_DATE_OPTIONS.map((option) => {
                   const optionId = `${methodGroupId}-${option.id}`
 
@@ -132,7 +132,7 @@ export const CheckoutShippingForm = ({
                       <label
                         htmlFor={optionId}
                         className={cn(
-                          "flex cursor-pointer items-center gap-3 border border-border bg-white px-3 py-3 text-sm text-ink focus-within:ring-2 focus-within:ring-brand",
+                          "flex h-full cursor-pointer items-start gap-2 border border-border bg-white px-2.5 py-3 text-xs text-ink focus-within:ring-2 focus-within:ring-brand sm:gap-3 sm:px-3 sm:text-sm",
                           expressDate === option.id
                             ? "border-brand"
                             : "hover:border-ink/40"
@@ -144,9 +144,9 @@ export const CheckoutShippingForm = ({
                           name={`${methodGroupId}-date`}
                           checked={expressDate === option.id}
                           onChange={() => setExpressDate(option.id)}
-                          className="size-4 accent-brand"
+                          className="mt-0.5 size-4 shrink-0 accent-brand"
                         />
-                        {option.label}
+                        <span>{option.label}</span>
                       </label>
                     </li>
                   )
@@ -156,9 +156,16 @@ export const CheckoutShippingForm = ({
           ) : null}
         </div>
 
-        <div className="px-4 py-4 md:px-5">
-          <p className="mb-3 text-sm font-medium text-ink">Guaranteed By</p>
-          <ul className="space-y-3" role="list">
+        <div
+          className={cn(
+            "px-4 py-4 md:px-5",
+            deliveryMode === "guaranteed" ? "bg-[#F0F2EF]" : "bg-white"
+          )}
+        >
+          <p className="text-base font-medium text-ink">Guaranteed By</p>
+          <p className="mt-1 text-sm text-ink-muted">UPS Next Day Air Saver</p>
+
+          <ul className="mt-4 space-y-3" role="list">
             {GUARANTEED_OPTIONS.map((option) => {
               const isSelected =
                 deliveryMode === "guaranteed" && guaranteedId === option.id
@@ -171,7 +178,7 @@ export const CheckoutShippingForm = ({
                     className={cn(
                       "flex cursor-pointer items-start gap-3 border border-border px-3 py-3",
                       isSelected
-                        ? "border-brand bg-[#F0F2EF]"
+                        ? "border-brand bg-white"
                         : "bg-white hover:border-ink/40"
                     )}
                   >
@@ -183,16 +190,11 @@ export const CheckoutShippingForm = ({
                       onChange={() => handleSelectGuaranteed(option.id)}
                       className="mt-1 size-4 accent-brand"
                     />
-                    <span className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:justify-between">
-                      <span>
-                        <span className="block text-sm font-medium text-ink md:text-base">
-                          {option.label}
-                        </span>
-                        <span className="mt-1 block text-sm text-ink-muted">
-                          {option.detail}
-                        </span>
+                    <span className="flex min-w-0 flex-1 items-start justify-between gap-3">
+                      <span className="text-sm font-medium text-ink md:text-base">
+                        {option.label}
                       </span>
-                      <span className="text-base font-semibold text-ink">
+                      <span className="shrink-0 text-base font-semibold text-ink">
                         ${option.price.toFixed(2)}
                       </span>
                     </span>
@@ -204,19 +206,19 @@ export const CheckoutShippingForm = ({
         </div>
       </fieldset>
 
-      <div className="mt-10 flex flex-col-reverse items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-        <Link
-          href="/checkout"
-          className="text-sm text-ink-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:text-base"
-        >
-          &lt; Return To Information
-        </Link>
+      <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row-reverse sm:items-center sm:justify-between">
         <Button
           type="submit"
-          className="h-12 rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90 sm:min-w-[220px]"
+          className="h-12 w-full rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90 sm:w-auto sm:min-w-[220px]"
         >
           Continue To Payment
         </Button>
+        <Link
+          href="/checkout"
+          className="text-center text-sm text-ink-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-left md:text-base"
+        >
+          &lt; Return To Information
+        </Link>
       </div>
     </form>
   )

@@ -71,22 +71,21 @@ const ModiweekDayPage = async ({ params }: ModiweekDayPageProps) => {
       <section aria-labelledby="modiweek-day-heading" className="pb-16 md:pb-24">
         <Container>
           <Breadcrumbs
-            className="mt-6 md:mt-8"
+            className="mt-4 md:mt-8"
             items={[
               { label: "Home", href: "/" },
               { label: "Modiweek", href: "/modiweek" },
-              { label: day.day },
             ]}
           />
 
           <h1
             id="modiweek-day-heading"
-            className="mt-8 font-display text-[2.75rem] italic leading-none text-ink md:mt-10 md:text-[4.5rem]"
+            className="mt-6 text-[2rem] font-bold capitalize leading-none text-ink md:mt-10 md:font-display md:text-[4.5rem] md:italic"
           >
             {day.day}
           </h1>
 
-          <ModiweekLookSection day={day} className="mt-8 md:mt-10" />
+          <ModiweekLookSection day={day} className="mt-6 md:mt-10" />
 
           <div className="mt-14 md:mt-20">
             <h2 className="mb-6 text-xl font-bold capitalize text-ink md:text-2xl">

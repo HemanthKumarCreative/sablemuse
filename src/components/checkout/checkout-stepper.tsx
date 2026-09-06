@@ -23,7 +23,7 @@ export const CheckoutStepper = ({
 
   return (
     <nav aria-label="Checkout progress" className={cn("w-full", className)}>
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm md:text-base">
+      <ol className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm md:justify-start md:text-base">
         {STEPS.map((step, index) => {
           const isCurrent = step.id === current
           const isComplete = index < currentIndex

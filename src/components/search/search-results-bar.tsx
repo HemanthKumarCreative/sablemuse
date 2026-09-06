@@ -46,7 +46,7 @@ export const SearchResultsBar = ({
       role="search"
       aria-label="Search results"
       className={cn(
-        "flex h-14 w-full items-center gap-2 border-b border-brand-light px-4",
+        "flex h-12 w-full items-center gap-2 border-b border-[#adadad] px-1 sm:h-14 sm:border-brand-light sm:px-4",
         className
       )}
     >
@@ -54,7 +54,7 @@ export const SearchResultsBar = ({
         Search products
       </label>
       <Search
-        className="size-6 shrink-0 text-ink-muted"
+        className="size-5 shrink-0 text-ink-muted sm:size-6"
         strokeWidth={1.5}
         aria-hidden="true"
       />
@@ -66,16 +66,16 @@ export const SearchResultsBar = ({
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search"
         autoComplete="off"
-        className="h-full flex-1 rounded-none border-0 bg-transparent px-0 text-xl capitalize leading-[1.8] text-ink shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 md:text-[20px]"
+        className="h-full flex-1 rounded-none border-0 bg-transparent px-0 text-lg capitalize leading-[1.8] text-ink shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 sm:text-xl md:text-[20px]"
       />
       {query ? (
         <button
           type="button"
           onClick={handleClear}
           aria-label="Clear search"
-          className="inline-flex size-6 shrink-0 items-center justify-center text-ink-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="hidden size-6 shrink-0 items-center justify-center text-ink-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:inline-flex"
         >
-          <X className="size-6" strokeWidth={1.5} />
+          <X className="size-5 sm:size-6" strokeWidth={1.5} />
         </button>
       ) : null}
     </form>

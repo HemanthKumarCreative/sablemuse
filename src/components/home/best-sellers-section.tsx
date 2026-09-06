@@ -1,5 +1,8 @@
+"use client"
+
 import { Container } from "@/components/shared/container"
 import { SectionHeader } from "@/components/shared/section-header"
+import { ScrollCarousel } from "@/components/shared/scroll-carousel"
 import { ProductCard } from "@/components/product/product-card"
 import type { Product } from "@/data/home"
 
@@ -17,10 +20,28 @@ export const BestSellersSection = ({ products }: BestSellersSectionProps) => {
           titleClassName="font-sans"
           titleId="best-sellers-heading"
         />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+
+        <div className="hidden md:grid md:grid-cols-3 md:gap-6">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
+        </div>
+
+        <div className="md:hidden">
+          <ScrollCarousel
+            itemCount={products.length}
+            ariaLabel="Best sellers"
+            trackClassName="gap-3"
+          >
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="w-[46vw] max-w-[200px] shrink-0 snap-start"
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </ScrollCarousel>
         </div>
       </Container>
     </section>

@@ -21,14 +21,14 @@ export const SectionHeader = ({
   return (
     <div
       className={cn(
-        "mb-4 mt-10 flex items-center justify-between md:mb-6 md:mt-24",
+        "mb-4 mt-8 flex items-center justify-between sm:mt-10 md:mb-6 md:mt-24",
         className
       )}
     >
       <h2
         id={titleId}
         className={cn(
-          "text-[1.4rem] font-extrabold tracking-tight text-ink md:text-[2.1rem]",
+          "text-[1.25rem] font-extrabold tracking-tight text-ink sm:text-[1.4rem] md:text-[2.1rem]",
           titleClassName
         )}
       >

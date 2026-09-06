@@ -64,8 +64,8 @@ const dayMeta: Record<
   saturday: {
     day: "Saturday",
     imageIndex: 5,
-    heroImage: "/images/products/dress-offwhite.webp",
-    heroAlt: "ModiWeek Saturday white dress look",
+    heroImage: "/images/modiweek/6.webp",
+    heroAlt: "ModiWeek Saturday cream strap dress look",
   },
   sunday: {
     day: "Sunday",
@@ -77,11 +77,12 @@ const dayMeta: Record<
 const sharedLooks: ModiweekLookProduct[] = [
   {
     id: "modiweek-coat",
-    name: "Soft Wrap Coat",
+    name: "Fabric Trench",
     subtitle: "Ivory",
     price: 220,
     image: "/images/products/wrap-top/main.webp",
     href: "/product/wrap-top",
+    isNew: true,
     colors: [
       { name: "Ivory", hex: "#F5F2EB" },
       { name: "Black", hex: "#0C0C0C" },
@@ -89,11 +90,12 @@ const sharedLooks: ModiweekLookProduct[] = [
   },
   {
     id: "modiweek-slip",
-    name: "Fluid Slip Dress",
+    name: "Structured Strap Dress",
     subtitle: "Off White",
     price: 168,
     image: "/images/products/dress-offwhite.webp",
     href: "/shop-all",
+    isNew: true,
     colors: [
       { name: "Off White", hex: "#F5F2EB" },
       { name: "Coconut", hex: "#E8DFD0" },

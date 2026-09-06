@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { ProductCard } from "@/components/product/product-card"
 import type { ModiweekDayDetail } from "@/data/modiweek"
 import { MODIWEEK_DAYS } from "@/data/modiweek"
 import { MODIWEEK } from "@/data/home"
@@ -68,6 +69,8 @@ export const ModiweekLookSection = ({
   day,
   className,
 }: ModiweekLookSectionProps) => {
+  const itemCount = day.shopTheLook.length
+
   return (
     <div
       className={cn(
@@ -75,7 +78,7 @@ export const ModiweekLookSection = ({
         className
       )}
     >
-      <div className="relative min-h-[420px] overflow-hidden bg-muted md:min-h-[640px]">
+      <div className="relative -mx-4 aspect-[390/480] overflow-hidden bg-muted sm:-mx-5 md:mx-0 md:aspect-auto md:min-h-[640px]">
         <Image
           src={day.heroImage}
           alt={day.heroAlt}
@@ -87,45 +90,31 @@ export const ModiweekLookSection = ({
       </div>
 
       <div className="flex flex-col">
-        <div className="mb-6 flex items-end justify-between gap-4">
-          <h2 className="text-xl font-bold capitalize text-ink md:text-2xl">
-            Shop The Look
-          </h2>
-          <Link
-            href="/shop-all"
-            className="text-sm font-medium text-brand transition-colors hover:text-brand-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-          >
-            Shop All
-          </Link>
+        <div className="mb-3 md:mb-6">
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-xl font-bold capitalize text-ink md:text-2xl">
+              Shop The Look
+            </h2>
+            <Link
+              href="/shop-all"
+              className="hidden text-sm font-medium text-brand transition-colors hover:text-brand-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline"
+            >
+              Shop All
+            </Link>
+          </div>
+          <p className="mt-1 text-sm capitalize text-ink-muted md:mt-2" aria-live="polite">
+            {itemCount} {itemCount === 1 ? "Item" : "Items"}
+          </p>
         </div>
 
-        <ul className="grid grid-cols-2 gap-4 md:gap-6">
+        <ul className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
           {day.shopTheLook.map((product) => (
             <li key={product.id}>
-              <Link
+              <ProductCard
+                product={product}
                 href={product.href}
-                className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                aria-label={`Shop ${product.name}`}
-              >
-                <div className="relative aspect-[3/4] overflow-hidden bg-muted">
-                  <Image
-                    src={product.image}
-                    alt={`${product.name} ${product.subtitle}`}
-                    fill
-                    sizes="(max-width: 768px) 45vw, 20vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                </div>
-                <div className="mt-3 flex items-start justify-between gap-2">
-                  <div>
-                    <p className="font-bold capitalize text-ink">{product.name}</p>
-                    <p className="text-sm capitalize text-ink-muted">
-                      {product.subtitle}
-                    </p>
-                  </div>
-                  <p className="font-bold text-ink">${product.price}</p>
-                </div>
-              </Link>
+                imageAspectClassName="aspect-[3/4]"
+              />
             </li>
           ))}
         </ul>

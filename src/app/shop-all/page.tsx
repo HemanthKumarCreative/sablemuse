@@ -1,10 +1,16 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import { ProductCard } from "@/components/product/product-card"
 import { SearchFilters } from "@/components/search/search-filters"
+import { SearchFiltersMobile } from "@/components/search/search-filters-mobile"
 import { Breadcrumbs } from "@/components/shared/breadcrumbs"
 import { Container } from "@/components/shared/container"
-import { SHOP_ALL_FILTERS, SHOP_ALL_FILTERS_DEFAULT_OPEN, SHOP_ALL_PRODUCTS } from "@/data/shop-all"
+import { ShopAllHero } from "@/components/shop/shop-all-hero"
+import {
+  SHOP_ALL_FILTERS,
+  SHOP_ALL_FILTERS_DEFAULT_OPEN,
+  SHOP_ALL_HERO_SLIDES,
+  SHOP_ALL_PRODUCTS,
+} from "@/data/shop-all"
 
 export const metadata: Metadata = {
   title: "Shop All",
@@ -14,7 +20,7 @@ export const metadata: Metadata = {
     title: "Shop All | Modimal",
     description:
       "Browse the full Modimal collection with filters for size, color, collection, and fabric.",
-    images: ["/images/shop-all/hero-wide.png"],
+    images: [SHOP_ALL_HERO_SLIDES[0].src],
   },
   alternates: {
     canonical: "/shop-all",
@@ -47,34 +53,47 @@ const ShopAllPage = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section aria-labelledby="shop-all-heading" className="pb-16 md:pb-24">
-        <div className="relative min-h-[220px] w-full overflow-hidden bg-muted md:min-h-[360px] lg:min-h-[420px]">
-          <Image
-            src="/images/shop-all/hero-wide.png"
-            alt="Modimal shop all lookbook featuring olive wrap top and casual trousers"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
+      <section aria-labelledby="shop-all-heading" className="pb-12 md:pb-24">
+        <h1 id="shop-all-heading" className="sr-only">
+          Shop All
+        </h1>
+
+        <div className="border-b border-border bg-[#f4f5f3] lg:hidden">
+          <Container>
+            <Breadcrumbs
+              className="py-3"
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Shop All" },
+              ]}
+            />
+          </Container>
         </div>
 
-        <Container>
-          <h1 id="shop-all-heading" className="sr-only">
-            Shop All
-          </h1>
+        <ShopAllHero
+          slides={[...SHOP_ALL_HERO_SLIDES]}
+          ariaLabel="Shop All lookbook"
+        />
 
+        <Container>
           <Breadcrumbs
-            className="mt-6 md:mt-8"
+            className="mt-5 hidden md:mt-8 lg:block"
             items={[
               { label: "Home", href: "/" },
               { label: "Shop All" },
             ]}
           />
 
-          <div className="mt-8 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-start lg:gap-6">
+          <SearchFiltersMobile
+            className="mt-5 lg:mt-6"
+            filters={SHOP_ALL_FILTERS}
+            defaultOpen={SHOP_ALL_FILTERS_DEFAULT_OPEN}
+            headingId="shop-all-mobile-filters-heading"
+          />
+
+          <div className="mt-5 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-start lg:gap-6">
             <SearchFilters
-              className="w-full shrink-0 lg:sticky lg:top-[120px] lg:w-[320px] xl:w-[392px]"
+              className="hidden w-full shrink-0 lg:sticky lg:top-[120px] lg:block lg:w-[320px] xl:w-[392px]"
               filters={SHOP_ALL_FILTERS}
               defaultOpen={SHOP_ALL_FILTERS_DEFAULT_OPEN}
               headingId="shop-all-filters-heading"
@@ -82,17 +101,17 @@ const ShopAllPage = () => {
 
             <div className="min-w-0 flex-1">
               <p
-                className="mb-6 text-sm capitalize text-ink-muted md:text-base"
+                className="sr-only mb-5 text-sm capitalize text-ink-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
                 aria-live="polite"
               >
                 {SHOP_ALL_PRODUCTS.length} items
               </p>
-              <div className="grid grid-cols-2 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
                 {SHOP_ALL_PRODUCTS.map((product) => (
                   <ProductCard
                     key={product.id}
                     product={product}
-                    imageAspectClassName="aspect-[392/438]"
+                    imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
                   />
                 ))}
               </div>

@@ -18,15 +18,17 @@ export const CollectionSection = ({ collections }: CollectionSectionProps) => {
           titleClassName="font-sans"
           titleId="collection-heading"
         />
-        <div className="columns-2 gap-2 md:gap-6 [column-fill:_balance]">
+        <div className="columns-2 gap-3 sm:gap-4 md:gap-6 [column-fill:_balance]">
           {collections.map((item) => (
             <Link
               key={item.id}
               href={item.href}
-              className="group relative mb-2 block break-inside-avoid md:mb-6"
+              className="group relative mb-3 block break-inside-avoid sm:mb-4 md:mb-6"
               aria-label={`Shop ${item.name}`}
             >
-              <div className={`relative w-full overflow-hidden bg-muted ${item.heightClass}`}>
+              <div
+                className={`relative w-full overflow-hidden bg-muted ${item.heightClass}`}
+              >
                 <Image
                   src={item.image}
                   alt={`${item.name} collection`}
@@ -35,7 +37,7 @@ export const CollectionSection = ({ collections }: CollectionSectionProps) => {
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               </div>
-              <span className="mt-2 block text-sm text-ink md:hidden">
+              <span className="mt-2 block text-sm capitalize text-ink md:hidden">
                 {item.name}
               </span>
               <Button

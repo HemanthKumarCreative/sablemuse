@@ -24,7 +24,7 @@ export const CheckoutShippingContent = () => {
           />
           <CheckoutOrderSummary
             shippingCost={shippingCost}
-            className="lg:sticky lg:top-[120px]"
+            className="hidden lg:sticky lg:top-[120px] lg:block"
           />
         </div>
       </Container>

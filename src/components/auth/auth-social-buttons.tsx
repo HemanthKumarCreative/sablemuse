@@ -1,4 +1,6 @@
-import { FacebookIcon } from "@/components/icons/social-icons"
+import {
+  FacebookIcon,
+} from "@/components/icons/social-icons"
 import { cn } from "cn"
 
 type AuthSocialButtonsProps = {
@@ -28,12 +30,29 @@ export const GoogleIcon = ({ className }: { className?: string }) => {
   )
 }
 
+export const AppleIcon = ({ className }: { className?: string }) => {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
+      <path d="M16.7 12.6c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.7-1.3-.1-2.5.8-3.1.8-.7 0-1.7-.7-2.8-.7-1.4 0-2.8.9-3.5 2.2-1.5 2.6-.4 6.5 1.1 8.6.7 1 1.6 2.1 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.6.7 2.8.7c1.2 0 1.9-1 2.6-2 .8-1.1 1.1-2.2 1.1-2.3-.1 0-2.1-.8-2.1-3.2ZM14.8 6.4c.6-.7 1-1.7.9-2.7-.9 0-1.9.6-2.5 1.3-.6.6-1.1 1.7-.9 2.6 1 .1 1.9-.5 2.5-1.2Z" />
+    </svg>
+  )
+}
+
 export const AuthSocialButtons = ({ className }: AuthSocialButtonsProps) => {
+  const handleAppleClick = () => {}
   const handleGoogleClick = () => {}
   const handleFacebookClick = () => {}
 
   return (
     <div className={cn("flex items-center justify-center gap-4", className)}>
+      <button
+        type="button"
+        onClick={handleAppleClick}
+        aria-label="Continue with Apple"
+        className="inline-flex size-12 items-center justify-center rounded-full bg-ink text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+      >
+        <AppleIcon className="size-6" />
+      </button>
       <button
         type="button"
         onClick={handleGoogleClick}
@@ -46,7 +65,7 @@ export const AuthSocialButtons = ({ className }: AuthSocialButtonsProps) => {
         type="button"
         onClick={handleFacebookClick}
         aria-label="Continue with Facebook"
-        className="inline-flex size-12 items-center justify-center rounded-full border border-border bg-white text-[#1877F2] transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="inline-flex size-12 items-center justify-center rounded-full bg-[#1877F2] text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         <FacebookIcon className="size-6" />
       </button>

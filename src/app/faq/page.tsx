@@ -40,20 +40,24 @@ const FaqPage = () => {
       />
 
       <section aria-labelledby="faq-heading" className="pb-16 md:pb-24">
-        <Container>
-          <Breadcrumbs
-            className="mt-6 md:mt-8"
-            items={[{ label: "Home", href: "/" }, { label: "FAQs" }]}
-          />
+        <div className="border-b border-border bg-[#f4f5f3] lg:bg-transparent lg:border-0">
+          <Container>
+            <Breadcrumbs
+              className="py-3 lg:mt-8 lg:py-0"
+              items={[{ label: "Home", href: "/" }, { label: "FAQs" }]}
+            />
+          </Container>
+        </div>
 
+        <Container>
           <h1
             id="faq-heading"
-            className="mt-8 text-[2rem] font-extrabold tracking-tight text-ink md:mt-10 md:text-[2.5rem]"
+            className="mt-8 text-[1.75rem] font-bold tracking-tight text-ink md:mt-10 md:text-[2.5rem] md:font-extrabold"
           >
             FAQs
           </h1>
 
-          <div className="mt-8 max-w-4xl md:mt-10">
+          <div className="mt-6 max-w-4xl md:mt-10">
             <FaqAccordion />
           </div>
         </Container>

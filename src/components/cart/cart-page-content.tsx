@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { CartLineItem } from "@/components/cart/cart-line-item"
 import { CartTableRow } from "@/components/cart/cart-table-row"
 import { useCart } from "@/components/cart/cart-provider"
 import { Container } from "@/components/shared/container"
@@ -29,14 +30,14 @@ export const CartPageContent = () => {
     return (
       <section className="pb-16 md:pb-24">
         <Container>
-          <div className="mt-8 flex items-center justify-between gap-4">
+          <div className="mt-6 grid grid-cols-[auto_1fr_auto] items-center gap-3 md:mt-8 md:gap-4">
             <Link
               href="/collection"
               className="text-base text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               Back
             </Link>
-            <h1 className="text-[2rem] font-bold text-ink md:text-[2.5rem]">
+            <h1 className="text-center text-[1.75rem] font-bold text-ink md:text-[2.5rem]">
               Your Cart
             </h1>
             <span className="w-12" aria-hidden="true" />
@@ -60,22 +61,23 @@ export const CartPageContent = () => {
   return (
     <section className="pb-16 md:pb-24">
       <Container>
-        <div className="mt-8 flex items-center justify-between gap-4">
+        <div className="mt-6 grid grid-cols-[auto_1fr_auto] items-center gap-3 md:mt-8 md:gap-4">
           <Link
             href="/collection"
             className="text-base text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             Back
           </Link>
-          <h1 className="text-[2rem] font-bold text-ink md:text-[2.5rem]">
+          <h1 className="text-center text-[1.75rem] font-bold text-ink md:text-[2.5rem]">
             Your Cart
           </h1>
           <Link
             href="/shop-all"
-            className="text-base text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="hidden text-base text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline"
           >
             Continue Shopping
           </Link>
+          <span className="w-12 md:hidden" aria-hidden="true" />
         </div>
 
         <div
@@ -87,11 +89,24 @@ export const CartPageContent = () => {
           <p className="text-base text-ink">Quantity</p>
           <p className="text-right text-base text-ink">Total</p>
         </div>
-        <h2 className="mt-10 text-lg font-semibold text-ink md:hidden">
+        <h2 className="mt-8 text-lg font-semibold text-ink md:hidden">
           Order Summary
         </h2>
 
-        <ul className="mt-2 md:mt-0" role="list">
+        <ul className="mt-6 space-y-8 md:hidden" role="list">
+          {items.map((item) => (
+            <li key={item.id}>
+              <CartLineItem
+                item={item}
+                onIncrement={incrementItem}
+                onDecrement={decrementItem}
+                onRemove={removeItem}
+              />
+            </li>
+          ))}
+        </ul>
+
+        <ul className="mt-2 hidden md:mt-0 md:block" role="list">
           {items.map((item) => (
             <li key={item.id}>
               <CartTableRow
@@ -104,7 +119,7 @@ export const CartPageContent = () => {
           ))}
         </ul>
 
-        <div className="mt-8 flex justify-end md:mt-10">
+        <div className="mt-10 flex justify-end md:mt-10">
           <div className="w-full max-w-md">
             <div className="space-y-4 text-base text-ink">
               <div className="flex items-center justify-between">
@@ -120,14 +135,14 @@ export const CartPageContent = () => {
                 <span>Free</span>
               </div>
               <div className="flex items-center justify-between font-bold">
-                <span>Order Total :</span>
+                <span>Order Totals</span>
                 <span>${formatMoney(orderTotal)}</span>
               </div>
             </div>
 
-            <p className="mt-4 text-sm font-semibold leading-[1.7] text-ink">
-              The total amount you pay includes all applicable customs duties
-              &amp; taxes. We guarantee no additional charges on delivery.
+            <p className="mt-5 text-sm font-semibold leading-[1.7] capitalize text-ink">
+              The Total Amount You Pay Includes All Applicable Customs Duties
+              &amp; Taxes. We Guarantee No Additional Charges On Delivery.
             </p>
 
             <div className="mt-8 flex justify-end">

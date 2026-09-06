@@ -8,18 +8,18 @@ export const SustainabilitySection = () => {
       aria-labelledby="sustainability-heading"
       className="relative w-full overflow-hidden"
     >
-      <div className="relative min-h-[320px] w-full md:min-h-[520px] lg:min-h-[600px]">
+      <div className="relative min-h-[360px] w-full sm:min-h-[420px] md:min-h-[520px] lg:min-h-[600px]">
         <Image
           src="/images/sustainability.png"
           alt="Sustainable fashion lifestyle imagery for Modimal"
           fill
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-center"
         />
-        <div className="absolute right-5 bottom-4 z-10 flex max-w-sm flex-col items-end gap-4 p-4 text-right md:right-8 md:bottom-16 md:max-w-md md:p-8">
+        <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-end gap-3 p-5 text-right sm:gap-4 sm:p-6 md:right-8 md:bottom-16 md:left-auto md:max-w-md md:p-8">
           <p
             id="sustainability-heading"
-            className="text-sm leading-relaxed text-ink md:text-base"
+            className="max-w-[280px] text-sm leading-relaxed text-ink sm:max-w-sm sm:text-[15px] md:max-w-none md:text-base"
           >
             Stylish sustainability in clothing promotes eco-friendly choices for
             a greater future
@@ -27,7 +27,7 @@ export const SustainabilitySection = () => {
           <Button
             render={<Link href="/sustainability" />}
             nativeButton={false}
-            className="h-auto rounded-none bg-white px-8 py-2.5 text-base font-medium text-ink hover:bg-white/90"
+            className="h-auto rounded-none bg-white px-6 py-2.5 text-sm font-medium text-ink hover:bg-white/90 sm:px-8 sm:text-base"
           >
             Sustainability
           </Button>

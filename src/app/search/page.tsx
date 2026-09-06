@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { ProductCard } from "@/components/product/product-card"
+import { SearchActiveChips } from "@/components/search/search-active-chips"
 import { SearchFilters } from "@/components/search/search-filters"
+import { SearchFiltersMobile } from "@/components/search/search-filters-mobile"
 import { SearchResultsBar } from "@/components/search/search-results-bar"
 import { Container } from "@/components/shared/container"
 import { getSearchResults } from "@/data/search"
@@ -71,23 +73,29 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section aria-labelledby="search-results-heading" className="pb-16 md:pb-24">
+      <section aria-labelledby="search-results-heading" className="pb-12 md:pb-24">
         <Container>
           <h1 id="search-results-heading" className="sr-only">
             Search results for {query}
           </h1>
 
-          <SearchResultsBar initialQuery={query} className="mt-6 md:mt-8" />
+          <SearchResultsBar initialQuery={query} className="mt-4 md:mt-8" />
 
           <p
-            className="mt-6 text-center text-xl capitalize leading-[1.8] text-ink md:mt-8"
+            className="sr-only mt-5 text-center text-lg capitalize leading-[1.8] text-ink sm:text-xl md:mt-8 lg:not-sr-only"
             aria-live="polite"
           >
             {itemCount} {itemCount === 1 ? "item" : "items"}
           </p>
 
-          <div className="mt-8 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-start lg:gap-6">
-            <SearchFilters className="w-full shrink-0 lg:sticky lg:top-[120px] lg:w-[392px]" />
+          <SearchFiltersMobile className="mt-5" />
+          <SearchActiveChips
+            className="mt-4 lg:hidden"
+            groupIds={["size", "collection"]}
+          />
+
+          <div className="mt-6 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-start lg:gap-6">
+            <SearchFilters className="hidden w-full shrink-0 lg:sticky lg:top-[120px] lg:block lg:w-[392px]" />
 
             <div className="min-w-0 flex-1">
               {itemCount === 0 ? (
@@ -97,12 +105,12 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
                     : "Enter a search term to see products."}
                 </p>
               ) : (
-                <div className="grid grid-cols-2 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
                   {products.map((product) => (
                     <ProductCard
                       key={product.id}
                       product={product}
-                      imageAspectClassName="aspect-[392/438]"
+                      imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
                     />
                   ))}
                 </div>

@@ -70,8 +70,8 @@ export const CartTableRow = ({
               <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
             </button>
           </div>
-          <p className="text-sm text-ink-muted">Size : {item.size}</p>
-          <p className="text-sm text-ink-muted">Color : {item.color}</p>
+          <p className="text-sm text-ink-muted">Size: {item.size}</p>
+          <p className="text-sm text-ink-muted">Color: {item.color}</p>
         </div>
 
         <button

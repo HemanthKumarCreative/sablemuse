@@ -6,12 +6,13 @@ import { PANTS_SEARCH_RESULTS } from "@/data/search"
 export const SHOP_ALL_FILTERS: SearchFilterGroup[] = [
   {
     id: "sort",
-    label: "Sort by",
+    label: "Sort By",
+    defaultOpen: true,
     options: [
-      { id: "newest", label: "Newest" },
-      { id: "price-asc", label: "Price (Low to High)" },
-      { id: "price-desc", label: "Price (High to Low)" },
-      { id: "top-rated", label: "Top Rated" },
+      { id: "featured", label: "Featured" },
+      { id: "best-seller", label: "Best Seller", defaultChecked: true },
+      { id: "price-asc", label: "Price: Low To High" },
+      { id: "price-desc", label: "Price: High To Low" },
     ],
   },
   {
@@ -19,11 +20,11 @@ export const SHOP_ALL_FILTERS: SearchFilterGroup[] = [
     label: "Size",
     defaultOpen: true,
     options: [
-      { id: "xs", label: "XS" },
-      { id: "s", label: "S", defaultChecked: true },
-      { id: "m", label: "M" },
-      { id: "l", label: "L" },
-      { id: "xl", label: "XL" },
+      { id: "xs", label: "XS / US (0-4)" },
+      { id: "s", label: "S / US (4-6)", defaultChecked: true },
+      { id: "m", label: "M / US (6-10)" },
+      { id: "l", label: "L / US (10-14)" },
+      { id: "xl", label: "XL / US (12-16)" },
     ],
   },
   {
@@ -31,22 +32,22 @@ export const SHOP_ALL_FILTERS: SearchFilterGroup[] = [
     label: "Color",
     defaultOpen: true,
     options: [
-      { id: "black", label: "Black", swatch: "#0C0C0C", defaultChecked: true },
-      { id: "white", label: "White", swatch: "#FFFFFF" },
-      { id: "beige", label: "Beige", swatch: "#E8DFD0" },
-      { id: "blue", label: "Blue", swatch: "#7DC3EB" },
+      { id: "black", label: "Black", swatch: "#0C0C0C" },
+      { id: "white", label: "White", swatch: "#FFFFFF", defaultChecked: true },
       { id: "red", label: "Red", swatch: "#CA2929" },
       { id: "green", label: "Green", swatch: "#748C70" },
+      { id: "yellow", label: "Yellow", swatch: "#E8C547" },
+      { id: "dark-blue", label: "Dark Blue", swatch: "#1E3A5F" },
+      { id: "purple", label: "Purple", swatch: "#9B8AA6" },
+      { id: "pink", label: "Pink", swatch: "#E8A0BF" },
     ],
   },
   {
     id: "collection",
     label: "Collection",
     options: [
-      { id: "blouses", label: "Blouses & Tops" },
-      { id: "pants", label: "Pants" },
-      { id: "dresses", label: "Dresses & Jumpsuits" },
-      { id: "outwear", label: "Outwear & Jackets" },
+      { id: "in-stock", label: "In Stock", defaultChecked: true },
+      { id: "out-of-stock", label: "Out Of Stock" },
     ],
   },
   {
@@ -65,6 +66,19 @@ export const SHOP_ALL_FILTERS: SearchFilterGroup[] = [
 export const SHOP_ALL_FILTERS_DEFAULT_OPEN = SHOP_ALL_FILTERS.filter(
   (group) => group.defaultOpen
 ).map((group) => group.id)
+
+export const SHOP_ALL_HERO_SLIDES = [
+  {
+    src: "/images/shop-all/hero-wide.png",
+    alt: "Modimal lookbook featuring an olive wrap top against a bright sky",
+    objectPosition: "left center",
+  },
+  {
+    src: "/images/shop-all/hero-wide.png",
+    alt: "Modimal lookbook featuring a white tee, olive trousers, and woven bag",
+    objectPosition: "right center",
+  },
+] as const
 
 export const SHOP_ALL_PRODUCTS: Product[] = [
   ...BEST_SELLERS,

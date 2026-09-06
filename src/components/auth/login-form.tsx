@@ -49,7 +49,7 @@ export const LoginForm = ({ className }: LoginFormProps) => {
             required
             placeholder="Email"
             aria-label="Email"
-            className="h-12 rounded-none border-border px-4 text-base text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+            className="h-12 rounded-none border-ink/40 px-4 text-base text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
           />
         </div>
 
@@ -66,7 +66,7 @@ export const LoginForm = ({ className }: LoginFormProps) => {
               required
               placeholder="Password"
               aria-label="Password"
-              className="h-12 rounded-none border-border px-4 pr-12 text-base text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+              className="h-12 rounded-none border-ink/40 px-4 pr-12 text-base text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
             />
             <button
               type="button"
@@ -84,7 +84,7 @@ export const LoginForm = ({ className }: LoginFormProps) => {
           </div>
         </div>
 
-        <div className="flex justify-start">
+        <div className="hidden justify-start lg:flex">
           <Link
             href="/forgot-password"
             className="text-sm capitalize text-ink-muted underline-offset-2 transition-colors hover:text-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
@@ -102,13 +102,11 @@ export const LoginForm = ({ className }: LoginFormProps) => {
       </form>
 
       <div
-        className="mt-8 flex items-center gap-4"
+        className="mt-8 flex items-center justify-center"
         role="separator"
         aria-label="Or continue with"
       >
-        <span className="h-px flex-1 bg-border" />
         <span className="text-sm capitalize text-ink-muted">Or</span>
-        <span className="h-px flex-1 bg-border" />
       </div>
 
       <AuthSocialButtons className="mt-6" />
@@ -117,7 +115,7 @@ export const LoginForm = ({ className }: LoginFormProps) => {
         New To Modimal?{" "}
         <Link
           href="/register"
-          className="font-bold underline underline-offset-2 transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="font-medium text-ink-muted transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           Create An Account
         </Link>

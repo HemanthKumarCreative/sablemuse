@@ -2,8 +2,7 @@
 
 import Link from "next/link"
 import { useId, useState, type FormEvent } from "react"
-import { PenLine } from "lucide-react"
-import { Breadcrumbs } from "@/components/shared/breadcrumbs"
+import { ChevronDown, PenLine } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -11,13 +10,29 @@ import { Label } from "@/components/ui/label"
 import { cn } from "cn"
 
 const fieldClassName =
-  "h-12 rounded-none border-0 border-b border-border bg-transparent px-0 text-base text-ink placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-0 md:text-base"
+  "h-12 rounded-none border-0 border-b border-border bg-transparent px-0 text-base text-ink placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-0"
+
+const SUBJECT_OPTIONS = [
+  "Order Inquiry",
+  "Product Question",
+  "Sizing",
+  "Returns & Exchanges",
+  "Other",
+] as const
 
 type ContactFormProps = {
   className?: string
+  hideHeading?: boolean
+  variant?: "page" | "modal"
+  onSubmitted?: () => void
 }
 
-export const ContactForm = ({ className }: ContactFormProps) => {
+export const ContactForm = ({
+  className,
+  hideHeading = false,
+  variant = "page",
+  onSubmitted,
+}: ContactFormProps) => {
   const fullNameId = useId()
   const emailId = useId()
   const subjectId = useId()
@@ -26,6 +41,7 @@ export const ContactForm = ({ className }: ContactFormProps) => {
   const policyId = useId()
   const [acceptedPolicy, setAcceptedPolicy] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const isModal = variant === "modal"
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -37,6 +53,7 @@ export const ContactForm = ({ className }: ContactFormProps) => {
     setIsSubmitted(true)
     event.currentTarget.reset()
     setAcceptedPolicy(false)
+    onSubmitted?.()
   }
 
   return (
@@ -45,14 +62,25 @@ export const ContactForm = ({ className }: ContactFormProps) => {
       className={cn("w-full", className)}
       noValidate
     >
-      <div className="flex items-center gap-3">
-        <PenLine className="size-5 text-ink" aria-hidden="true" />
-        <h2 className="text-xl font-semibold text-ink md:text-2xl">Write Us</h2>
-      </div>
+      {hideHeading || isModal ? null : (
+        <div className="flex items-center gap-3">
+          <PenLine className="size-5 text-ink" aria-hidden="true" />
+          <h2 className="text-xl font-semibold text-ink md:text-2xl">Write Us</h2>
+        </div>
+      )}
 
-      <p className="mt-6 text-base font-medium text-ink">Your Information</p>
+      {isModal ? null : (
+        <p
+          className={cn(
+            "text-base font-medium text-ink",
+            hideHeading ? "mt-0" : "mt-6"
+          )}
+        >
+          Your Information
+        </p>
+      )}
 
-      <div className="mt-4 space-y-5">
+      <div className={cn("space-y-5", isModal ? "mt-0" : "mt-4")}>
         <div>
           <Label htmlFor={fullNameId} className="sr-only">
             Full Name
@@ -83,19 +111,49 @@ export const ContactForm = ({ className }: ContactFormProps) => {
             className={fieldClassName}
           />
         </div>
-        <div>
+        <div className="relative">
           <Label htmlFor={subjectId} className="sr-only">
             Subject
           </Label>
-          <Input
-            id={subjectId}
-            name="subject"
-            type="text"
-            required
-            placeholder="Subject"
-            aria-label="Subject"
-            className={fieldClassName}
-          />
+          {isModal ? (
+            <>
+              <select
+                id={subjectId}
+                name="subject"
+                required
+                defaultValue=""
+                aria-label="Subject"
+                className={cn(
+                  fieldClassName,
+                  "w-full appearance-none pr-8 text-ink-muted valid:text-ink"
+                )}
+              >
+                <option value="" disabled>
+                  Subject
+                </option>
+                {SUBJECT_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                className="pointer-events-none absolute top-1/2 right-0 size-4 -translate-y-1/2 text-ink-muted"
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
+            </>
+          ) : (
+            <Input
+              id={subjectId}
+              name="subject"
+              type="text"
+              required
+              placeholder="Subject"
+              aria-label="Subject"
+              className={fieldClassName}
+            />
+          )}
         </div>
         <div>
           <Label htmlFor={orderId} className="sr-only">
@@ -118,7 +176,7 @@ export const ContactForm = ({ className }: ContactFormProps) => {
             id={messageId}
             name="message"
             required
-            rows={4}
+            rows={isModal ? 3 : 4}
             placeholder="Message"
             aria-label="Message"
             className="w-full resize-y rounded-none border-0 border-b border-border bg-transparent px-0 py-3 text-base text-ink placeholder:text-ink-muted outline-none focus-visible:border-brand"
@@ -134,15 +192,36 @@ export const ContactForm = ({ className }: ContactFormProps) => {
           required
           className="mt-0.5 size-4 rounded-none border-border data-checked:border-brand data-checked:bg-brand"
         />
-        <Label htmlFor={policyId} className="text-sm font-normal leading-relaxed text-ink">
-          I have read and understood the{" "}
-          <Link
-            href="/privacy-policy"
-            className="text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-          >
-            contact us privacy and policy
-          </Link>
-          .
+        <Label
+          htmlFor={policyId}
+          className={cn(
+            "text-sm font-normal leading-relaxed text-ink",
+            isModal && "capitalize"
+          )}
+        >
+          {isModal ? (
+            <>
+              I Have Read And Understood The{" "}
+              <Link
+                href="/privacy-policy"
+                className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
+                Contact Us Privacy And Policy
+              </Link>
+              .
+            </>
+          ) : (
+            <>
+              I have read and understood the{" "}
+              <Link
+                href="/privacy-policy"
+                className="text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
+                contact us privacy and policy
+              </Link>
+              .
+            </>
+          )}
         </Label>
       </div>
 
@@ -153,10 +232,13 @@ export const ContactForm = ({ className }: ContactFormProps) => {
         </p>
       ) : null}
 
-      <div className="mt-8 flex justify-end">
+      <div className={cn("mt-8", isModal ? "flex" : "flex justify-end")}>
         <Button
           type="submit"
-          className="h-12 rounded-none bg-brand px-16 text-base font-medium capitalize text-white hover:bg-brand/90"
+          className={cn(
+            "h-12 rounded-none bg-brand text-base font-medium capitalize text-white hover:bg-brand/90",
+            isModal ? "w-full" : "px-16"
+          )}
         >
           Send
         </Button>

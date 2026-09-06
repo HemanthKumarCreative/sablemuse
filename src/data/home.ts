@@ -11,6 +11,7 @@ export type Product = {
   image: string
   colors: ProductColor[]
   isNew?: boolean
+  isRestock?: boolean
   isBestSeller?: boolean
 }
 
@@ -76,28 +77,28 @@ export const COLLECTIONS: CollectionTile[] = [
     name: "Blouses",
     href: "/collection/blouses",
     image: "/images/collection/Lifestyle_Detail_Something_Tailored_Shirt_White_1400x.webp",
-    heightClass: "min-h-[280px] md:min-h-[400px]",
+    heightClass: "min-h-[180px] sm:min-h-[240px] md:min-h-[400px]",
   },
   {
     id: "pants",
     name: "Pants",
     href: "/collection/pants",
     image: "/images/collection/Moodboard2_71ade389-dc80-49eb-b7e8-1c90a0273a2a_700x.webp",
-    heightClass: "min-h-[420px] md:min-h-[700px]",
+    heightClass: "min-h-[280px] sm:min-h-[360px] md:min-h-[700px]",
   },
   {
     id: "dresses",
     name: "Dresses",
     href: "/collection/dresses",
     image: "/images/collection/Save_The_Date_Dress_Khaki_Lifestyle_Khaki_Main_720x.webp",
-    heightClass: "min-h-[380px] md:min-h-[600px]",
+    heightClass: "min-h-[260px] sm:min-h-[320px] md:min-h-[600px]",
   },
   {
     id: "outwear",
     name: "Outwear",
     href: "/collection/outwear",
     image: "/images/collection/ezgif-2-f137fd9d7d.png",
-    heightClass: "min-h-[240px] md:min-h-[300px]",
+    heightClass: "min-h-[160px] sm:min-h-[200px] md:min-h-[300px]",
   },
 ]
 

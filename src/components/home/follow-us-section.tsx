@@ -6,7 +6,7 @@ import { cn } from "cn"
 
 export const FollowUsSection = () => {
   return (
-    <section aria-labelledby="follow-us-heading" className="pb-16 md:pb-20">
+    <section aria-labelledby="follow-us-heading" className="pb-12 md:pb-20">
       <Container>
         <SectionHeader
           title="Follow us @modimal"
@@ -20,8 +20,8 @@ export const FollowUsSection = () => {
               className={cn(
                 "relative overflow-hidden bg-muted",
                 index === 0
-                  ? "col-span-2 min-h-[280px] md:col-span-1 md:row-span-2 md:min-h-0"
-                  : "min-h-[160px] md:min-h-0"
+                  ? "col-span-2 aspect-[4/3] md:col-span-1 md:row-span-2 md:aspect-auto md:min-h-0"
+                  : "aspect-square md:aspect-auto md:min-h-0"
               )}
             >
               <Image

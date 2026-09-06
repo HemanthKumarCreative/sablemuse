@@ -6,6 +6,7 @@ import { ProductGallery } from "@/components/product/product-gallery"
 import { ProductPurchasePanel } from "@/components/product/product-purchase-panel"
 import { Breadcrumbs } from "@/components/shared/breadcrumbs"
 import { Container } from "@/components/shared/container"
+import { ScrollCarousel } from "@/components/shared/scroll-carousel"
 import { SectionHeader } from "@/components/shared/section-header"
 import {
   RELATED_PRODUCTS,
@@ -58,6 +59,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   }
 
   const placeAccordionsUnderGallery = product.accordionPlacement === "gallery"
+  const accordionDefaultOpen = product.accordionDefaultOpen
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -89,7 +91,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
       <section aria-labelledby="product-heading" className="pb-16 md:pb-24">
         <Container>
           <Breadcrumbs
-            className="mt-6 md:mt-8"
+            className="mt-4 md:mt-8"
             items={[
               { label: "Home", href: "/" },
               { label: product.category, href: product.categoryHref },
@@ -101,7 +103,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
             {product.name}
           </h2>
 
-          <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+          <div className="mt-5 grid gap-8 md:mt-8 md:gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
             <div className="min-w-0">
               <ProductGallery
                 images={product.gallery}
@@ -110,6 +112,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
               {placeAccordionsUnderGallery ? (
                 <ProductAccordions
                   product={product}
+                  defaultOpen={accordionDefaultOpen}
                   className="mt-8 hidden lg:block"
                 />
               ) : null}
@@ -122,6 +125,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
               {placeAccordionsUnderGallery ? (
                 <ProductAccordions
                   product={product}
+                  defaultOpen={accordionDefaultOpen}
                   className="mt-10 lg:hidden"
                 />
               ) : null}
@@ -139,8 +143,28 @@ const ProductPage = async ({ params }: ProductPageProps) => {
             title="You May Also Like"
             titleId="related-products-heading"
             className="mt-0"
+            titleClassName="text-[1.75rem] font-bold md:text-[2.1rem]"
           />
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+          <ScrollCarousel
+            itemCount={RELATED_PRODUCTS.length}
+            ariaLabel="You may also like"
+            className="md:hidden"
+            trackClassName="gap-3"
+            dotsClassName="hidden"
+          >
+            {RELATED_PRODUCTS.map((item) => (
+              <div
+                key={item.id}
+                className="w-[68%] shrink-0 snap-start sm:w-[55%]"
+              >
+                <ProductCard
+                  product={item}
+                  imageAspectClassName="aspect-[3/4]"
+                />
+              </div>
+            ))}
+          </ScrollCarousel>
+          <div className="hidden grid-cols-2 gap-4 md:grid md:grid-cols-3 md:gap-6">
             {RELATED_PRODUCTS.map((item) => (
               <ProductCard
                 key={item.id}

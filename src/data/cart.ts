@@ -23,7 +23,7 @@ export const SAMPLE_CART_ITEMS: CartItem[] = [
   {
     id: "casual-wide-leg-s-navy",
     productId: "casual-wide-leg",
-    name: "Casual Wide Leg",
+    name: "Casual Wild Leg",
     image: "/images/plus-size/pants.png",
     price: 130,
     size: "S",

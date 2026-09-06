@@ -45,7 +45,7 @@ export const CartLineItem = ({
           className="object-cover"
         />
         {showImageBadge ? (
-          <span className="absolute top-2 right-2 bg-white px-3 py-1 text-sm font-medium text-ink">
+          <span className="absolute top-2 right-2 flex size-7 items-center justify-center bg-white text-sm font-medium text-ink">
             {item.quantity}
           </span>
         ) : null}
@@ -53,10 +53,12 @@ export const CartLineItem = ({
 
       <div className="flex min-w-0 flex-1 flex-col gap-2 pr-8">
         <h3 className="text-base font-semibold text-ink">{item.name}</h3>
-        <p className="text-sm text-ink-muted">Size : {item.size}</p>
-        <p className="text-sm text-ink-muted">Color : {item.color}</p>
+        <p className="text-sm text-ink-muted">Size: {item.size}</p>
+        <p className="text-sm text-ink-muted">Color: {item.color}</p>
 
         <div className="mt-auto flex items-end justify-between gap-3 pt-2">
+          <p className="text-base font-semibold text-ink">$ {item.price}</p>
+
           <div
             className="inline-flex h-10 items-center gap-4 bg-[#D1D9CF] px-3"
             role="group"
@@ -82,8 +84,6 @@ export const CartLineItem = ({
               <Plus className="size-3.5" strokeWidth={2} aria-hidden="true" />
             </button>
           </div>
-
-          <p className="text-base font-semibold text-ink">${item.price}</p>
         </div>
       </div>
 

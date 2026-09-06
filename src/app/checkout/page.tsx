@@ -20,11 +20,11 @@ const CheckoutInfoPage = () => {
         <CheckoutStepper current="info" className="mt-8 md:mt-10" />
 
         <div className="mt-8 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-start lg:gap-12 xl:gap-16">
-          <div>
+          <div className="order-2 lg:order-1">
             <h1 className="sr-only">Checkout information</h1>
             <CheckoutInfoForm />
           </div>
-          <CheckoutOrderSummary className="lg:sticky lg:top-[120px]" />
+          <CheckoutOrderSummary className="order-1 lg:order-2 lg:sticky lg:top-[120px]" />
         </div>
       </Container>
     </section>

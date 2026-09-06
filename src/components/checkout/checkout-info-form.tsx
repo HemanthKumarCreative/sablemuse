@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useId, useState, type FormEvent } from "react"
-import { ChevronDown, CircleHelp, Mail, MapPin } from "lucide-react"
+import { ChevronDown, Phone, User, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -72,7 +72,7 @@ export const CheckoutInfoForm = ({ className }: CheckoutInfoFormProps) => {
         <Label htmlFor={emailId} className="sr-only">
           Email
         </Label>
-        <Mail
+        <User
           className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
           aria-hidden="true"
         />
@@ -258,7 +258,7 @@ export const CheckoutInfoForm = ({ className }: CheckoutInfoFormProps) => {
           aria-label="Phone"
           className={cn(fieldClassName, "pr-11")}
         />
-        <CircleHelp
+        <Phone
           className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-ink-muted"
           aria-hidden="true"
         />
@@ -276,19 +276,19 @@ export const CheckoutInfoForm = ({ className }: CheckoutInfoFormProps) => {
         </Label>
       </div>
 
-      <div className="mt-10 flex flex-col-reverse items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-        <Link
-          href="/cart"
-          className="text-sm text-ink-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:text-base"
-        >
-          &lt; Return To Cart
-        </Link>
+      <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row-reverse sm:items-center sm:justify-between">
         <Button
           type="submit"
-          className="h-12 rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90 sm:min-w-[220px]"
+          className="h-12 w-full rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90 sm:w-auto sm:min-w-[220px]"
         >
           Continue To Shipping
         </Button>
+        <Link
+          href="/cart"
+          className="text-center text-sm text-ink-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-left md:text-base"
+        >
+          &lt; Return To Cart
+        </Link>
       </div>
     </form>
   )

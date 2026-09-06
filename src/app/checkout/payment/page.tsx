@@ -23,7 +23,7 @@ const CheckoutPaymentPage = () => {
             <h1 className="sr-only">Payment</h1>
             <CheckoutPaymentForm />
           </div>
-          <CheckoutOrderSummary className="lg:sticky lg:top-[120px]" />
+          <CheckoutOrderSummary className="hidden lg:sticky lg:top-[120px] lg:block" />
         </div>
       </Container>
     </section>

@@ -7,8 +7,10 @@ import {
   Building2,
   ChevronDown,
   CircleHelp,
+  Flag,
+  Home,
   Mail,
-  MapPin,
+  Package,
   Phone,
   User,
 } from "lucide-react"
@@ -53,7 +55,9 @@ export const CheckoutPaymentForm = ({
   const yearId = useId()
   const cvvId = useId()
 
-  const [billingMode, setBillingMode] = useState<"same" | "alternative">("same")
+  const [billingMode, setBillingMode] = useState<"same" | "alternative">(
+    "alternative"
+  )
   const [showCvvHelp, setShowCvvHelp] = useState(false)
 
   const handleToggleCvvHelp = () => {
@@ -65,10 +69,12 @@ export const CheckoutPaymentForm = ({
     router.push("/checkout/success")
   }
 
+  const showAddressFields = billingMode === "alternative"
+
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn("grid gap-10 lg:grid-cols-2 lg:gap-8 xl:gap-12", className)}
+      className={cn("flex w-full flex-col gap-10 lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-12", className)}
       noValidate
     >
       <div>
@@ -96,11 +102,11 @@ export const CheckoutPaymentForm = ({
               onChange={() => setBillingMode("alternative")}
               className="size-4 accent-brand"
             />
-            Add An Alternative Billing Address
+            Add An Alternative Delivery Address
           </label>
         </fieldset>
 
-        {billingMode === "alternative" ? (
+        {showAddressFields ? (
           <div className="mt-6 space-y-4">
             <div className="relative">
               <Label htmlFor={nameId} className="sr-only">
@@ -115,7 +121,7 @@ export const CheckoutPaymentForm = ({
                 name="billingName"
                 type="text"
                 autoComplete="name"
-                required
+                required={showAddressFields}
                 placeholder="Name"
                 aria-label="Name"
                 className={cn(fieldClassName, "pl-11")}
@@ -135,7 +141,7 @@ export const CheckoutPaymentForm = ({
                 name="billingEmail"
                 type="email"
                 autoComplete="email"
-                required
+                required={showAddressFields}
                 placeholder="Email"
                 aria-label="Email"
                 className={cn(fieldClassName, "pl-11")}
@@ -146,14 +152,14 @@ export const CheckoutPaymentForm = ({
               <Label htmlFor={countryId} className="sr-only">
                 Country
               </Label>
-              <Building2
+              <Flag
                 className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
                 aria-hidden="true"
               />
               <select
                 id={countryId}
                 name="billingCountry"
-                required
+                required={showAddressFields}
                 defaultValue="United States"
                 aria-label="Country"
                 className={cn(
@@ -177,7 +183,7 @@ export const CheckoutPaymentForm = ({
               <Label htmlFor={address1Id} className="sr-only">
                 Address Line 1
               </Label>
-              <MapPin
+              <Home
                 className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
                 aria-hidden="true"
               />
@@ -186,17 +192,21 @@ export const CheckoutPaymentForm = ({
                 name="billingAddress1"
                 type="text"
                 autoComplete="address-line1"
-                required
+                required={showAddressFields}
                 placeholder="Address Line 1"
                 aria-label="Address Line 1"
                 className={cn(fieldClassName, "pl-11")}
               />
             </div>
 
-            <div>
+            <div className="relative">
               <Label htmlFor={address2Id} className="sr-only">
                 Address Line 2
               </Label>
+              <Home
+                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
+                aria-hidden="true"
+              />
               <Input
                 id={address2Id}
                 name="billingAddress2"
@@ -204,41 +214,48 @@ export const CheckoutPaymentForm = ({
                 autoComplete="address-line2"
                 placeholder="Address Line 2"
                 aria-label="Address Line 2"
-                className={fieldClassName}
+                className={cn(fieldClassName, "pl-11")}
               />
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label htmlFor={cityId} className="sr-only">
-                  City / Suburb
-                </Label>
-                <Input
-                  id={cityId}
-                  name="billingCity"
-                  type="text"
-                  autoComplete="address-level2"
-                  required
-                  placeholder="City / Suburb"
-                  aria-label="City / Suburb"
-                  className={fieldClassName}
-                />
-              </div>
-              <div>
-                <Label htmlFor={postalId} className="sr-only">
-                  Zip / Postcode
-                </Label>
-                <Input
-                  id={postalId}
-                  name="billingPostal"
-                  type="text"
-                  autoComplete="postal-code"
-                  required
-                  placeholder="Zip / Postcode"
-                  aria-label="Zip / Postcode"
-                  className={fieldClassName}
-                />
-              </div>
+            <div className="relative">
+              <Label htmlFor={cityId} className="sr-only">
+                City / Suburb
+              </Label>
+              <Building2
+                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
+                aria-hidden="true"
+              />
+              <Input
+                id={cityId}
+                name="billingCity"
+                type="text"
+                autoComplete="address-level2"
+                required={showAddressFields}
+                placeholder="City / Suburb"
+                aria-label="City / Suburb"
+                className={cn(fieldClassName, "pl-11")}
+              />
+            </div>
+
+            <div className="relative">
+              <Label htmlFor={postalId} className="sr-only">
+                Zip / Postcode
+              </Label>
+              <Package
+                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
+                aria-hidden="true"
+              />
+              <Input
+                id={postalId}
+                name="billingPostal"
+                type="text"
+                autoComplete="postal-code"
+                required={showAddressFields}
+                placeholder="Zip / Postcode"
+                aria-label="Zip / Postcode"
+                className={cn(fieldClassName, "pl-11")}
+              />
             </div>
 
             <div className="relative">
@@ -254,7 +271,7 @@ export const CheckoutPaymentForm = ({
                 name="billingPhone"
                 type="tel"
                 autoComplete="tel"
-                required
+                required={showAddressFields}
                 placeholder="Phone"
                 aria-label="Phone"
                 className={cn(fieldClassName, "pl-11")}
@@ -262,7 +279,7 @@ export const CheckoutPaymentForm = ({
             </div>
           </div>
         ) : (
-          <p className="mt-6 text-sm text-ink-muted">
+          <p className="mt-6 text-sm text-ink-muted lg:block">
             We&apos;ll use the shipping address from the previous step for
             billing.
           </p>
@@ -310,65 +327,51 @@ export const CheckoutPaymentForm = ({
             />
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <Label
-                htmlFor={monthId}
-                className="mb-2 block text-sm font-medium text-ink"
-              >
-                Expiry Month*
-              </Label>
-              <Input
-                id={monthId}
-                name="expiryMonth"
-                type="text"
-                inputMode="numeric"
-                autoComplete="cc-exp-month"
-                required
-                placeholder="MM"
-                aria-label="Expiry Month"
-                className={fieldClassName}
-              />
-            </div>
-            <div>
-              <Label
-                htmlFor={yearId}
-                className="mb-2 block text-sm font-medium text-ink"
-              >
-                Expiry Year*
-              </Label>
-              <Input
-                id={yearId}
-                name="expiryYear"
-                type="text"
-                inputMode="numeric"
-                autoComplete="cc-exp-year"
-                required
-                placeholder="YY"
-                aria-label="Expiry Year"
-                className={fieldClassName}
-              />
+          <div>
+            <p className="mb-2 text-sm font-medium text-ink">Expiry Date*</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor={monthId} className="sr-only">
+                  Expiry Month
+                </Label>
+                <Input
+                  id={monthId}
+                  name="expiryMonth"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="cc-exp-month"
+                  required
+                  placeholder="Month"
+                  aria-label="Expiry Month"
+                  className={fieldClassName}
+                />
+              </div>
+              <div>
+                <Label htmlFor={yearId} className="sr-only">
+                  Expiry Year
+                </Label>
+                <Input
+                  id={yearId}
+                  name="expiryYear"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="cc-exp-year"
+                  required
+                  placeholder="Year"
+                  aria-label="Expiry Year"
+                  className={fieldClassName}
+                />
+              </div>
             </div>
           </div>
 
           <div>
-            <div className="mb-2 flex items-center justify-between gap-3">
-              <Label
-                htmlFor={cvvId}
-                className="text-sm font-medium text-ink"
-              >
-                Security Code*
-              </Label>
-              <button
-                type="button"
-                onClick={handleToggleCvvHelp}
-                className="inline-flex items-center gap-1 text-sm text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                aria-expanded={showCvvHelp}
-              >
-                What is this?
-                <CircleHelp className="size-3.5" aria-hidden="true" />
-              </button>
-            </div>
+            <Label
+              htmlFor={cvvId}
+              className="mb-2 block text-sm font-medium text-ink"
+            >
+              Security Code*
+            </Label>
             <Input
               id={cvvId}
               name="securityCode"
@@ -380,6 +383,15 @@ export const CheckoutPaymentForm = ({
               aria-label="Security Code"
               className={cn(fieldClassName, "max-w-[160px]")}
             />
+            <button
+              type="button"
+              onClick={handleToggleCvvHelp}
+              className="mt-2 inline-flex items-center gap-1.5 text-sm text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              aria-expanded={showCvvHelp}
+            >
+              <CircleHelp className="size-3.5" aria-hidden="true" />
+              What Is This?
+            </button>
             {showCvvHelp ? (
               <p className="mt-2 text-sm text-ink-muted">
                 The 3 or 4 digit code on the back of your card (front for Amex).
@@ -395,22 +407,26 @@ export const CheckoutPaymentForm = ({
           Pay And Place Order
         </Button>
 
-        <p className="mt-4 text-xs leading-[1.7] text-ink-muted">
-          By clicking Pay And Place Order, you agree to Modimal&apos;s{" "}
+        <p className="mt-4 text-xs leading-[1.7] capitalize text-ink-muted">
+          By Clicking On &quot;Pay And Place Order&quot;, You Agree (I) To Make
+          Your Purchase From Global-E As Merchant Of Record For This Transaction,
+          Subject To Global-E&apos;s{" "}
           <Link
             href="/sustainability"
             className="underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
-            Terms of Sale
-          </Link>{" "}
-          and{" "}
+            Term Of Sale
+          </Link>
+          ; (II) That Your Information Will Be Handled By Global-E In Accordance
+          With The Global-E{" "}
           <Link
             href="/sustainability"
             className="underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           >
             Privacy Policy
           </Link>
-          .
+          ; And (III) That Global-E Will Share Your Information (Excluding The
+          Payment Details) With Modimal.
         </p>
 
         <div className="mt-8">

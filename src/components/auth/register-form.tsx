@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useId, useRef, useState } from "react"
+import { Eye, EyeOff } from "lucide-react"
 import { AuthSocialButtons } from "@/components/auth/auth-social-buttons"
 import { VerifyEmailDialog } from "@/components/auth/verify-email-dialog"
 import { Button } from "@/components/ui/button"
@@ -21,6 +22,7 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
   const emailInputRef = useRef<HTMLInputElement>(null)
   const [isVerifyOpen, setIsVerifyOpen] = useState(false)
   const [submittedEmail, setSubmittedEmail] = useState("")
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -43,9 +45,13 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
     })
   }
 
+  const handleTogglePassword = () => {
+    setIsPasswordVisible((current) => !current)
+  }
+
   return (
     <div className={cn("flex w-full flex-col justify-center", className)}>
-      <h1 className="text-[2rem] font-bold capitalize leading-[1.4] text-ink md:text-[2.5rem]">
+      <h1 className="text-center text-[2rem] font-bold capitalize leading-[1.4] text-ink lg:text-left md:text-[2.5rem]">
         Create Account
       </h1>
 
@@ -66,7 +72,7 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
             required
             placeholder="First Name"
             aria-label="First Name"
-            className="h-12 rounded-none border-border px-4 text-base capitalize text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+            className="h-12 rounded-none border-ink/40 px-4 text-base capitalize text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
           />
         </div>
 
@@ -82,7 +88,7 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
             required
             placeholder="Last Name"
             aria-label="Last Name"
-            className="h-12 rounded-none border-border px-4 text-base capitalize text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+            className="h-12 rounded-none border-ink/40 px-4 text-base capitalize text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
           />
         </div>
 
@@ -99,7 +105,7 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
             required
             placeholder="Email"
             aria-label="Email"
-            className="h-12 rounded-none border-border px-4 text-base text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+            className="h-12 rounded-none border-ink/40 px-4 text-base text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
           />
         </div>
 
@@ -107,16 +113,31 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
           <Label htmlFor={passwordId} className="sr-only">
             Password
           </Label>
-          <Input
-            id={passwordId}
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-            placeholder="Password"
-            aria-label="Password"
-            className="h-12 rounded-none border-border px-4 text-base text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
-          />
+          <div className="relative">
+            <Input
+              id={passwordId}
+              name="password"
+              type={isPasswordVisible ? "text" : "password"}
+              autoComplete="new-password"
+              required
+              placeholder="Password"
+              aria-label="Password"
+              className="h-12 rounded-none border-ink/40 px-4 pr-12 text-base text-ink placeholder:capitalize placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+            />
+            <button
+              type="button"
+              onClick={handleTogglePassword}
+              aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+              aria-pressed={isPasswordVisible}
+              className="absolute top-1/2 right-3 inline-flex size-8 -translate-y-1/2 items-center justify-center text-ink-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            >
+              {isPasswordVisible ? (
+                <Eye className="size-5" strokeWidth={1.5} />
+              ) : (
+                <EyeOff className="size-5" strokeWidth={1.5} />
+              )}
+            </button>
+          </div>
         </div>
 
         <Button
@@ -138,13 +159,11 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
       </p>
 
       <div
-        className="mt-8 flex items-center gap-4"
+        className="mt-8 flex items-center justify-center"
         role="separator"
         aria-label="Or continue with"
       >
-        <span className="h-px flex-1 bg-border" />
         <span className="text-sm capitalize text-ink-muted">Or</span>
-        <span className="h-px flex-1 bg-border" />
       </div>
 
       <AuthSocialButtons className="mt-6" />
