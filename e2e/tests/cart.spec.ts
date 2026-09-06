@@ -18,17 +18,17 @@ test.describe("Shopping bag and cart", () => {
     await expect(bag.getByRole("heading", { name: "Wrap Top" }).filter({ visible: true })).toBeVisible()
     await bag.getByRole("link", { name: "Check Out" }).click()
     await expect(page).toHaveURL(/\/cart$/)
-    await expect(page.getByRole("heading", { name: "Your Cart" })).toBeVisible()
+    await expect(page.getByRole("heading", { name: "Your Cart", level: 1 })).toBeVisible()
   })
 
   test("cart page shows totals and continues to checkout", async ({ page }) => {
     await gotoPath(page, "/cart")
-    await expect(page.getByRole("heading", { name: "Your Cart" })).toBeVisible()
+    await expect(page.getByRole("heading", { name: "Your Cart", level: 1 })).toBeVisible()
     await expect(
       page.getByRole("heading", { name: "Wrap Top" }).filter({ visible: true })
     ).toBeVisible()
     await expect(page.getByText("Subtotal (3)")).toBeVisible()
-    await expect(page.getByText("Shipping")).toBeVisible()
+    await expect(page.getByText("Shipping", { exact: true })).toBeVisible()
     await expect(page.getByText("Free")).toBeVisible()
     await page.getByRole("link", { name: "Next" }).click()
     await expect(page).toHaveURL(/\/checkout$/)
@@ -63,7 +63,7 @@ test.describe("Shopping bag and cart", () => {
     page,
   }) => {
     await gotoPath(page, "/cart")
-    await expect(page.getByText("Order Summary").first()).toBeVisible()
+    await expect(page.getByText("Order Summary").filter({ visible: true }).first()).toBeVisible()
 
     if (isMobileViewport(page)) {
       await expect(page.getByRole("link", { name: "Continue Shopping" })).toHaveCount(0)

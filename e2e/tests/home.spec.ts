@@ -14,7 +14,7 @@ test.describe("Home", () => {
     await assertShellVisible(page)
     await expect(page).toHaveTitle(/Modimal/i)
     await expect(page.getByRole("heading", { name: /Elegance in simplicity/i })).toBeVisible()
-    await expect(page.getByRole("link", { name: "New In", exact: true }).first()).toBeVisible()
+    await expect(page.getByRole("button", { name: "New In", exact: true })).toBeVisible()
     await expect(page.getByRole("heading", { name: "Best Sellers" })).toBeVisible()
     await expect(page.getByRole("heading", { name: "Collection" })).toBeVisible()
     await expect(page.getByRole("heading", { name: "ModiWeek" })).toBeVisible()
@@ -24,7 +24,7 @@ test.describe("Home", () => {
 
   test("hero CTA opens New In", async ({ page }) => {
     await gotoPath(page, "/")
-    await page.getByRole("link", { name: "New In", exact: true }).first().click()
+    await page.getByRole("button", { name: "New In", exact: true }).click()
     await expect(page).toHaveURL(/\/new-in$/)
     await expect(page.getByRole("heading", { name: "New In" })).toBeVisible()
   })
@@ -61,7 +61,7 @@ test.describe("Home", () => {
   test("mobile home uses a product carousel for best sellers", async ({ page }) => {
     test.skip(!isMobileViewport(page), "carousel is mobile-only")
     await gotoPath(page, "/")
-    await expect(page.getByRole("region", { name: "Best sellers" })).toBeVisible()
+    await expect(page.getByRole("region", { name: "Best sellers", exact: true })).toBeVisible()
   })
 })
 

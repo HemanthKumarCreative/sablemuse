@@ -7,7 +7,7 @@ test.describe("Product detail", () => {
   }) => {
     await gotoPath(page, "/product/wrap-top")
     await expect(pageHeading(page, "Wrap Top")).toBeVisible()
-    await expect(page.getByRole("list", { name: "Available colors" })).toBeVisible()
+    await expect(page.getByRole("list", { name: "Available colors" }).first()).toBeVisible()
     await expect(page.getByLabel("Select size")).toBeVisible()
     await expect(page.getByRole("button", { name: "Add To Cart" })).toBeVisible()
     await expect(page.getByRole("heading", { name: "You May Also Like" })).toBeVisible()

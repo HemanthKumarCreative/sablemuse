@@ -17,7 +17,7 @@ export const ModiweekDayNav = ({
 }: ModiweekDayNavProps) => {
   return (
     <nav aria-label="ModiWeek days" className={cn("w-full", className)}>
-      <ul className="-mx-5 flex gap-4 overflow-x-auto px-5 pb-2 md:mx-0 md:grid md:grid-cols-4 md:gap-5 md:overflow-visible md:px-0 lg:grid-cols-7">
+      <ul className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-5 sm:px-5 md:mx-0 md:grid md:grid-cols-4 md:gap-5 md:overflow-visible md:px-0 lg:grid-cols-7">
         {MODIWEEK_DAYS.map((day, index) => {
           const isActive = day.slug === activeSlug
           const thumb = MODIWEEK[index]?.image ?? day.heroImage

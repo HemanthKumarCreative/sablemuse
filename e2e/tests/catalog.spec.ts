@@ -37,7 +37,7 @@ test.describe("Catalog pages", () => {
     }
 
     await page.getByRole("button", { name: "Filter" }).click()
-    await expect(page.getByRole("dialog").getByRole("heading", { name: "Filters" })).toBeVisible()
+    await expect(page.getByRole("dialog").getByRole("heading", { name: "Filters" }).first()).toBeVisible()
   })
 
   test("plus-size shop all lists inclusive products", async ({ page }) => {

@@ -38,8 +38,9 @@ test.describe("Search", () => {
   test("results page can refine the query", async ({ page }) => {
     await gotoPath(page, "/search?q=pants")
     const resultsSearch = page.getByRole("search", { name: "Search results" })
-    await resultsSearch.getByRole("searchbox", { name: /search products/i }).fill("wide")
-    await resultsSearch.press("Enter")
+    const searchInput = resultsSearch.getByRole("searchbox", { name: /search products/i })
+    await searchInput.fill("wide")
+    await searchInput.press("Enter")
     await expect(page).toHaveURL(/q=wide/)
   })
 
@@ -61,7 +62,7 @@ test.describe("Search", () => {
   test("narrow viewports open filters in a sheet", async ({ page }) => {
     test.skip(isLargeDesktop(page), "sheet filters are below lg")
     await gotoPath(page, "/search?q=pants")
-    await page.getByRole("button", { name: "Filter" }).click()
+    await page.getByRole("button", { name: "Filter", exact: true }).click()
     const sheet = page.getByRole("dialog")
     await expect(sheet).toBeVisible()
     await expect(sheet.getByRole("heading", { name: "Filters" })).toBeVisible()

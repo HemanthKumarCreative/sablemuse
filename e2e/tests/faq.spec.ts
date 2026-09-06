@@ -16,7 +16,7 @@ test.describe("FAQ", () => {
     await gotoPath(page, "/faq")
     const trigger = page.getByRole("button", { name: /When Will My Order Ship/i })
     await trigger.click()
-    await expect(page.getByText(/Typically Ship Within 1–2 Business Days/i)).toBeVisible()
+    await expect(page.getByText(/Typically Ship Within 1.2 Business Days/i)).toBeVisible()
   })
 
   test("breadcrumbs can return home", async ({ page }) => {

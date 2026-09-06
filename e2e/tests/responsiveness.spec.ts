@@ -43,14 +43,14 @@ test.describe("Responsiveness", () => {
 
     await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible()
     await expect(header(page).getByRole("button", { name: "Open menu" })).toHaveCount(0)
-    await expect(header(page).getByRole("link", { name: "Account" })).toBeVisible()
+    await expect(header(page).getByRole("button", { name: "Account" })).toBeVisible()
   })
 
   test("search and cart stay reachable at this viewport", async ({ page }) => {
     await gotoPath(page, "/")
     await expect(header(page).getByRole("button", { name: /search/i })).toBeVisible()
     await expect(header(page).getByRole("button", { name: /shopping bag/i })).toBeVisible()
-    await expect(header(page).getByRole("link", { name: /wishlist/i })).toBeVisible()
+    await expect(header(page).getByRole("button", { name: /wishlist/i })).toBeVisible()
   })
 
   test("listing filters follow the lg breakpoint", async ({ page }) => {
@@ -87,7 +87,7 @@ test.describe("Responsiveness", () => {
       return
     }
 
-    await expect(page.getByText("Price")).toBeVisible()
+    await expect(page.getByText("Price").first()).toBeVisible()
     await expect(page.getByRole("link", { name: "Continue Shopping" })).toBeVisible()
   })
 
