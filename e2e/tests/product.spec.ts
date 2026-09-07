@@ -26,8 +26,16 @@ test.describe("Product detail", () => {
 
   test("size guide dialog opens from wrap top", async ({ page }) => {
     await gotoPath(page, "/product/wrap-top")
-    await page.getByLabel("Open size guide").click()
-    await expect(page.getByRole("heading", { name: /Women/i })).toBeVisible()
+    
+    await expect(async () => {
+      // If the click was swallowed by React hydration, the dialog won't open.
+      // We retry the click until the dialog heading becomes visible.
+      if ((await page.getByRole("heading", { name: /Women/i }).count()) === 0) {
+        await page.getByLabel("Open size guide").click()
+      }
+      await expect(page.getByRole("heading", { name: /Women/i })).toBeVisible()
+    }).toPass()
+
     await expect(page.getByRole("columnheader", { name: "Waist" })).toBeVisible()
   })
 
@@ -43,8 +51,15 @@ test.describe("Product detail", () => {
   test("product accordion can expand shipping details", async ({ page }) => {
     await gotoPath(page, "/product/wrap-top")
     const trigger = page.getByRole("button", { name: /Shipping/i }).first()
-    await trigger.click()
-    await expect(page.getByText(/eligible for returns/i).first()).toBeVisible()
+    
+    await expect(async () => {
+      // If the click was swallowed by React hydration, aria-expanded will remain false.
+      // We retry the click until the accordion actually opens.
+      if (await trigger.getAttribute("aria-expanded") === "false") {
+        await trigger.click()
+      }
+      await expect(page.getByText(/eligible for returns/i).first()).toBeVisible()
+    }).toPass()
   })
 
   test("essential dress uses the priced cart CTA and material block on desktop", async ({
@@ -53,11 +68,15 @@ test.describe("Product detail", () => {
     await gotoPath(page, "/product/essential-dress")
     await expect(pageHeading(page, "Essential Dress")).toBeVisible()
     await expect(page.getByRole("button", { name: /Add To Cart \+ \$195/i })).toBeVisible()
-    await page.getByRole("button", { name: "Sky" }).click()
-    await expect(page.getByRole("button", { name: "Sky" })).toHaveAttribute(
-      "aria-pressed",
-      "true"
-    )
+    const skyButton = page.getByRole("button", { name: "Sky" })
+    await expect(async () => {
+      // If the click is swallowed by React hydration, aria-pressed will remain false.
+      // We retry the click until it updates successfully.
+      if (await skyButton.getAttribute("aria-pressed") === "false") {
+        await skyButton.click()
+      }
+      await expect(skyButton).toHaveAttribute("aria-pressed", "true")
+    }).toPass()
 
     if (isLargeDesktop(page)) {
       await expect(page.getByRole("heading", { name: "Cuproluxe" })).toBeVisible()

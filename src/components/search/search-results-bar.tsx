@@ -25,7 +25,8 @@ export const SearchResultsBar = ({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const nextQuery = query.trim()
+    const formData = new FormData(event.currentTarget)
+    const nextQuery = String(formData.get("q") ?? "").trim()
 
     if (!nextQuery) {
       router.push("/search")

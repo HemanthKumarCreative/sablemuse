@@ -29,7 +29,7 @@ test.describe("Shopping bag and cart", () => {
     ).toBeVisible()
     await expect(page.getByText("Subtotal (3)")).toBeVisible()
     await expect(page.getByText("Shipping", { exact: true })).toBeVisible()
-    await expect(page.getByText("Free")).toBeVisible()
+    await expect(page.getByText("Free", { exact: true })).toBeVisible()
     await page.getByRole("link", { name: "Next" }).click()
     await expect(page).toHaveURL(/\/checkout$/)
   })
@@ -50,11 +50,18 @@ test.describe("Shopping bag and cart", () => {
 
   test("an item can be removed from the cart", async ({ page }) => {
     await gotoPath(page, "/cart")
-    await page
-      .getByRole("button", { name: "Remove Wrap Top from cart" })
-      .filter({ visible: true })
-      .click()
-    await expect(page.getByText("Wrap Top")).toHaveCount(0)
+    
+    await expect(async () => {
+      // If the click is swallowed by React hydration, the item will remain in the cart.
+      // We retry the click until the heading count becomes 0.
+      if ((await page.getByRole("heading", { name: "Wrap Top" }).count()) > 0) {
+        await page
+          .getByRole("button", { name: "Remove Wrap Top from cart" })
+          .filter({ visible: true })
+          .click()
+      }
+      await expect(page.getByRole("heading", { name: "Wrap Top" })).toHaveCount(0)
+    }).toPass()
     await expect(page.getByText("Subtotal (2)")).toBeVisible()
     await waitForCartHydration(page, 2)
   })

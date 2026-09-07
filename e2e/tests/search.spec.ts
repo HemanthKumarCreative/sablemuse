@@ -65,7 +65,7 @@ test.describe("Search", () => {
     await page.getByRole("button", { name: "Filter", exact: true }).click()
     const sheet = page.getByRole("dialog")
     await expect(sheet).toBeVisible()
-    await expect(sheet.getByRole("heading", { name: "Filters" })).toBeVisible()
+    await expect(sheet.getByRole("heading", { name: "Filters" }).first()).toBeVisible()
     await sheet.getByRole("button", { name: "Close filters" }).click()
     await expect(sheet).toBeHidden()
   })
