@@ -15,8 +15,8 @@ export const BestSellersSection = ({ products }: BestSellersSectionProps) => {
     <section aria-labelledby="best-sellers-heading">
       <Container>
         <SectionHeader
-          title="Best Sellers"
-          href="/collection/best-sellers"
+          title="New Arrivals"
+          href="/collection/new-arrivals"
           titleClassName="font-sans"
           titleId="best-sellers-heading"
         />
@@ -30,7 +30,7 @@ export const BestSellersSection = ({ products }: BestSellersSectionProps) => {
         <div className="md:hidden">
           <ScrollCarousel
             itemCount={products.length}
-            ariaLabel="Best sellers"
+            ariaLabel="New arrivals"
             trackClassName="gap-3"
           >
             {products.map((product) => (

@@ -67,7 +67,7 @@ const CollectionPage = async () => {
 
   const featured = COLLECTION_MEGA_MENU.featured
   const bestSellers = await getCollectionProducts(
-    COLLECTION_HANDLES["best-sellers"],
+    COLLECTION_HANDLES["new-in"],
     3
   )
 
@@ -122,8 +122,8 @@ const CollectionPage = async () => {
       <section aria-labelledby="collection-best-sellers-heading" className="pb-16 md:pb-24">
         <Container>
           <SectionHeader
-            title="Best Sellers"
-            href="/collection/best-sellers"
+            title="New Arrivals"
+            href="/collection/new-arrivals"
             titleId="collection-best-sellers-heading"
             className="mt-6 md:mt-12"
           />

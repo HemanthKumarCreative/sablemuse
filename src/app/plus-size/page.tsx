@@ -128,8 +128,8 @@ const PlusSizePage = async () => {
       >
         <Container>
           <SectionHeader
-            title="Best Sellers"
-            href="/collection/best-sellers"
+            title="New Arrivals"
+            href="/collection/new-arrivals"
             titleId="plus-size-best-sellers-heading"
             className="mt-6 md:mt-12"
           />

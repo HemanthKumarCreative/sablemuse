@@ -41,7 +41,7 @@ const jsonLd = {
 
 const HomePage = async () => {
   const bestSellers = await getCollectionProducts(
-    COLLECTION_HANDLES["best-sellers"],
+    COLLECTION_HANDLES["new-in"],
     3
   )
 

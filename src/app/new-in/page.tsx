@@ -140,8 +140,8 @@ const NewInPage = async () => {
       <section aria-labelledby="new-in-best-sellers-heading" className="pb-16 md:pb-24">
         <Container>
           <SectionHeader
-            title="Best Sellers"
-            href="/collection/best-sellers"
+            title="New Arrivals"
+            href="/collection/new-arrivals"
             titleId="new-in-best-sellers-heading"
             className="mt-6 md:mt-12"
           />

@@ -44,16 +44,12 @@ export const COLLECTION_MEGA_MENU = {
         { label: "New In", href: "/new-in" },
         { label: "Modiweek", href: "/modiweek" },
         { label: "Plus Size", href: "/plus-size" },
-        { label: "Best Seller", href: "/collection/best-sellers" },
       ],
     },
     {
       title: "More",
       links: [
-        { label: "Bundles", href: "/collection/bundles" },
-        { label: "Occasion Wear", href: "/collection/occasion" },
-        { label: "Matching Set", href: "/collection/matching-set" },
-        { label: "Suiting", href: "/collection/suiting" },
+        { label: "Matching Sets", href: "/collection/matching-sets-lounge" },
       ],
     },
   ] satisfies MegaMenuColumn[],
@@ -81,12 +77,8 @@ export const NEW_IN_MEGA_MENU = {
       links: [
         { label: "Shop All", href: "/new-in" },
         { label: "Tops & Blouses", href: "/new-in/tops" },
-        { label: "Tees", href: "/new-in/tees" },
         { label: "Pants", href: "/new-in/pants" },
-        { label: "Jackets & Outwears", href: "/new-in/jackets" },
-        { label: "Pullovers", href: "/new-in/pullovers" },
         { label: "Dresses & Jumpsuits", href: "/new-in/dresses" },
-        { label: "Shorts & Skirts", href: "/new-in/shorts" },
       ],
     },
     {
@@ -127,12 +119,8 @@ export const PLUS_SIZE_MEGA_MENU = {
       links: [
         { label: "Shop All", href: "/plus-size/shop-all" },
         { label: "Tops & Blouses", href: "/plus-size/tops" },
-        { label: "Tees", href: "/plus-size/tees" },
         { label: "Pants", href: "/plus-size/pants" },
-        { label: "Jackets & Outwears", href: "/plus-size/jackets" },
-        { label: "Pullovers", href: "/plus-size/pullovers" },
         { label: "Dresses & Jumpsuits", href: "/plus-size/dresses" },
-        { label: "Shorts & Skirts", href: "/plus-size/shorts" },
       ],
     },
   ] satisfies MegaMenuColumn[],
