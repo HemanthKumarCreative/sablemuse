@@ -1,5 +1,4 @@
 import { shopifyFetch } from "../client"
-import { shopifyConfig } from "../config"
 import {
   IMAGE_FRAGMENT,
   MONEY_FRAGMENT,
@@ -7,8 +6,6 @@ import {
 } from "../fragments/product"
 import { mapProductCard } from "../mappers/product"
 import type { Product } from "@/types/commerce"
-import { getSearchResults as getMockSearchResults } from "@/data/search"
-
 type SearchResponse = {
   search: {
     edges: Array<{
@@ -64,17 +61,9 @@ export const searchProducts = async (
       })
       .filter((product): product is Product => Boolean(product))
 
-    if (products.length === 0 && shopifyConfig.useMockFallback) {
-      return getMockSearchResults(trimmed)
-    }
-
     return products
   } catch (error) {
     console.error("Failed to search products", error)
-    if (shopifyConfig.useMockFallback) {
-      return getMockSearchResults(trimmed)
-    }
-
     return []
   }
 }

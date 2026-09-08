@@ -8,9 +8,6 @@ import {
 } from "../fragments/product"
 import { mapProductCard, mapProductDetail } from "../mappers/product"
 import type { Product, ProductDetail } from "@/types/commerce"
-import { BEST_SELLERS } from "@/data/home"
-import { getProductById as getMockProductById } from "@/data/products"
-
 type ProductsResponse = {
   products: {
     edges: Array<{ node: Parameters<typeof mapProductCard>[0] }>
@@ -36,17 +33,7 @@ type RecommendationsResponse = {
   productRecommendations: Array<Parameters<typeof mapProductCard>[0]> | null
 }
 
-const withMockProducts = (products: Product[], limit?: number) => {
-  if (products.length > 0) {
-    return limit ? products.slice(0, limit) : products
-  }
 
-  if (!shopifyConfig.useMockFallback) {
-    return []
-  }
-
-  return limit ? BEST_SELLERS.slice(0, limit) : BEST_SELLERS
-}
 
 export const getProducts = async (limit = 12): Promise<Product[]> => {
   try {
@@ -69,10 +56,10 @@ export const getProducts = async (limit = 12): Promise<Product[]> => {
     })
 
     const products = data.products.edges.map(({ node }) => mapProductCard(node))
-    return withMockProducts(products, limit)
+    return products
   } catch (error) {
     console.error("Failed to fetch products from Shopify", error)
-    return withMockProducts([], limit)
+    return []
   }
 }
 
@@ -95,59 +82,12 @@ export const getProduct = async (
     })
 
     if (!data.product) {
-      if (shopifyConfig.useMockFallback) {
-        const mock = getMockProductById(handle)
-        if (!mock) {
-          return null
-        }
-
-        return {
-          ...mock,
-          gid: `gid://shopify/Product/mock-${mock.id}`,
-          options: [
-            { name: "Color", values: mock.colors.map((color) => color.name) },
-            { name: "Size", values: mock.sizes },
-          ],
-          variants: mock.sizes.flatMap((size) =>
-            mock.colors.map((color) => ({
-              id: `gid://shopify/ProductVariant/mock-${mock.id}-${size}-${color.name}`,
-              title: `${size} / ${color.name}`,
-              availableForSale: true,
-              price: mock.price,
-              currencyCode: "USD",
-              selectedOptions: [
-                { name: "Size", value: size },
-                { name: "Color", value: color.name },
-              ],
-              image: mock.image,
-            }))
-          ),
-        }
-      }
-
       return null
     }
 
     return mapProductDetail(data.product)
   } catch (error) {
     console.error("Failed to fetch product from Shopify", error)
-    if (shopifyConfig.useMockFallback) {
-      const mock = getMockProductById(handle)
-      if (!mock) {
-        return null
-      }
-
-      return {
-        ...mock,
-        gid: `gid://shopify/Product/mock-${mock.id}`,
-        options: [
-          { name: "Color", values: mock.colors.map((color) => color.name) },
-          { name: "Size", values: mock.sizes },
-        ],
-        variants: [],
-      }
-    }
-
     return null
   }
 }

@@ -14,48 +14,7 @@ export type ModiWeekDay = {
   image: string
 }
 
-export const BEST_SELLERS: Product[] = [
-  {
-    id: "1",
-    name: "Tailored Shirt",
-    subtitle: "Classic White",
-    price: 98,
-    image: "/images/products/shirt-black.webp",
-    colors: [
-      { name: "Black", hex: "#0C0C0C" },
-      { name: "White", hex: "#FFFFFF" },
-      { name: "Olive", hex: "#5A6D57" },
-    ],
-    isNew: true,
-    isBestSeller: true,
-  },
-  {
-    id: "2",
-    name: "Wind Down Dress",
-    subtitle: "Coconut",
-    price: 148,
-    image: "/images/products/dress-coconut.webp",
-    colors: [
-      { name: "Coconut", hex: "#E8DFD0" },
-      { name: "Black", hex: "#0C0C0C" },
-      { name: "Sage", hex: "#748C70" },
-    ],
-    isBestSeller: true,
-  },
-  {
-    id: "3",
-    name: "Elba Dress",
-    subtitle: "Off White",
-    price: 168,
-    image: "/images/products/dress-offwhite.webp",
-    colors: [
-      { name: "Off White", hex: "#F5F2EB" },
-      { name: "Khaki", hex: "#8B7E66" },
-      { name: "Navy", hex: "#1F2A44" },
-    ],
-    isBestSeller: true,
-  },
-]
+
 
 export const COLLECTIONS: CollectionTile[] = [
   {

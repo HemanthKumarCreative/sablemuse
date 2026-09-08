@@ -1,7 +1,4 @@
-import type { Product } from "@/data/home"
 import type { SearchFilterGroup } from "@/data/search"
-import { BEST_SELLERS } from "@/data/home"
-import { PANTS_SEARCH_RESULTS } from "@/data/search"
 
 export const SHOP_ALL_FILTERS: SearchFilterGroup[] = [
   {
@@ -79,24 +76,3 @@ export const SHOP_ALL_HERO_SLIDES = [
     objectPosition: "right center",
   },
 ] as const
-
-export const SHOP_ALL_PRODUCTS: Product[] = [
-  ...BEST_SELLERS,
-  {
-    id: "wrap-top",
-    name: "Wrap Top",
-    subtitle: "Soft Linen",
-    price: 120,
-    image: "/images/products/wrap-top/main.webp",
-    colors: [
-      { name: "Black", hex: "#0C0C0C" },
-      { name: "White", hex: "#FFFFFF" },
-      { name: "Sage", hex: "#748C70" },
-    ],
-    isNew: true,
-  },
-  ...PANTS_SEARCH_RESULTS.slice(0, 5).map((product) => ({
-    ...product,
-    id: `shop-${product.id}`,
-  })),
-]

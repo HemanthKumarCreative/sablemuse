@@ -4,10 +4,6 @@ export const shopifyConfig = {
   domain: trimEnv(process.env.SHOPIFY_STORE_DOMAIN),
   storefrontAccessToken: trimEnv(process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN),
   apiVersion: trimEnv(process.env.SHOPIFY_STOREFRONT_API_VERSION) ?? "2025-10",
-  useMockFallback:
-    process.env.NODE_ENV === "production"
-      ? process.env.SHOPIFY_USE_MOCK_FALLBACK === "true"
-      : process.env.SHOPIFY_USE_MOCK_FALLBACK !== "false",
 }
 
 export const getStorefrontEndpoint = () => {
