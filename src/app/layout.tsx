@@ -2,8 +2,10 @@ import type { Metadata } from "next"
 import { Caveat, Montserrat } from "next/font/google"
 import localFont from "next/font/local"
 import { CartProvider } from "@/components/cart/cart-provider"
+import { WishlistProvider } from "@/components/wishlist/wishlist-provider"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SiteHeader } from "@/components/layout/site-header"
+import { fetchCart } from "@/lib/shopify/cart/actions"
 import "./globals.css"
 
 const montserrat = Montserrat({
@@ -79,18 +81,22 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const initialCart = await fetchCart()
+
   return (
     <html
       lang="en"
       className={`${montserrat.variable} ${caveat.variable} ${gillSans.variable} h-full`}
     >
       <body className="min-h-full flex flex-col font-sans text-ink">
-        <CartProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </CartProvider>
+        <WishlistProvider>
+          <CartProvider initialCart={initialCart}>
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </CartProvider>
+        </WishlistProvider>
       </body>
     </html>
   )

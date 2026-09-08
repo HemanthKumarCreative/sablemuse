@@ -5,9 +5,22 @@ import { CheckoutOrderSummary } from "@/components/checkout/checkout-order-summa
 import { CheckoutShippingForm } from "@/components/checkout/checkout-shipping-form"
 import { CheckoutStepper } from "@/components/checkout/checkout-stepper"
 import { Container } from "@/components/shared/container"
+import type { DeliveryGroup } from "@/types/commerce"
 
-export const CheckoutShippingContent = () => {
-  const [shippingCost, setShippingCost] = useState(0)
+type CheckoutShippingContentProps = {
+  deliveryGroups: DeliveryGroup[]
+}
+
+export const CheckoutShippingContent = ({
+  deliveryGroups,
+}: CheckoutShippingContentProps) => {
+  const [shippingCost, setShippingCost] = useState(
+    deliveryGroups[0]?.options.find(
+      (option) => option.handle === deliveryGroups[0]?.selectedHandle
+    )?.price ??
+      deliveryGroups[0]?.options[0]?.price ??
+      0
+  )
 
   const handleShippingCostChange = (cost: number) => {
     setShippingCost(cost)
@@ -20,6 +33,7 @@ export const CheckoutShippingContent = () => {
 
         <div className="mt-8 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-start lg:gap-12 xl:gap-16">
           <CheckoutShippingForm
+            deliveryGroups={deliveryGroups}
             onShippingCostChange={handleShippingCostChange}
           />
           <CheckoutOrderSummary

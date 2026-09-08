@@ -3,8 +3,8 @@ import { CategoryCard } from "@/components/collection/category-card"
 import { ProductCard } from "@/components/product/product-card"
 import { Container } from "@/components/shared/container"
 import { SectionHeader } from "@/components/shared/section-header"
-import { BEST_SELLERS } from "@/data/home"
 import { COLLECTION_MEGA_MENU } from "@/data/navigation"
+import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
 
 export const metadata: Metadata = {
   title: "Collection",
@@ -67,14 +67,17 @@ const jsonLd = {
   url: "/collection",
 }
 
-const CollectionPage = () => {
+const CollectionPage = async () => {
   const categories = COLLECTION_MEGA_MENU.columns[0].links.map((link) => ({
     ...link,
     ...(categoryImages[link.label] ?? {}),
   }))
 
   const featured = COLLECTION_MEGA_MENU.featured
-  const bestSellers = BEST_SELLERS.filter((item) => item.isBestSeller).slice(0, 3)
+  const bestSellers = await getCollectionProducts(
+    COLLECTION_HANDLES["best-sellers"],
+    3
+  )
 
   return (
     <>

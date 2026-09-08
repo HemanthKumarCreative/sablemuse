@@ -4,8 +4,8 @@ import { CategoryCard } from "@/components/collection/category-card"
 import { ProductCard } from "@/components/product/product-card"
 import { Container } from "@/components/shared/container"
 import { SectionHeader } from "@/components/shared/section-header"
-import { BEST_SELLERS } from "@/data/home"
 import { NEW_IN_MEGA_MENU } from "@/data/navigation"
+import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
 
 export const metadata: Metadata = {
   title: "New In",
@@ -67,7 +67,7 @@ const jsonLd = {
   url: "/new-in",
 }
 
-const NewInPage = () => {
+const NewInPage = async () => {
   const categories = NEW_IN_MEGA_MENU.columns[0].links.map((link) => ({
     ...link,
     ...(categoryImages[link.label] ?? {}),
@@ -75,7 +75,7 @@ const NewInPage = () => {
 
   const trending = NEW_IN_MEGA_MENU.columns[1].links
   const featured = NEW_IN_MEGA_MENU.featured
-  const products = BEST_SELLERS.slice(0, 3)
+  const products = await getCollectionProducts(COLLECTION_HANDLES["new-in"], 3)
 
   return (
     <>

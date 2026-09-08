@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Heart } from "lucide-react"
-import type { Product } from "@/data/home"
+import type { Product } from "@/types/commerce"
 import { cn } from "cn"
 
 type ProductCardProps = {

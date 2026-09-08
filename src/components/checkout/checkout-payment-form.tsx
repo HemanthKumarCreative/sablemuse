@@ -1,295 +1,53 @@
 "use client"
 
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useId, useState, type FormEvent } from "react"
-import {
-  Building2,
-  ChevronDown,
-  CircleHelp,
-  Flag,
-  Home,
-  Mail,
-  Package,
-  Phone,
-  User,
-} from "lucide-react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { getCheckoutUrlAction } from "@/lib/shopify/cart/actions"
 import { cn } from "cn"
 
-const COUNTRIES = [
-  "United States",
-  "Canada",
-  "United Kingdom",
-  "Australia",
-  "Germany",
-  "France",
-] as const
-
-const PAYMENT_BRANDS = ["Amex", "Visa", "Mastercard", "PayPal"] as const
-
-const fieldClassName =
-  "h-12 rounded-none border-border bg-white px-4 text-base text-ink placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+const PAYMENT_BRANDS = ["Amex", "Visa", "Mastercard", "Shop Pay", "PayPal"] as const
 
 type CheckoutPaymentFormProps = {
   className?: string
+  checkoutUrl?: string
 }
 
 export const CheckoutPaymentForm = ({
   className,
+  checkoutUrl,
 }: CheckoutPaymentFormProps) => {
-  const router = useRouter()
-  const billingModeId = useId()
-  const nameId = useId()
-  const emailId = useId()
-  const countryId = useId()
-  const address1Id = useId()
-  const address2Id = useId()
-  const cityId = useId()
-  const postalId = useId()
-  const phoneId = useId()
-  const cardNumberId = useId()
-  const monthId = useId()
-  const yearId = useId()
-  const cvvId = useId()
+  const [error, setError] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const [billingMode, setBillingMode] = useState<"same" | "alternative">(
-    "alternative"
-  )
-  const [showCvvHelp, setShowCvvHelp] = useState(false)
+  const handlePay = async () => {
+    setError("")
+    setIsSubmitting(true)
 
-  const handleToggleCvvHelp = () => {
-    setShowCvvHelp((current) => !current)
+    try {
+      const url = checkoutUrl || (await getCheckoutUrlAction())
+      if (!url) {
+        throw new Error("Checkout URL unavailable")
+      }
+
+      window.location.assign(url)
+    } catch (payError) {
+      setError(
+        payError instanceof Error
+          ? payError.message
+          : "Unable to start secure payment"
+      )
+      setIsSubmitting(false)
+    }
   }
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    router.push("/checkout/success")
-  }
-
-  const showAddressFields = billingMode === "alternative"
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={cn("flex w-full flex-col gap-10 lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-12", className)}
-      noValidate
-    >
-      <div>
-        <h2 className="text-xl font-semibold text-ink md:text-2xl">
-          Billing Address
-        </h2>
-
-        <fieldset className="mt-4 space-y-3">
-          <legend className="sr-only">Billing address options</legend>
-          <label className="flex cursor-pointer items-center gap-3 text-sm text-ink md:text-base">
-            <input
-              type="radio"
-              name={billingModeId}
-              checked={billingMode === "same"}
-              onChange={() => setBillingMode("same")}
-              className="size-4 accent-brand"
-            />
-            Default (Same As Shipping Address)
-          </label>
-          <label className="flex cursor-pointer items-center gap-3 text-sm text-ink md:text-base">
-            <input
-              type="radio"
-              name={billingModeId}
-              checked={billingMode === "alternative"}
-              onChange={() => setBillingMode("alternative")}
-              className="size-4 accent-brand"
-            />
-            Add An Alternative Delivery Address
-          </label>
-        </fieldset>
-
-        {showAddressFields ? (
-          <div className="mt-6 space-y-4">
-            <div className="relative">
-              <Label htmlFor={nameId} className="sr-only">
-                Name
-              </Label>
-              <User
-                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <Input
-                id={nameId}
-                name="billingName"
-                type="text"
-                autoComplete="name"
-                required={showAddressFields}
-                placeholder="Name"
-                aria-label="Name"
-                className={cn(fieldClassName, "pl-11")}
-              />
-            </div>
-
-            <div className="relative">
-              <Label htmlFor={emailId} className="sr-only">
-                Email
-              </Label>
-              <Mail
-                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <Input
-                id={emailId}
-                name="billingEmail"
-                type="email"
-                autoComplete="email"
-                required={showAddressFields}
-                placeholder="Email"
-                aria-label="Email"
-                className={cn(fieldClassName, "pl-11")}
-              />
-            </div>
-
-            <div className="relative">
-              <Label htmlFor={countryId} className="sr-only">
-                Country
-              </Label>
-              <Flag
-                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <select
-                id={countryId}
-                name="billingCountry"
-                required={showAddressFields}
-                defaultValue="United States"
-                aria-label="Country"
-                className={cn(
-                  fieldClassName,
-                  "w-full appearance-none pr-10 pl-11"
-                )}
-              >
-                {COUNTRIES.map((country) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-ink"
-                aria-hidden="true"
-              />
-            </div>
-
-            <div className="relative">
-              <Label htmlFor={address1Id} className="sr-only">
-                Address Line 1
-              </Label>
-              <Home
-                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <Input
-                id={address1Id}
-                name="billingAddress1"
-                type="text"
-                autoComplete="address-line1"
-                required={showAddressFields}
-                placeholder="Address Line 1"
-                aria-label="Address Line 1"
-                className={cn(fieldClassName, "pl-11")}
-              />
-            </div>
-
-            <div className="relative">
-              <Label htmlFor={address2Id} className="sr-only">
-                Address Line 2
-              </Label>
-              <Home
-                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <Input
-                id={address2Id}
-                name="billingAddress2"
-                type="text"
-                autoComplete="address-line2"
-                placeholder="Address Line 2"
-                aria-label="Address Line 2"
-                className={cn(fieldClassName, "pl-11")}
-              />
-            </div>
-
-            <div className="relative">
-              <Label htmlFor={cityId} className="sr-only">
-                City / Suburb
-              </Label>
-              <Building2
-                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <Input
-                id={cityId}
-                name="billingCity"
-                type="text"
-                autoComplete="address-level2"
-                required={showAddressFields}
-                placeholder="City / Suburb"
-                aria-label="City / Suburb"
-                className={cn(fieldClassName, "pl-11")}
-              />
-            </div>
-
-            <div className="relative">
-              <Label htmlFor={postalId} className="sr-only">
-                Zip / Postcode
-              </Label>
-              <Package
-                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <Input
-                id={postalId}
-                name="billingPostal"
-                type="text"
-                autoComplete="postal-code"
-                required={showAddressFields}
-                placeholder="Zip / Postcode"
-                aria-label="Zip / Postcode"
-                className={cn(fieldClassName, "pl-11")}
-              />
-            </div>
-
-            <div className="relative">
-              <Label htmlFor={phoneId} className="sr-only">
-                Phone
-              </Label>
-              <Phone
-                className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
-                aria-hidden="true"
-              />
-              <Input
-                id={phoneId}
-                name="billingPhone"
-                type="tel"
-                autoComplete="tel"
-                required={showAddressFields}
-                placeholder="Phone"
-                aria-label="Phone"
-                className={cn(fieldClassName, "pl-11")}
-              />
-            </div>
-          </div>
-        ) : (
-          <p className="mt-6 text-sm text-ink-muted lg:block">
-            We&apos;ll use the shipping address from the previous step for
-            billing.
-          </p>
-        )}
-      </div>
-
+    <div className={cn("flex w-full flex-col gap-8", className)}>
       <div>
         <h2 className="text-xl font-semibold text-ink md:text-2xl">Payment</h2>
         <p className="mt-2 text-sm text-ink-muted md:text-base">
-          Please Choose Your Payment Method
+          You&apos;ll complete payment securely on Shopify Checkout. Card details
+          are never collected on this site.
         </p>
 
         <ul
@@ -306,127 +64,21 @@ export const CheckoutPaymentForm = ({
           ))}
         </ul>
 
-        <div className="mt-6 space-y-4">
-          <div>
-            <Label
-              htmlFor={cardNumberId}
-              className="mb-2 block text-sm font-medium text-ink"
-            >
-              Card Number*
-            </Label>
-            <Input
-              id={cardNumberId}
-              name="cardNumber"
-              type="text"
-              inputMode="numeric"
-              autoComplete="cc-number"
-              required
-              placeholder="Card Number"
-              aria-label="Card Number"
-              className={fieldClassName}
-            />
-          </div>
-
-          <div>
-            <p className="mb-2 text-sm font-medium text-ink">Expiry Date*</p>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor={monthId} className="sr-only">
-                  Expiry Month
-                </Label>
-                <Input
-                  id={monthId}
-                  name="expiryMonth"
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="cc-exp-month"
-                  required
-                  placeholder="Month"
-                  aria-label="Expiry Month"
-                  className={fieldClassName}
-                />
-              </div>
-              <div>
-                <Label htmlFor={yearId} className="sr-only">
-                  Expiry Year
-                </Label>
-                <Input
-                  id={yearId}
-                  name="expiryYear"
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="cc-exp-year"
-                  required
-                  placeholder="Year"
-                  aria-label="Expiry Year"
-                  className={fieldClassName}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <Label
-              htmlFor={cvvId}
-              className="mb-2 block text-sm font-medium text-ink"
-            >
-              Security Code*
-            </Label>
-            <Input
-              id={cvvId}
-              name="securityCode"
-              type="text"
-              inputMode="numeric"
-              autoComplete="cc-csc"
-              required
-              placeholder="CVV"
-              aria-label="Security Code"
-              className={cn(fieldClassName, "max-w-[160px]")}
-            />
-            <button
-              type="button"
-              onClick={handleToggleCvvHelp}
-              className="mt-2 inline-flex items-center gap-1.5 text-sm text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-              aria-expanded={showCvvHelp}
-            >
-              <CircleHelp className="size-3.5" aria-hidden="true" />
-              What Is This?
-            </button>
-            {showCvvHelp ? (
-              <p className="mt-2 text-sm text-ink-muted">
-                The 3 or 4 digit code on the back of your card (front for Amex).
-              </p>
-            ) : null}
-          </div>
-        </div>
+        {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
 
         <Button
-          type="submit"
+          type="button"
+          onClick={() => void handlePay()}
+          disabled={isSubmitting}
           className="mt-8 h-12 w-full rounded-none bg-brand text-base font-medium capitalize text-white hover:bg-brand/90"
         >
-          Pay And Place Order
+          {isSubmitting ? "Redirecting..." : "Continue To Secure Payment"}
         </Button>
 
-        <p className="mt-4 text-xs leading-[1.7] capitalize text-ink-muted">
-          By Clicking On &quot;Pay And Place Order&quot;, You Agree (I) To Make
-          Your Purchase From Global-E As Merchant Of Record For This Transaction,
-          Subject To Global-E&apos;s{" "}
-          <Link
-            href="/sustainability"
-            className="underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-          >
-            Term Of Sale
-          </Link>
-          ; (II) That Your Information Will Be Handled By Global-E In Accordance
-          With The Global-E{" "}
-          <Link
-            href="/sustainability"
-            className="underline underline-offset-2 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-          >
-            Privacy Policy
-          </Link>
-          ; And (III) That Global-E Will Share Your Information (Excluding The
-          Payment Details) With Modimal.
+        <p className="mt-4 text-xs leading-[1.7] text-ink-muted">
+          By continuing, you agree to complete your purchase through Shopify
+          Checkout. Billing address can be confirmed there if it differs from
+          shipping.
         </p>
 
         <div className="mt-8">
@@ -438,6 +90,6 @@ export const CheckoutPaymentForm = ({
           </Link>
         </div>
       </div>
-    </form>
+    </div>
   )
 }

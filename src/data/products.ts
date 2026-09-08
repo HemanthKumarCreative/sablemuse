@@ -1,29 +1,8 @@
-import type { Product } from "@/data/home"
-
-export type ProductMaterial = {
-  title: string
-  description: string
-  tags: string[]
-}
-
-export type ProductDetail = Product & {
-  category: string
-  categoryHref: string
-  description: string
-  gallery: string[]
-  sizes: string[]
-  fitting: string
-  fabricCare: string
-  productDetail: string
-  shippingReturns: string
-  sizeSelector?: "buttons" | "select"
-  ctaStyle?: "ink" | "brand"
-  showCtaPrice?: boolean
-  showEasyReturn?: boolean
-  accordionDefaultOpen?: string[]
-  material?: ProductMaterial
-  accordionPlacement?: "panel" | "gallery"
-}
+export type {
+  ProductDetail,
+  ProductMaterial,
+} from "@/types/commerce"
+import type { Product, ProductDetail } from "@/types/commerce"
 
 export const PRODUCTS: Record<string, ProductDetail> = {
   "wrap-top": {

@@ -9,10 +9,10 @@ import { Container } from "@/components/shared/container"
 import { ScrollCarousel } from "@/components/shared/scroll-carousel"
 import { SectionHeader } from "@/components/shared/section-header"
 import {
-  RELATED_PRODUCTS,
-  getProductById as getMockProductById,
-} from "@/data/products"
-import { getProduct } from "@/lib/shopify/queries/product"
+  getProduct,
+  getProductRecommendations,
+  getProducts,
+} from "@/lib/shopify"
 
 type ProductPageProps = {
   params: Promise<{
@@ -20,17 +20,11 @@ type ProductPageProps = {
   }>
 }
 
-
-
 export const generateMetadata = async ({
   params,
 }: ProductPageProps): Promise<Metadata> => {
   const { id } = await params
-  let product = await getProduct(id)
-  
-  if (!product) {
-    product = getMockProductById(id)
-  }
+  const product = await getProduct(id)
 
   if (!product) {
     return {
@@ -54,15 +48,15 @@ export const generateMetadata = async ({
 
 const ProductPage = async ({ params }: ProductPageProps) => {
   const { id } = await params
-  let product = await getProduct(id)
-  
-  if (!product) {
-    product = getMockProductById(id)
-  }
+  const product = await getProduct(id)
 
   if (!product) {
     notFound()
   }
+
+  const related = product.gid
+    ? await getProductRecommendations(product.gid, 4)
+    : await getProducts(4)
 
   const placeAccordionsUnderGallery = product.accordionPlacement === "gallery"
   const accordionDefaultOpen = product.accordionDefaultOpen
@@ -80,7 +74,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     },
     offers: {
       "@type": "Offer",
-      priceCurrency: "USD",
+      priceCurrency: product.currencyCode ?? "USD",
       price: product.price,
       availability: "https://schema.org/InStock",
       url: `/product/${product.id}`,
@@ -152,13 +146,13 @@ const ProductPage = async ({ params }: ProductPageProps) => {
             titleClassName="text-[1.75rem] font-bold md:text-[2.1rem]"
           />
           <ScrollCarousel
-            itemCount={RELATED_PRODUCTS.length}
+            itemCount={related.length}
             ariaLabel="You may also like"
             className="md:hidden"
             trackClassName="gap-3"
             dotsClassName="hidden"
           >
-            {RELATED_PRODUCTS.map((item) => (
+            {related.map((item) => (
               <div
                 key={item.id}
                 className="w-[68%] shrink-0 snap-start sm:w-[55%]"
@@ -171,7 +165,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
             ))}
           </ScrollCarousel>
           <div className="hidden grid-cols-2 gap-4 md:grid md:grid-cols-3 md:gap-6">
-            {RELATED_PRODUCTS.map((item) => (
+            {related.map((item) => (
               <ProductCard
                 key={item.id}
                 product={item}

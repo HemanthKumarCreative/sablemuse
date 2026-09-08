@@ -8,25 +8,30 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { updateCheckoutInfoAction } from "@/lib/shopify/cart/actions"
 import { cn } from "cn"
 
-const COUNTRIES = [
-  "United States",
-  "Canada",
-  "United Kingdom",
-  "Australia",
-  "Germany",
-  "France",
-] as const
+const COUNTRY_CODES: Array<{ label: string; code: string }> = [
+  { label: "United States", code: "US" },
+  { label: "Canada", code: "CA" },
+  { label: "United Kingdom", code: "GB" },
+  { label: "Australia", code: "AU" },
+  { label: "Germany", code: "DE" },
+  { label: "France", code: "FR" },
+]
 
 const fieldClassName =
   "h-12 rounded-none border-border bg-white px-4 text-base text-ink placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
 
 type CheckoutInfoFormProps = {
   className?: string
+  customerAccessToken?: string
 }
 
-export const CheckoutInfoForm = ({ className }: CheckoutInfoFormProps) => {
+export const CheckoutInfoForm = ({
+  className,
+  customerAccessToken,
+}: CheckoutInfoFormProps) => {
   const router = useRouter()
   const emailId = useId()
   const newsId = useId()
@@ -43,15 +48,45 @@ export const CheckoutInfoForm = ({ className }: CheckoutInfoFormProps) => {
 
   const [emailNews, setEmailNews] = useState(false)
   const [saveInfo, setSaveInfo] = useState(false)
+  const [error, setError] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    router.push("/checkout/shipping")
+    setError("")
+    setIsSubmitting(true)
+
+    const form = new FormData(event.currentTarget)
+
+    try {
+      await updateCheckoutInfoAction({
+        email: String(form.get("email") ?? ""),
+        phone: String(form.get("phone") ?? ""),
+        countryCode: String(form.get("country") ?? "US"),
+        firstName: String(form.get("firstName") ?? ""),
+        lastName: String(form.get("lastName") ?? ""),
+        company: String(form.get("company") ?? "") || undefined,
+        address1: String(form.get("address") ?? ""),
+        address2: String(form.get("apartment") ?? "") || undefined,
+        city: String(form.get("city") ?? ""),
+        zip: String(form.get("postalCode") ?? ""),
+        customerAccessToken,
+      })
+      router.push("/checkout/shipping")
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Unable to save checkout info"
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(event) => void handleSubmit(event)}
       className={cn("flex w-full flex-col", className)}
       noValidate
     >
@@ -112,13 +147,13 @@ export const CheckoutInfoForm = ({ className }: CheckoutInfoFormProps) => {
           id={countryId}
           name="country"
           required
-          defaultValue="United States"
+          defaultValue="US"
           aria-label="Country / Region"
           className={cn(fieldClassName, "w-full appearance-none pr-10")}
         >
-          {COUNTRIES.map((country) => (
-            <option key={country} value={country}>
-              {country}
+          {COUNTRY_CODES.map((country) => (
+            <option key={country.code} value={country.code}>
+              {country.label}
             </option>
           ))}
         </select>
@@ -276,12 +311,15 @@ export const CheckoutInfoForm = ({ className }: CheckoutInfoFormProps) => {
         </Label>
       </div>
 
+      {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+
       <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row-reverse sm:items-center sm:justify-between">
         <Button
           type="submit"
+          disabled={isSubmitting}
           className="h-12 w-full rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90 sm:w-auto sm:min-w-[220px]"
         >
-          Continue To Shipping
+          {isSubmitting ? "Saving..." : "Continue To Shipping"}
         </Button>
         <Link
           href="/cart"

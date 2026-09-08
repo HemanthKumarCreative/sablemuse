@@ -5,7 +5,8 @@ import { SearchFilters } from "@/components/search/search-filters"
 import { SearchFiltersMobile } from "@/components/search/search-filters-mobile"
 import { SearchResultsBar } from "@/components/search/search-results-bar"
 import { Container } from "@/components/shared/container"
-import { getSearchResults } from "@/data/search"
+import { SEARCH_FILTERS } from "@/data/search"
+import { searchProducts } from "@/lib/shopify/queries/search"
 
 type SearchPageProps = {
   searchParams: Promise<{
@@ -45,81 +46,60 @@ export const generateMetadata = async ({
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const query = resolveQuery((await searchParams).q)
-  const products = query ? getSearchResults(query) : []
+  const products = query ? await searchProducts(query) : []
   const itemCount = products.length
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SearchResultsPage",
-    name: `Search results for ${query}`,
-    description: `Modimal search results for ${query}`,
-    url: `/search?q=${encodeURIComponent(query)}`,
-    mainEntity: {
-      "@type": "ItemList",
-      numberOfItems: itemCount,
-      itemListElement: products.map((product, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        url: `/product/${product.id}`,
-        name: `${product.name} ${product.subtitle}`,
-      })),
-    },
-  }
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+    <section aria-labelledby="search-heading" className="pb-12 md:pb-24">
+      <Container>
+        <h1 id="search-heading" className="sr-only">
+          Search results
+        </h1>
 
-      <section aria-labelledby="search-results-heading" className="pb-12 md:pb-24">
-        <Container>
-          <h1 id="search-results-heading" className="sr-only">
-            Search results for {query}
-          </h1>
+        <SearchResultsBar
+          className="mt-6 md:mt-10"
+          initialQuery={query}
+        />
 
-          <SearchResultsBar initialQuery={query} className="mt-4 md:mt-8" />
+        <SearchActiveChips className="mt-4" />
 
-          <p
-            className="sr-only mt-5 text-center text-lg capitalize leading-[1.8] text-ink sm:text-xl md:mt-8 lg:not-sr-only"
-            aria-live="polite"
-          >
-            {itemCount} {itemCount === 1 ? "item" : "items"}
-          </p>
+        <SearchFiltersMobile
+          className="mt-5 lg:mt-6"
+          filters={SEARCH_FILTERS}
+          headingId="search-mobile-filters-heading"
+        />
 
-          <SearchFiltersMobile className="mt-5" />
-          <SearchActiveChips
-            className="mt-4 lg:hidden"
-            groupIds={["size", "collection"]}
+        <div className="mt-5 flex flex-col gap-8 lg:mt-8 lg:flex-row lg:items-start lg:gap-6">
+          <SearchFilters
+            className="hidden w-full shrink-0 lg:sticky lg:top-[120px] lg:block lg:w-[320px] xl:w-[392px]"
+            filters={SEARCH_FILTERS}
+            headingId="search-filters-heading"
           />
 
-          <div className="mt-6 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-start lg:gap-6">
-            <SearchFilters className="hidden w-full shrink-0 lg:sticky lg:top-[120px] lg:block lg:w-[392px]" />
-
-            <div className="min-w-0 flex-1">
-              {itemCount === 0 ? (
-                <p className="text-base text-ink-muted">
-                  {query
-                    ? `No products matched “${query}”. Try another search.`
-                    : "Enter a search term to see products."}
-                </p>
-              ) : (
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                  {products.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+          <div className="min-w-0 flex-1">
+            {!query ? (
+              <p className="text-base text-ink-muted">
+                Enter a search term to find Modimal products.
+              </p>
+            ) : itemCount === 0 ? (
+              <p className="text-base text-ink-muted">
+                No products found for “{query}”.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+                {products.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </Container>
-      </section>
-    </>
+        </div>
+      </Container>
+    </section>
   )
 }
 

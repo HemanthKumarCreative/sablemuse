@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import type { ProductDetail } from "@/data/products"
+import type { ProductDetail } from "@/types/commerce"
 import { cn } from "cn"
 
 type ProductAccordionsProps = {

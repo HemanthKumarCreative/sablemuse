@@ -1,19 +1,5 @@
-export type ProductColor = {
-  name: string
-  hex: string
-}
-
-export type Product = {
-  id: string
-  name: string
-  subtitle: string
-  price: number
-  image: string
-  colors: ProductColor[]
-  isNew?: boolean
-  isRestock?: boolean
-  isBestSeller?: boolean
-}
+export type { Product, ProductColor } from "@/types/commerce"
+import type { Product } from "@/types/commerce"
 
 export type CollectionTile = {
   id: string

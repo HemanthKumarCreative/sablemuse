@@ -9,8 +9,8 @@ import {
   SHOP_ALL_FILTERS,
   SHOP_ALL_FILTERS_DEFAULT_OPEN,
   SHOP_ALL_HERO_SLIDES,
-  SHOP_ALL_PRODUCTS,
 } from "@/data/shop-all"
+import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
 
 export const metadata: Metadata = {
   title: "Shop All",
@@ -27,25 +27,30 @@ export const metadata: Metadata = {
   },
 }
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  name: "Shop All",
-  description: "Shop all Modimal women’s clothing",
-  url: "/shop-all",
-  mainEntity: {
-    "@type": "ItemList",
-    numberOfItems: SHOP_ALL_PRODUCTS.length,
-    itemListElement: SHOP_ALL_PRODUCTS.map((product, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      url: `/product/${product.id}`,
-      name: `${product.name} ${product.subtitle}`,
-    })),
-  },
-}
+const ShopAllPage = async () => {
+  const products = await getCollectionProducts(
+    COLLECTION_HANDLES["shop-all"],
+    24
+  )
 
-const ShopAllPage = () => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Shop All",
+    description: "Shop all Modimal women’s clothing",
+    url: "/shop-all",
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: products.length,
+      itemListElement: products.map((product, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `/product/${product.id}`,
+        name: `${product.name} ${product.subtitle}`,
+      })),
+    },
+  }
+
   return (
     <>
       <script
@@ -104,10 +109,10 @@ const ShopAllPage = () => {
                 className="sr-only mb-5 text-sm capitalize text-ink-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
                 aria-live="polite"
               >
-                {SHOP_ALL_PRODUCTS.length} items
+                {products.length} items
               </p>
               <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                {SHOP_ALL_PRODUCTS.map((product) => (
+                {products.map((product) => (
                   <ProductCard
                     key={product.id}
                     product={product}

@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   },
 }
 
+type LoginPageProps = {
+  searchParams: Promise<{ error?: string }>
+}
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -26,7 +30,9 @@ const jsonLd = {
   url: "/login",
 }
 
-const LoginPage = () => {
+const LoginPage = async ({ searchParams }: LoginPageProps) => {
+  const { error } = await searchParams
+
   return (
     <>
       <script
@@ -64,7 +70,10 @@ const LoginPage = () => {
             </div>
 
             <div className="flex items-center lg:py-8">
-              <LoginForm className="mx-auto w-full max-w-[480px]" />
+              <LoginForm
+                className="mx-auto w-full max-w-[480px]"
+                error={error}
+              />
             </div>
           </div>
         </Container>

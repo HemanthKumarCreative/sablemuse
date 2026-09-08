@@ -1,131 +1,225 @@
-import { shopifyFetch } from "../index";
-import type { Product } from "@/data/home";
-import type { ProductDetail } from "@/data/products";
+import { shopifyFetch } from "../client"
+import { shopifyConfig } from "../config"
+import {
+  IMAGE_FRAGMENT,
+  MONEY_FRAGMENT,
+  PRODUCT_CARD_FRAGMENT,
+  PRODUCT_DETAIL_FRAGMENT,
+} from "../fragments/product"
+import { mapProductCard, mapProductDetail } from "../mappers/product"
+import type { Product, ProductDetail } from "@/types/commerce"
+import { BEST_SELLERS } from "@/data/home"
+import { getProductById as getMockProductById } from "@/data/products"
 
-export async function getProducts(limit: number = 10): Promise<Product[]> {
-  const query = `
-    query getProducts($first: Int!) {
-      products(first: $first) {
-        edges {
-          node {
+type ProductsResponse = {
+  products: {
+    edges: Array<{ node: Parameters<typeof mapProductCard>[0] }>
+  }
+}
+
+type ProductResponse = {
+  product: (Parameters<typeof mapProductDetail>[0] & { id: string }) | null
+}
+
+type CollectionProductsResponse = {
+  collection: {
+    id: string
+    title: string
+    handle: string
+    products: {
+      edges: Array<{ node: Parameters<typeof mapProductCard>[0] }>
+    }
+  } | null
+}
+
+type RecommendationsResponse = {
+  productRecommendations: Array<Parameters<typeof mapProductCard>[0]> | null
+}
+
+const withMockProducts = (products: Product[], limit?: number) => {
+  if (products.length > 0) {
+    return limit ? products.slice(0, limit) : products
+  }
+
+  if (!shopifyConfig.useMockFallback) {
+    return []
+  }
+
+  return limit ? BEST_SELLERS.slice(0, limit) : BEST_SELLERS
+}
+
+export const getProducts = async (limit = 12): Promise<Product[]> => {
+  try {
+    const data = await shopifyFetch<ProductsResponse>({
+      query: `
+        ${MONEY_FRAGMENT}
+        ${IMAGE_FRAGMENT}
+        ${PRODUCT_CARD_FRAGMENT}
+        query getProducts($first: Int!) {
+          products(first: $first) {
+            edges {
+              node {
+                ...ProductCardFields
+              }
+            }
+          }
+        }
+      `,
+      variables: { first: limit },
+    })
+
+    const products = data.products.edges.map(({ node }) => mapProductCard(node))
+    return withMockProducts(products, limit)
+  } catch (error) {
+    console.error("Failed to fetch products from Shopify", error)
+    return withMockProducts([], limit)
+  }
+}
+
+export const getProduct = async (
+  handle: string
+): Promise<ProductDetail | null> => {
+  try {
+    const data = await shopifyFetch<ProductResponse>({
+      query: `
+        ${MONEY_FRAGMENT}
+        ${IMAGE_FRAGMENT}
+        ${PRODUCT_DETAIL_FRAGMENT}
+        query getProduct($handle: String!) {
+          product(handle: $handle) {
+            ...ProductDetailFields
+          }
+        }
+      `,
+      variables: { handle },
+    })
+
+    if (!data.product) {
+      if (shopifyConfig.useMockFallback) {
+        const mock = getMockProductById(handle)
+        if (!mock) {
+          return null
+        }
+
+        return {
+          ...mock,
+          gid: `gid://shopify/Product/mock-${mock.id}`,
+          options: [
+            { name: "Color", values: mock.colors.map((color) => color.name) },
+            { name: "Size", values: mock.sizes },
+          ],
+          variants: mock.sizes.flatMap((size) =>
+            mock.colors.map((color) => ({
+              id: `gid://shopify/ProductVariant/mock-${mock.id}-${size}-${color.name}`,
+              title: `${size} / ${color.name}`,
+              availableForSale: true,
+              price: mock.price,
+              currencyCode: "USD",
+              selectedOptions: [
+                { name: "Size", value: size },
+                { name: "Color", value: color.name },
+              ],
+              image: mock.image,
+            }))
+          ),
+        }
+      }
+
+      return null
+    }
+
+    return mapProductDetail(data.product)
+  } catch (error) {
+    console.error("Failed to fetch product from Shopify", error)
+    if (shopifyConfig.useMockFallback) {
+      const mock = getMockProductById(handle)
+      if (!mock) {
+        return null
+      }
+
+      return {
+        ...mock,
+        gid: `gid://shopify/Product/mock-${mock.id}`,
+        options: [
+          { name: "Color", values: mock.colors.map((color) => color.name) },
+          { name: "Size", values: mock.sizes },
+        ],
+        variants: [],
+      }
+    }
+
+    return null
+  }
+}
+
+export const getCollectionProducts = async (
+  handle: string,
+  limit = 24
+): Promise<Product[]> => {
+  try {
+    const data = await shopifyFetch<CollectionProductsResponse>({
+      query: `
+        ${MONEY_FRAGMENT}
+        ${IMAGE_FRAGMENT}
+        ${PRODUCT_CARD_FRAGMENT}
+        query getCollectionProducts($handle: String!, $first: Int!) {
+          collection(handle: $handle) {
             id
             title
             handle
-            description
-            priceRange {
-              maxVariantPrice {
-                amount
-                currencyCode
-              }
-            }
-            images(first: 1) {
+            products(first: $first) {
               edges {
                 node {
-                  url
-                  altText
+                  ...ProductCardFields
                 }
               }
             }
           }
         }
-      }
+      `,
+      variables: { handle, first: limit },
+    })
+
+    const products =
+      data.collection?.products.edges.map(({ node }) => mapProductCard(node)) ??
+      []
+
+    if (products.length === 0) {
+      return getProducts(limit)
     }
-  `;
 
-  try {
-    const response = await shopifyFetch<any>({
-      query,
-      variables: {
-        first: limit,
-      },
-    });
-
-    const shopifyProducts = response.body.data.products.edges.map((edge: any) => edge.node);
-
-    // Map Shopify product structure to the UI Product structure
-    const mappedProducts: Product[] = shopifyProducts.map((p: any) => ({
-      id: p.handle, // Use handle as id for routing to /product/[handle]
-      name: p.title,
-      subtitle: "New Arrival", // Defaulting subtitle
-      price: parseFloat(p.priceRange.maxVariantPrice.amount),
-      image: p.images?.edges?.[0]?.node?.url || "/images/placeholder.jpg",
-      colors: [], // Colors would ideally come from product options/metafields
-      isNew: true,
-      isBestSeller: true, // Assuming these are fetched for best sellers
-    }));
-
-    return mappedProducts;
+    return products
   } catch (error) {
-    console.error("Failed to fetch products from Shopify", error);
-    return []; // Return empty array on failure so UI doesn't crash completely
+    console.error("Failed to fetch collection products from Shopify", error)
+    return getProducts(limit)
   }
 }
 
-export async function getProduct(handle: string): Promise<ProductDetail | null> {
-  const query = `
-    query getProduct($handle: String!) {
-      product(handle: $handle) {
-        id
-        title
-        handle
-        description
-        priceRange {
-          maxVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        images(first: 10) {
-          edges {
-            node {
-              url
-              altText
-            }
-          }
-        }
-      }
-    }
-  `;
-
+export const getProductRecommendations = async (
+  productId: string,
+  limit = 4
+): Promise<Product[]> => {
   try {
-    const response = await shopifyFetch<any>({
-      query,
-      variables: {
-        handle,
-      },
-    });
+    const data = await shopifyFetch<RecommendationsResponse>({
+      query: `
+        ${MONEY_FRAGMENT}
+        ${IMAGE_FRAGMENT}
+        ${PRODUCT_CARD_FRAGMENT}
+        query getProductRecommendations($productId: ID!) {
+          productRecommendations(productId: $productId) {
+            ...ProductCardFields
+          }
+        }
+      `,
+      variables: { productId },
+    })
 
-    const shopifyProduct = response.body.data.product;
+    const products =
+      data.productRecommendations?.map((node) => mapProductCard(node)) ?? []
 
-    if (!shopifyProduct) {
-      return null;
-    }
-
-    const images = shopifyProduct.images?.edges?.map((edge: any) => edge.node.url) || [];
-
-    const mappedProduct: ProductDetail = {
-      id: shopifyProduct.handle,
-      name: shopifyProduct.title,
-      subtitle: "New Arrival",
-      price: parseFloat(shopifyProduct.priceRange.maxVariantPrice.amount),
-      image: images[0] || "/images/placeholder.jpg",
-      colors: [{ name: "Default", hex: "#0C0C0C" }],
-      category: "Shop",
-      categoryHref: "/shop-all",
-      description: shopifyProduct.description || "No description available.",
-      gallery: images.length > 0 ? images : ["/images/placeholder.jpg"],
-      sizes: ["S", "M", "L"], // Mocking sizes for now
-      fitting: "We recommend taking your usual size.",
-      fabricCare: "Machine wash cold. Do not tumble dry.",
-      productDetail: shopifyProduct.description || "Detailed product information.",
-      shippingReturns: "Free shipping on orders over $150. Returns accepted within 30 days.",
-      sizeSelector: "select",
-      ctaStyle: "brand",
-    };
-
-    return mappedProduct;
+    return products.slice(0, limit)
   } catch (error) {
-    console.error("Failed to fetch single product from Shopify", error);
-    return null;
+    console.error("Failed to fetch product recommendations", error)
+    return []
   }
 }

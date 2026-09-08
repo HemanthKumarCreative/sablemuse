@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { CheckoutShippingContent } from "@/components/checkout/checkout-shipping-content"
+import { fetchCartDelivery } from "@/lib/shopify/cart/actions"
 
 export const metadata: Metadata = {
   title: "Shipping",
@@ -9,8 +10,10 @@ export const metadata: Metadata = {
   },
 }
 
-const CheckoutShippingPage = () => {
-  return <CheckoutShippingContent />
+const CheckoutShippingPage = async () => {
+  const { deliveryGroups } = await fetchCartDelivery()
+
+  return <CheckoutShippingContent deliveryGroups={deliveryGroups} />
 }
 
 export default CheckoutShippingPage

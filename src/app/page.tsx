@@ -6,8 +6,8 @@ import { HeroSection } from "@/components/home/hero-section"
 import { ModiWeekSection } from "@/components/home/modiweek-section"
 import { SustainabilitySection } from "@/components/home/sustainability-section"
 import { WelcomeDialog } from "@/components/home/welcome-dialog"
-import { BEST_SELLERS, COLLECTIONS, MODIWEEK } from "@/data/home"
-import { getProducts } from "@/lib/shopify/queries/product"
+import { COLLECTIONS, MODIWEEK } from "@/data/home"
+import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
 
 export const metadata: Metadata = {
   title: {
@@ -40,11 +40,10 @@ const jsonLd = {
 }
 
 const HomePage = async () => {
-  let bestSellers = await getProducts(3)
-  
-  if (!bestSellers || bestSellers.length === 0) {
-    bestSellers = BEST_SELLERS.filter((item) => item.isBestSeller).slice(0, 3)
-  }
+  const bestSellers = await getCollectionProducts(
+    COLLECTION_HANDLES["best-sellers"],
+    3
+  )
 
   return (
     <>

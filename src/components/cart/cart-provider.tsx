@@ -7,156 +7,170 @@ import {
   useEffect,
   useMemo,
   useState,
+  useTransition,
   type ReactNode,
 } from "react"
 import {
-  CART_STORAGE_KEY,
-  SAMPLE_CART_ITEMS,
-  getCartItemKey,
-  type CartItem,
-} from "@/data/cart"
+  addToCartAction,
+  fetchCart,
+  removeCartLineAction,
+  updateCartLineAction,
+  clearCartAction,
+} from "@/lib/shopify/cart/actions"
+import type { CartItem, CartSummary } from "@/types/commerce"
 
 type CartContextValue = {
   items: CartItem[]
   itemCount: number
   subtotal: number
+  checkoutUrl: string
   isHydrated: boolean
-  addItem: (item: Omit<CartItem, "id" | "quantity"> & { quantity?: number }) => void
-  removeItem: (id: string) => void
-  incrementItem: (id: string) => void
-  decrementItem: (id: string) => void
-  clearCart: () => void
+  isPending: boolean
+  addItem: (input: { merchandiseId: string; quantity?: number }) => Promise<void>
+  removeItem: (lineId: string) => Promise<void>
+  incrementItem: (lineId: string) => Promise<void>
+  decrementItem: (lineId: string) => Promise<void>
+  clearCart: () => Promise<void>
+  refreshCart: () => Promise<void>
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
 
 type CartProviderProps = {
   children: ReactNode
+  initialCart?: CartSummary
 }
 
-export const CartProvider = ({ children }: CartProviderProps) => {
-  const [items, setItems] = useState<CartItem[]>(SAMPLE_CART_ITEMS)
-  const [isHydrated, setIsHydrated] = useState(false)
-
-  useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(CART_STORAGE_KEY)
-
-      if (stored) {
-        const parsed = JSON.parse(stored) as CartItem[]
-
-        if (Array.isArray(parsed)) {
-          setItems(parsed)
-        }
-      }
-    } catch {
-      setItems(SAMPLE_CART_ITEMS)
-    } finally {
-      setIsHydrated(true)
+export const CartProvider = ({ children, initialCart }: CartProviderProps) => {
+  const [cart, setCart] = useState<CartSummary>(
+    initialCart ?? {
+      id: "",
+      checkoutUrl: "",
+      totalQuantity: 0,
+      subtotal: 0,
+      currencyCode: "USD",
+      items: [],
     }
+  )
+  const [isHydrated, setIsHydrated] = useState(Boolean(initialCart))
+  const [isPending, startTransition] = useTransition()
+
+  const refreshCart = useCallback(async () => {
+    const next = await fetchCart()
+    setCart(next)
+    setIsHydrated(true)
   }, [])
 
   useEffect(() => {
-    if (!isHydrated) {
+    if (initialCart) {
       return
     }
 
-    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
-  }, [items, isHydrated])
+    void refreshCart()
+  }, [initialCart, refreshCart])
 
   const addItem = useCallback(
-    (item: Omit<CartItem, "id" | "quantity"> & { quantity?: number }) => {
-      const id = getCartItemKey(item.productId, item.size, item.color)
-      const quantityToAdd = item.quantity ?? 1
-
-      setItems((current) => {
-        const existing = current.find((entry) => entry.id === id)
-
-        if (existing) {
-          return current.map((entry) =>
-            entry.id === id
-              ? { ...entry, quantity: entry.quantity + quantityToAdd }
-              : entry
-          )
-        }
-
-        return [
-          ...current,
-          {
-            ...item,
-            id,
-            quantity: quantityToAdd,
-          },
-        ]
+    async (input: { merchandiseId: string; quantity?: number }) => {
+      startTransition(() => {
+        void (async () => {
+          const next = await addToCartAction(input)
+          setCart(next)
+        })()
       })
     },
     []
   )
 
-  const removeItem = useCallback((id: string) => {
-    setItems((current) => current.filter((item) => item.id !== id))
+  const removeItem = useCallback(async (lineId: string) => {
+    startTransition(() => {
+      void (async () => {
+        const next = await removeCartLineAction(lineId)
+        setCart(next)
+      })()
+    })
   }, [])
 
-  const incrementItem = useCallback((id: string) => {
-    setItems((current) =>
-      current.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    )
-  }, [])
+  const incrementItem = useCallback(
+    async (lineId: string) => {
+      const line = cart.items.find((item) => item.id === lineId)
+      if (!line) {
+        return
+      }
 
-  const decrementItem = useCallback((id: string) => {
-    setItems((current) =>
-      current.flatMap((item) => {
-        if (item.id !== id) {
-          return [item]
-        }
-
-        if (item.quantity <= 1) {
-          return []
-        }
-
-        return [{ ...item, quantity: item.quantity - 1 }]
+      startTransition(() => {
+        void (async () => {
+          const next = await updateCartLineAction({
+            lineId,
+            quantity: line.quantity + 1,
+          })
+          setCart(next)
+        })()
       })
-    )
-  }, [])
-
-  const clearCart = useCallback(() => {
-    setItems([])
-  }, [])
-
-  const itemCount = useMemo(
-    () => items.reduce((total, item) => total + item.quantity, 0),
-    [items]
+    },
+    [cart.items]
   )
 
-  const subtotal = useMemo(
-    () => items.reduce((total, item) => total + item.price * item.quantity, 0),
-    [items]
+  const decrementItem = useCallback(
+    async (lineId: string) => {
+      const line = cart.items.find((item) => item.id === lineId)
+      if (!line) {
+        return
+      }
+
+      startTransition(() => {
+        void (async () => {
+          const next = await updateCartLineAction({
+            lineId,
+            quantity: line.quantity - 1,
+          })
+          setCart(next)
+        })()
+      })
+    },
+    [cart.items]
   )
 
-  const value = useMemo(
+  const clearCart = useCallback(async () => {
+    startTransition(() => {
+      void (async () => {
+        await clearCartAction()
+        setCart({
+          id: "",
+          checkoutUrl: "",
+          totalQuantity: 0,
+          subtotal: 0,
+          currencyCode: "USD",
+          items: [],
+        })
+      })()
+    })
+  }, [])
+
+  const value = useMemo<CartContextValue>(
     () => ({
-      items,
-      itemCount,
-      subtotal,
+      items: cart.items,
+      itemCount: cart.totalQuantity,
+      subtotal: cart.subtotal,
+      checkoutUrl: cart.checkoutUrl,
       isHydrated,
+      isPending,
       addItem,
       removeItem,
       incrementItem,
       decrementItem,
       clearCart,
+      refreshCart,
     }),
     [
-      items,
-      itemCount,
-      subtotal,
+      cart,
       isHydrated,
+      isPending,
       addItem,
       removeItem,
       incrementItem,
       decrementItem,
       clearCart,
+      refreshCart,
     ]
   )
 
@@ -165,9 +179,8 @@ export const CartProvider = ({ children }: CartProviderProps) => {
 
 export const useCart = () => {
   const context = useContext(CartContext)
-
   if (!context) {
-    throw new Error("useCart must be used within a CartProvider")
+    throw new Error("useCart must be used within CartProvider")
   }
 
   return context

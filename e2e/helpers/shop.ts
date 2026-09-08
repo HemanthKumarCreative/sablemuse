@@ -91,17 +91,9 @@ export const fillCheckoutInfo = async (page: Page) => {
 }
 
 export const fillPaymentForm = async (page: Page) => {
-  const sameAsShipping = page.getByLabel(/Default \(Same As Shipping Address\)/i)
-
-  if (await sameAsShipping.count()) {
-    await sameAsShipping.check()
-  }
-
-  const form = main(page)
-  await form.getByRole("textbox", { name: "Card Number" }).fill("4111111111111111")
-  await form.getByRole("textbox", { name: "Expiry Month" }).fill("12")
-  await form.getByRole("textbox", { name: "Expiry Year" }).fill("2030")
-  await form.getByRole("textbox", { name: "Security Code" }).fill("123")
+  await expect(
+    page.getByRole("button", { name: "Continue To Secure Payment" })
+  ).toBeVisible()
 }
 
 export const fillContactForm = async (form: Locator, options?: { modal?: boolean }) => {

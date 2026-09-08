@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { Minus, Plus, X } from "lucide-react"
-import type { CartItem } from "@/data/cart"
+import type { CartItem } from "@/types/commerce"
 import { cn } from "cn"
 
 type CartTableRowProps = {

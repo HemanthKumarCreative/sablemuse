@@ -4,51 +4,69 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useId, useState, type FormEvent } from "react"
 import { Button } from "@/components/ui/button"
-import {
-  DEMO_CHECKOUT_CONTACT,
-  DEMO_CHECKOUT_SHIP_TO,
-  EXPRESS_DATE_OPTIONS,
-  GUARANTEED_OPTIONS,
-} from "@/data/checkout"
+import { selectDeliveryOptionAction } from "@/lib/shopify/cart/actions"
+import type { DeliveryGroup } from "@/types/commerce"
 import { cn } from "cn"
 
 type CheckoutShippingFormProps = {
   className?: string
+  deliveryGroups: DeliveryGroup[]
+  contactEmail?: string
+  shipToSummary?: string
   onShippingCostChange?: (cost: number) => void
 }
 
 export const CheckoutShippingForm = ({
   className,
+  deliveryGroups,
+  contactEmail,
+  shipToSummary,
   onShippingCostChange,
 }: CheckoutShippingFormProps) => {
   const router = useRouter()
   const methodGroupId = useId()
-  const [deliveryMode, setDeliveryMode] = useState<"express" | "guaranteed">(
-    "express"
+  const primaryGroup = deliveryGroups[0]
+  const [selectedHandle, setSelectedHandle] = useState(
+    primaryGroup?.selectedHandle ?? primaryGroup?.options[0]?.handle ?? ""
   )
-  const [expressDate, setExpressDate] = useState(EXPRESS_DATE_OPTIONS[0].id)
-  const [guaranteedId, setGuaranteedId] = useState(GUARANTEED_OPTIONS[0].id)
+  const [error, setError] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSelectExpress = () => {
-    setDeliveryMode("express")
-    onShippingCostChange?.(0)
+  const handleSelectOption = (handle: string, price: number) => {
+    setSelectedHandle(handle)
+    onShippingCostChange?.(price)
   }
 
-  const handleSelectGuaranteed = (id: string) => {
-    setDeliveryMode("guaranteed")
-    setGuaranteedId(id)
-    const option = GUARANTEED_OPTIONS.find((entry) => entry.id === id)
-    onShippingCostChange?.(option?.price ?? 24)
-  }
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    router.push("/checkout/payment")
+    setError("")
+
+    if (!primaryGroup || !selectedHandle) {
+      setError("No delivery options available yet. Check your address and try again.")
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      await selectDeliveryOptionAction({
+        groupId: primaryGroup.groupId,
+        deliveryOptionHandle: selectedHandle,
+      })
+      router.push("/checkout/payment")
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "Unable to save delivery option"
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(event) => void handleSubmit(event)}
       className={cn("flex w-full flex-col", className)}
       noValidate
     >
@@ -59,7 +77,7 @@ export const CheckoutShippingForm = ({
           <div className="min-w-0">
             <p className="text-sm text-ink-muted">Contact</p>
             <p className="mt-1 truncate text-sm text-ink md:text-base">
-              {DEMO_CHECKOUT_CONTACT}
+              {contactEmail || "Saved on previous step"}
             </p>
           </div>
           <Link
@@ -73,7 +91,7 @@ export const CheckoutShippingForm = ({
           <div className="min-w-0">
             <p className="text-sm text-ink-muted">Ship To</p>
             <p className="mt-1 text-sm text-ink md:text-base">
-              {DEMO_CHECKOUT_SHIP_TO}
+              {shipToSummary || "Address saved on previous step"}
             </p>
           </div>
           <Link
@@ -89,113 +107,51 @@ export const CheckoutShippingForm = ({
         Delivery Options
       </h2>
 
-      <fieldset className="mt-4 border border-border">
-        <legend className="sr-only">Delivery options</legend>
-
-        <div
-          className={cn(
-            "border-b border-border px-4 py-4 md:px-5",
-            deliveryMode === "express" ? "bg-[#F0F2EF]" : "bg-white"
-          )}
-        >
-          <label className="flex cursor-pointer items-start gap-3">
-            <input
-              type="radio"
-              name={methodGroupId}
-              checked={deliveryMode === "express"}
-              onChange={handleSelectExpress}
-              className="mt-1 size-4 accent-brand"
-              aria-label="Express Courier (Air), Free"
-            />
-            <span className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-              <span>
-                <span className="block text-base font-medium text-ink">
-                  Express Courier (Air)
-                </span>
-                <span className="mt-1 block text-sm capitalize text-ink-muted">
-                  3 To 4 Business Days
-                </span>
-              </span>
-              <span className="text-base font-semibold text-ink">Free</span>
-            </span>
-          </label>
-
-          {deliveryMode === "express" ? (
-            <div className="mt-4 border-t border-border pt-4 pl-7">
-              <p className="mb-3 text-sm font-medium text-ink">Expected Date:</p>
-              <ul className="grid grid-cols-2 gap-3" role="list">
-                {EXPRESS_DATE_OPTIONS.map((option) => {
-                  const optionId = `${methodGroupId}-${option.id}`
-
-                  return (
-                    <li key={option.id}>
-                      <label
-                        htmlFor={optionId}
-                        className={cn(
-                          "flex h-full cursor-pointer items-start gap-2 border border-border bg-white px-2.5 py-3 text-xs text-ink focus-within:ring-2 focus-within:ring-brand sm:gap-3 sm:px-3 sm:text-sm",
-                          expressDate === option.id
-                            ? "border-brand"
-                            : "hover:border-ink/40"
-                        )}
-                      >
-                        <input
-                          id={optionId}
-                          type="radio"
-                          name={`${methodGroupId}-date`}
-                          checked={expressDate === option.id}
-                          onChange={() => setExpressDate(option.id)}
-                          className="mt-0.5 size-4 shrink-0 accent-brand"
-                        />
-                        <span>{option.label}</span>
-                      </label>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          ) : null}
-        </div>
-
-        <div
-          className={cn(
-            "px-4 py-4 md:px-5",
-            deliveryMode === "guaranteed" ? "bg-[#F0F2EF]" : "bg-white"
-          )}
-        >
-          <p className="text-base font-medium text-ink">Guaranteed By</p>
-          <p className="mt-1 text-sm text-ink-muted">UPS Next Day Air Saver</p>
-
-          <ul className="mt-4 space-y-3" role="list">
-            {GUARANTEED_OPTIONS.map((option) => {
-              const isSelected =
-                deliveryMode === "guaranteed" && guaranteedId === option.id
-              const optionId = `${methodGroupId}-${option.id}`
+      {primaryGroup?.options.length ? (
+        <fieldset className="mt-4 border border-border">
+          <legend className="sr-only">Delivery options</legend>
+          <ul className="divide-y divide-border" role="list">
+            {primaryGroup.options.map((option) => {
+              const isSelected = selectedHandle === option.handle
+              const optionId = `${methodGroupId}-${option.handle}`
 
               return (
-                <li key={option.id}>
+                <li
+                  key={option.handle}
+                  className={cn(
+                    "px-4 py-4 md:px-5",
+                    isSelected ? "bg-[#F0F2EF]" : "bg-white"
+                  )}
+                >
                   <label
                     htmlFor={optionId}
-                    className={cn(
-                      "flex cursor-pointer items-start gap-3 border border-border px-3 py-3",
-                      isSelected
-                        ? "border-brand bg-white"
-                        : "bg-white hover:border-ink/40"
-                    )}
+                    className="flex cursor-pointer items-start gap-3"
                   >
                     <input
                       id={optionId}
                       type="radio"
                       name={methodGroupId}
                       checked={isSelected}
-                      onChange={() => handleSelectGuaranteed(option.id)}
+                      onChange={() =>
+                        handleSelectOption(option.handle, option.price)
+                      }
                       className="mt-1 size-4 accent-brand"
                     />
-                    <span className="flex min-w-0 flex-1 items-start justify-between gap-3">
-                      <span className="text-sm font-medium text-ink md:text-base">
-                        {option.label}
+                    <span className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                      <span>
+                        <span className="block text-base font-medium text-ink">
+                          {option.title}
+                        </span>
+                        {option.description ? (
+                          <span className="mt-1 block text-sm text-ink-muted">
+                            {option.description}
+                          </span>
+                        ) : null}
                       </span>
-                      <span className="shrink-0 text-base font-semibold text-ink">
-                        ${option.price.toFixed(2)}
+                      <span className="text-base font-semibold text-ink">
+                        {option.price === 0
+                          ? "Free"
+                          : `$${option.price.toFixed(2)}`}
                       </span>
                     </span>
                   </label>
@@ -203,15 +159,23 @@ export const CheckoutShippingForm = ({
               )
             })}
           </ul>
-        </div>
-      </fieldset>
+        </fieldset>
+      ) : (
+        <p className="mt-4 text-sm text-ink-muted">
+          Delivery options will appear after Shopify calculates rates for your
+          address. You can continue and choose shipping in secure checkout.
+        </p>
+      )}
+
+      {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
 
       <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row-reverse sm:items-center sm:justify-between">
         <Button
           type="submit"
+          disabled={isSubmitting}
           className="h-12 w-full rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90 sm:w-auto sm:min-w-[220px]"
         >
-          Continue To Payment
+          {isSubmitting ? "Saving..." : "Continue To Payment"}
         </Button>
         <Link
           href="/checkout"

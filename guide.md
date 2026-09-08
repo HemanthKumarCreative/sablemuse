@@ -1,8 +1,40 @@
-# Integrating Headless Shopify with Next.js: A Beginner's Guide
+# Integrating Headless Shopify with Next.js
 
-This guide will walk you through the entire process of connecting your Next.js storefront to a headless Shopify backend, step by step. We assume you have your Next.js frontend ready and now need to hook it up to real data.
+This project uses the Storefront API + Customer Account API. Copy `.env.example` to `.env.local` and fill in credentials from the Headless sales channel.
 
-## Step 1: Set Up Your Shopify Development Store
+## Code layout
+
+```
+src/lib/shopify/     # Storefront client, queries, mutations, cart actions
+src/lib/customer/    # Customer Account OAuth + session
+src/types/commerce.ts
+src/app/api/auth/    # login, callback, logout
+```
+
+Collection handles for routes live in `src/lib/shopify/collections.ts` — update them to match collections published to your Headless channel.
+
+## Environment
+
+```env
+SHOPIFY_STORE_DOMAIN="your-store-name.myshopify.com"
+SHOPIFY_STOREFRONT_ACCESS_TOKEN="your_public_access_token_here"
+SHOPIFY_STOREFRONT_API_VERSION="2025-10"
+SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID=""
+SHOPIFY_CUSTOMER_ACCOUNT_SHOP_ID=""
+SHOPIFY_CUSTOMER_ACCOUNT_CALLBACK_URL="http://localhost:3000/api/auth/callback"
+CUSTOMER_SESSION_SECRET="replace-with-a-long-random-secret"
+NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+```
+
+## Checkout
+
+Contact and shipping steps update the Storefront cart. Payment redirects to Shopify Checkout via `cart.checkoutUrl` (card data is never collected in this app).
+
+## Original beginner walkthrough
+
+The steps below remain useful for creating a development store and Headless channel credentials.
+
+### Step 1: Set Up Your Shopify Development Store
 
 If you don't already have a Shopify store, the best place to start is by creating a development store.
 

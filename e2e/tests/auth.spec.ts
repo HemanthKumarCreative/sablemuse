@@ -1,22 +1,16 @@
 import { expect, test } from "../helpers/fixtures"
-import { gotoPath, isLargeDesktop, main, mainTextbox, pageHeading } from "../helpers/shop"
+import { gotoPath, isLargeDesktop, pageHeading } from "../helpers/shop"
 
 test.describe("Authentication", () => {
-  test("login form can be filled and password visibility toggled", async ({
-    page,
-  }) => {
+  test("login offers Shopify customer account sign-in", async ({ page }) => {
     await gotoPath(page, "/login")
     await expect(pageHeading(page, "Log In")).toBeVisible()
-    await mainTextbox(page, "Email").fill("ada@modimal.test")
-    const password = mainTextbox(page, "Password")
-    await password.fill("secret-pass")
-    await expect(password).toHaveAttribute("type", "password")
-    await page.getByRole("button", { name: "Show password" }).click()
-    await expect(password).toHaveAttribute("type", "text")
-    await page.getByRole("button", { name: "Hide password" }).click()
-    await expect(password).toHaveAttribute("type", "password")
-    await page.getByRole("button", { name: "Log In" }).click()
-    await expect(page).toHaveURL(/\/login$/)
+    await expect(
+      page.getByText(/Sign in securely with your Shopify customer account/i)
+    ).toBeVisible()
+    await expect(
+      page.getByRole("link", { name: "Continue With Shopify" })
+    ).toHaveAttribute("href", "/api/auth/login")
   })
 
   test("login links to create account", async ({ page }) => {
@@ -26,27 +20,13 @@ test.describe("Authentication", () => {
     await expect(pageHeading(page, "Create Account")).toBeVisible()
   })
 
-  test("register shows a verify-email dialog after submit", async ({ page }) => {
+  test("register offers Shopify account creation", async ({ page }) => {
     await gotoPath(page, "/register")
-    await mainTextbox(page, "First Name").fill("Ada")
-    await mainTextbox(page, "Last Name").fill("Lovelace")
-    await mainTextbox(page, "Email").fill("ada@modimal.test")
-    await mainTextbox(page, "Password").fill("secret-pass")
-    await page.getByRole("button", { name: "Register Now" }).click()
-
-    const dialog = page.getByRole("dialog")
-    await expect(dialog).toBeVisible()
-    await expect(dialog.getByRole("heading", { name: "Verify Your Email" })).toBeVisible()
-    await expect(dialog.getByText("ada@modimal.test")).toBeVisible()
-  })
-
-  test("register can change the submitted email", async ({ page }) => {
-    await gotoPath(page, "/register")
-    await mainTextbox(page, "Email").fill("ada@modimal.test")
-    await page.getByRole("button", { name: "Register Now" }).click()
-    await page.getByRole("dialog").getByRole("button", { name: "Click Here" }).click()
-    await expect(page.getByRole("dialog")).toHaveCount(0)
-    await expect(mainTextbox(page, "Email")).toBeFocused()
+    await expect(pageHeading(page, "Create Account")).toBeVisible()
+    await expect(
+      page.getByRole("link", { name: "Continue With Shopify" })
+    ).toHaveAttribute("href", "/api/auth/login")
+    await expect(page.getByRole("link", { name: "Log In" })).toBeVisible()
   })
 
   test("login and register show a side image on large screens", async ({

@@ -10,8 +10,8 @@ import {
   PLUS_SIZE_FILTERS,
   PLUS_SIZE_FILTERS_DEFAULT_OPEN,
   PLUS_SIZE_HERO_SLIDES,
-  PLUS_SIZE_PRODUCTS,
 } from "@/data/plus-size"
+import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
 
 export const metadata: Metadata = {
   title: "Plus Size Shop All",
@@ -28,25 +28,30 @@ export const metadata: Metadata = {
   },
 }
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  name: "Plus Size Shop All",
-  description: "Shop all Modimal plus size women’s clothing",
-  url: "/plus-size/shop-all",
-  mainEntity: {
-    "@type": "ItemList",
-    numberOfItems: PLUS_SIZE_PRODUCTS.length,
-    itemListElement: PLUS_SIZE_PRODUCTS.map((product, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      url: `/product/${product.id}`,
-      name: `${product.name} ${product.subtitle}`,
-    })),
-  },
-}
+const PlusSizeShopAllPage = async () => {
+  const products = await getCollectionProducts(
+    COLLECTION_HANDLES["plus-size-shop-all"],
+    24
+  )
 
-const PlusSizeShopAllPage = () => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Plus Size Shop All",
+    description: "Shop all Modimal plus size women’s clothing",
+    url: "/plus-size/shop-all",
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: products.length,
+      itemListElement: products.map((product, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `/product/${product.id}`,
+        name: `${product.name} ${product.subtitle}`,
+      })),
+    },
+  }
+
   return (
     <>
       <script
@@ -110,10 +115,10 @@ const PlusSizeShopAllPage = () => {
                 className="sr-only mb-5 text-sm capitalize text-ink-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
                 aria-live="polite"
               >
-                {PLUS_SIZE_PRODUCTS.length} items
+                {products.length} items
               </p>
               <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                {PLUS_SIZE_PRODUCTS.map((product) => (
+                {products.map((product) => (
                   <ProductCard
                     key={product.id}
                     product={product}

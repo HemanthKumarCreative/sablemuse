@@ -4,7 +4,7 @@ import { Container } from "@/components/shared/container"
 import { SectionHeader } from "@/components/shared/section-header"
 import { ScrollCarousel } from "@/components/shared/scroll-carousel"
 import { ProductCard } from "@/components/product/product-card"
-import type { Product } from "@/data/home"
+import type { Product } from "@/types/commerce"
 
 type BestSellersSectionProps = {
   products: Product[]

@@ -3,6 +3,7 @@ import { CheckoutInfoForm } from "@/components/checkout/checkout-info-form"
 import { CheckoutOrderSummary } from "@/components/checkout/checkout-order-summary"
 import { CheckoutStepper } from "@/components/checkout/checkout-stepper"
 import { Container } from "@/components/shared/container"
+import { getCustomerSession } from "@/lib/customer/session"
 
 export const metadata: Metadata = {
   title: "Checkout Information",
@@ -13,7 +14,9 @@ export const metadata: Metadata = {
   },
 }
 
-const CheckoutInfoPage = () => {
+const CheckoutInfoPage = async () => {
+  const session = await getCustomerSession()
+
   return (
     <section className="pb-16 md:pb-24">
       <Container>
@@ -22,7 +25,7 @@ const CheckoutInfoPage = () => {
         <div className="mt-8 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-start lg:gap-12 xl:gap-16">
           <div className="order-2 lg:order-1">
             <h1 className="sr-only">Checkout information</h1>
-            <CheckoutInfoForm />
+            <CheckoutInfoForm customerAccessToken={session?.accessToken} />
           </div>
           <CheckoutOrderSummary className="order-1 lg:order-2 lg:sticky lg:top-[120px]" />
         </div>
