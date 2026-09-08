@@ -26,35 +26,27 @@ const categoryImages: Record<string, { image: string; alt: string }> = {
     image: "/images/hero.jpg",
     alt: "Modimal collection overview",
   },
-  "Blouses & Tops": {
+  "New Arrivals": {
+    image: "/images/modiweek/1.webp",
+    alt: "Modimal new arrivals",
+  },
+  "Tops & Blouses": {
     image: COLLECTION_MEGA_MENU.featured[0].image,
     alt: COLLECTION_MEGA_MENU.featured[0].alt,
   },
-  Pants: {
+  "Jeans & Pants": {
     image:
       "/images/collection/Moodboard2_71ade389-dc80-49eb-b7e8-1c90a0273a2a_700x.webp",
-    alt: "Modimal pants collection",
+    alt: "Modimal jeans and pants collection",
   },
   "Dresses & Jumpsuits": {
     image:
       "/images/collection/Save_The_Date_Dress_Khaki_Lifestyle_Khaki_Main_720x.webp",
-    alt: "Modimal dresses collection",
+    alt: "Modimal dresses and jumpsuits collection",
   },
-  "Outwear & Jackets": {
+  "Matching Sets & Lounge": {
     image: "/images/collection/ezgif-2-f137fd9d7d.png",
-    alt: "Modimal outwear collection",
-  },
-  Pullovers: {
-    image: "/images/products/shirt-black.webp",
-    alt: "Modimal pullovers",
-  },
-  Tees: {
-    image: "/images/modiweek/1.webp",
-    alt: "Modimal tees",
-  },
-  "Shorts & Skirts": {
-    image: "/images/modiweek/3.webp",
-    alt: "Modimal shorts and skirts",
+    alt: "Modimal matching sets and lounge",
   },
 }
 

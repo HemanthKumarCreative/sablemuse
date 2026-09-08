@@ -31,13 +31,11 @@ export const COLLECTION_MEGA_MENU = {
       title: "Category",
       links: [
         { label: "Shop All", href: "/shop-all" },
-        { label: "Blouses & Tops", href: "/collection/blouses" },
-        { label: "Pants", href: "/collection/pants" },
-        { label: "Dresses & Jumpsuits", href: "/collection/dresses" },
-        { label: "Outwear & Jackets", href: "/collection/outwear" },
-        { label: "Pullovers", href: "/collection/pullovers" },
-        { label: "Tees", href: "/collection/tees" },
-        { label: "Shorts & Skirts", href: "/collection/shorts" },
+        { label: "New Arrivals", href: "/collection/new-arrivals" },
+        { label: "Tops & Blouses", href: "/collection/tops-blouses" },
+        { label: "Jeans & Pants", href: "/collection/jeans-pants" },
+        { label: "Dresses & Jumpsuits", href: "/collection/dresses-jumpsuits" },
+        { label: "Matching Sets & Lounge", href: "/collection/matching-sets-lounge" },
       ],
     },
     {
@@ -61,8 +59,8 @@ export const COLLECTION_MEGA_MENU = {
   ] satisfies MegaMenuColumn[],
   featured: [
     {
-      label: "Blouses",
-      href: "/collection/blouses",
+      label: "Tops & Blouses",
+      href: "/collection/tops-blouses",
       image:
         "/images/collection/Lifestyle_Detail_Something_Tailored_Shirt_White_1400x.webp",
       alt: "Woman wearing a white tailored blouse",
