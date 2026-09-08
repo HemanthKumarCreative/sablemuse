@@ -10,9 +10,9 @@ import { ScrollCarousel } from "@/components/shared/scroll-carousel"
 import { SectionHeader } from "@/components/shared/section-header"
 import {
   RELATED_PRODUCTS,
-  getProductById,
-  PRODUCTS,
+  getProductById as getMockProductById,
 } from "@/data/products"
+import { getProduct } from "@/lib/shopify/queries/product"
 
 type ProductPageProps = {
   params: Promise<{
@@ -20,15 +20,17 @@ type ProductPageProps = {
   }>
 }
 
-export const generateStaticParams = () => {
-  return Object.keys(PRODUCTS).map((id) => ({ id }))
-}
+
 
 export const generateMetadata = async ({
   params,
 }: ProductPageProps): Promise<Metadata> => {
   const { id } = await params
-  const product = getProductById(id)
+  let product = await getProduct(id)
+  
+  if (!product) {
+    product = getMockProductById(id)
+  }
 
   if (!product) {
     return {
@@ -52,7 +54,11 @@ export const generateMetadata = async ({
 
 const ProductPage = async ({ params }: ProductPageProps) => {
   const { id } = await params
-  const product = getProductById(id)
+  let product = await getProduct(id)
+  
+  if (!product) {
+    product = getMockProductById(id)
+  }
 
   if (!product) {
     notFound()

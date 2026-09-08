@@ -7,6 +7,7 @@ import { ModiWeekSection } from "@/components/home/modiweek-section"
 import { SustainabilitySection } from "@/components/home/sustainability-section"
 import { WelcomeDialog } from "@/components/home/welcome-dialog"
 import { BEST_SELLERS, COLLECTIONS, MODIWEEK } from "@/data/home"
+import { getProducts } from "@/lib/shopify/queries/product"
 
 export const metadata: Metadata = {
   title: {
@@ -38,8 +39,12 @@ const jsonLd = {
   ],
 }
 
-const HomePage = () => {
-  const bestSellers = BEST_SELLERS.filter((item) => item.isBestSeller).slice(0, 3)
+const HomePage = async () => {
+  let bestSellers = await getProducts(3)
+  
+  if (!bestSellers || bestSellers.length === 0) {
+    bestSellers = BEST_SELLERS.filter((item) => item.isBestSeller).slice(0, 3)
+  }
 
   return (
     <>
