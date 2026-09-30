@@ -28,27 +28,26 @@ export type NavItem = {
 export const COLLECTION_MEGA_MENU = {
   columns: [
     {
-      title: "Category",
+      title: "Collections",
       links: [
-        { label: "Shop All", href: "/shop-all" },
         { label: "New Arrivals", href: "/collection/new-arrivals" },
+        { label: "Dresses & Jumpsuits", href: "/collection/dresses-jumpsuits" },
         { label: "Tops & Blouses", href: "/collection/tops-blouses" },
         { label: "Jeans & Pants", href: "/collection/jeans-pants" },
-        { label: "Dresses & Jumpsuits", href: "/collection/dresses-jumpsuits" },
         { label: "Matching Sets & Lounge", href: "/collection/matching-sets-lounge" },
       ],
     },
     {
       title: "Featured",
       links: [
-        { label: "New In", href: "/new-in" },
-        { label: "Modiweek", href: "/modiweek" },
-        { label: "Plus Size", href: "/plus-size" },
+        { label: "New Arrivals", href: "/collection/new-arrivals" },
+        { label: "Best Sellers", href: "/collection/tops-blouses" },
       ],
     },
     {
-      title: "More",
+      title: "Trending",
       links: [
+        { label: "Dresses & Jumpsuits", href: "/collection/dresses-jumpsuits" },
         { label: "Matching Sets", href: "/collection/matching-sets-lounge" },
       ],
     },

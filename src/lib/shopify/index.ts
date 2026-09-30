@@ -7,4 +7,5 @@ export {
   getProductRecommendations,
 } from "./queries/product"
 export { searchProducts, predictiveSearchProducts } from "./queries/search"
+export { fetchShopifyNavItems } from "./queries/menu"
 export { COLLECTION_HANDLES } from "./collections"
