@@ -184,26 +184,24 @@ export const NAV_ITEMS: NavItem[] = [
     megaMenuVariant: "collection",
   },
   {
-    label: "New In",
-    href: "/new-in",
-    columns: NEW_IN_MEGA_MENU.columns,
-    featured: NEW_IN_MEGA_MENU.featured,
-    megaMenuVariant: "new-in",
-  },
-  { label: "Modiweek", href: "/modiweek" },
-  {
-    label: "Plus Size",
-    href: "/plus-size",
-    columns: PLUS_SIZE_MEGA_MENU.columns,
-    featured: PLUS_SIZE_MEGA_MENU.featured,
-    megaMenuVariant: "plus-size",
+    label: "New Arrivals",
+    href: "/collection/new-arrivals",
   },
   {
-    label: "Sustainability",
-    href: "/sustainability",
-    columns: SUSTAINABILITY_MEGA_MENU.columns,
-    featured: SUSTAINABILITY_MEGA_MENU.featured,
-    megaMenuVariant: "sustainability",
+    label: "Dresses & Jumpsuits",
+    href: "/collection/dresses-jumpsuits",
+  },
+  {
+    label: "Tops & Blouses",
+    href: "/collection/tops-blouses",
+  },
+  {
+    label: "Jeans & Pants",
+    href: "/collection/jeans-pants",
+  },
+  {
+    label: "Matching Sets",
+    href: "/collection/matching-sets-lounge",
   },
 ]
 
