@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { cn } from "cn"
 
-const WELCOME_STORAGE_KEY = "modimal-welcome-dismissed"
+const WELCOME_STORAGE_KEY = "sablemuse-welcome-dismissed"
 
 type WelcomeDialogProps = {
   className?: string
@@ -63,7 +63,7 @@ export const WelcomeDialog = ({ className }: WelcomeDialogProps) => {
               variant="ghost"
               size="icon"
               aria-label="Close welcome"
-              className="absolute top-3 left-3 z-10 rounded-none text-ink hover:bg-transparent sm:top-4 sm:left-4"
+              className="absolute top-3 right-3 z-10 rounded-none text-ink hover:bg-transparent sm:top-4 sm:right-4"
             />
           }
         >
@@ -73,7 +73,7 @@ export const WelcomeDialog = ({ className }: WelcomeDialogProps) => {
         <div className="px-5 pt-14 pb-10 text-center sm:px-10 sm:pt-16 sm:pb-12 md:px-14 md:pt-20 md:pb-16">
           <DialogHeader className="items-center gap-0">
             <DialogTitle className="font-sans text-xl font-bold capitalize leading-[1.4] text-ink sm:text-2xl md:text-[2rem]">
-              Welcome To Modimal
+              Welcome To Sable Muse
             </DialogTitle>
           </DialogHeader>
 
@@ -82,15 +82,15 @@ export const WelcomeDialog = ({ className }: WelcomeDialogProps) => {
           </DialogDescription>
 
           <p className="mt-6 text-sm capitalize leading-[1.6] text-ink sm:mt-8 sm:text-base md:text-xl md:font-bold">
-            Is It Your First Experience On Modimal?
+            Is It Your First Experience At Sable Muse?
           </p>
 
           <Button
-            render={<Link href="/collection" onClick={handleDismiss} />}
+            render={<Link href="/collection/new-arrivals" onClick={handleDismiss} />}
             nativeButton={false}
             className="mt-6 h-12 w-full max-w-[320px] rounded-none bg-brand text-sm font-medium capitalize text-white hover:bg-brand/90 sm:mt-8 sm:max-w-[360px] sm:text-base"
           >
-            Create Your Own Style
+            Explore New Arrivals
           </Button>
         </div>
       </DialogContent>

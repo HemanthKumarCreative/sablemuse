@@ -112,14 +112,14 @@ export const SiteFooter = () => {
                 </li>
               </ul>
               <p className="text-sm text-white/90">
-                © 2023 modimal. All Rights Reserved.
+                © {new Date().getFullYear()} Sable Muse. All Rights Reserved.
               </p>
             </div>
           </div>
 
           <div className="md:col-span-2">
             <h3 className="mb-4 text-base font-semibold md:text-lg">
-              About Modimal
+              About Sable Muse
             </h3>
             <ul className="space-y-3.5">
               {FOOTER_LINKS.about.map((link) => (
@@ -155,7 +155,7 @@ export const SiteFooter = () => {
 
           <div className="md:col-span-2">
             <h3 className="mb-4 text-base font-semibold md:text-lg">
-              Modimal Club
+              Sable Muse Club
             </h3>
             <ul className="space-y-3.5">
               {FOOTER_LINKS.club.map((link) => (
@@ -219,7 +219,7 @@ export const SiteFooter = () => {
               </li>
             </ul>
             <p className="text-sm text-white/90">
-              © 2023 modimal. All Rights Reserved.
+              © {new Date().getFullYear()} Sable Muse. All Rights Reserved.
             </p>
           </div>
         </div>

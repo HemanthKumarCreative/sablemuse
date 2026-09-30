@@ -118,19 +118,22 @@ export const ProductPurchasePanel = ({
 
   return (
     <div className={cn("flex w-full flex-col", className)}>
-      <h1 className="text-[2rem] font-bold capitalize leading-[1.3] text-ink md:text-[2.5rem]">
+      <h1 className="text-[1.75rem] font-bold capitalize leading-[1.3] text-ink md:text-[2.25rem]">
         {product.name}
       </h1>
-      {!product.showCtaPrice && product.sizeSelector !== "select" ? (
-        <p className="mt-3 text-xl font-medium text-ink">${product.price}</p>
-      ) : null}
-      <p className="mt-4 text-sm leading-[1.8] capitalize text-ink md:text-base md:normal-case">
-        {product.description}
-      </p>
+      
+      <div className="mt-3 flex items-baseline gap-3">
+        <p className="text-2xl font-bold text-ink">${product.price}</p>
+        {product.compareAtPrice ? (
+          <p className="text-lg text-ink-muted line-through">${product.compareAtPrice}</p>
+        ) : null}
+      </div>
 
       {product.colors.length > 0 ? (
-        <div className="mt-8">
-          <p className="mb-3 text-sm font-medium capitalize text-ink">Color</p>
+        <div className="mt-6">
+          <p className="mb-3 text-sm font-medium capitalize text-ink">
+            Color: <span className="text-ink-muted font-normal">{selectedColor}</span>
+          </p>
           <ul className="flex flex-wrap gap-3" aria-label="Available colors">
             {product.colors.map((color) => {
               const isSelected = selectedColor === color.name
@@ -154,9 +157,11 @@ export const ProductPurchasePanel = ({
         </div>
       ) : null}
 
-      <div className="mt-8">
+      <div className="mt-6">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <p className="text-sm font-medium capitalize text-ink">Size</p>
+          <p className="text-sm font-medium capitalize text-ink">
+            Size: <span className="text-ink-muted font-normal">{selectedSize || "Select size"}</span>
+          </p>
           <Dialog>
             <DialogTrigger
               render={
@@ -237,7 +242,7 @@ export const ProductPurchasePanel = ({
 
       {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
       {added ? (
-        <p className="mt-3 text-sm text-brand">Added to bag</p>
+        <p className="mt-3 text-sm text-brand font-medium">✓ Added to bag successfully!</p>
       ) : null}
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -246,13 +251,11 @@ export const ProductPurchasePanel = ({
           onClick={() => void handleAddToBag()}
           disabled={isPending}
           className={cn(
-            "h-12 flex-1 rounded-none text-base font-medium capitalize text-white hover:opacity-90",
+            "h-12 flex-1 rounded-none text-base font-semibold uppercase tracking-wide text-white hover:opacity-90",
             ctaBrand ? "bg-brand" : "bg-ink"
           )}
         >
-          {product.showCtaPrice
-            ? `Add To Bag — $${product.price}`
-            : "Add To Bag"}
+          {isPending ? "Adding..." : `Add To Bag — $${product.price}`}
         </Button>
         <Button
           type="button"
@@ -272,12 +275,20 @@ export const ProductPurchasePanel = ({
       {product.showEasyReturn !== false ? (
         <p className="mt-4 inline-flex items-center gap-2 text-sm text-ink-muted">
           <RefreshCcw className="size-4" aria-hidden="true" />
-          Easy return
+          Fast US Shipping (2–5 Days) & Easy 14-Day Returns
         </p>
       ) : null}
 
+      {product.description ? (
+        <div className="mt-6 border-t border-border pt-6">
+          <p className="text-sm leading-[1.8] text-ink">
+            {product.description}
+          </p>
+        </div>
+      ) : null}
+
       {showAccordions ? (
-        <div className="mt-10">
+        <div className="mt-6">
           <ProductAccordions product={product} />
         </div>
       ) : null}

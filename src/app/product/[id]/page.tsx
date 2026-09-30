@@ -36,7 +36,7 @@ export const generateMetadata = async ({
     title: product.name,
     description: product.description,
     openGraph: {
-      title: `${product.name} | Modimal`,
+      title: `${product.name} | Sable Muse`,
       description: product.description,
       images: [product.image],
     },
@@ -70,7 +70,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     sku: product.id,
     brand: {
       "@type": "Brand",
-      name: "Modimal",
+      name: "Sable Muse",
     },
     offers: {
       "@type": "Offer",

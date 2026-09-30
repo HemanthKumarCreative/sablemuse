@@ -86,16 +86,11 @@ export const SiteHeader = () => {
         <Link
           href="/"
           className="hidden shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:block"
-          aria-label="Modimal home"
+          aria-label="Sable Muse home"
         >
-          <Image
-            src="/images/logo.png"
-            alt="Modimal women clothing"
-            width={184}
-            height={46}
-            priority
-            className="h-auto w-[160px] lg:w-[184px]"
-          />
+          <span className="font-serif text-2xl font-bold tracking-tight text-ink uppercase lg:text-3xl">
+            Sable Muse
+          </span>
         </Link>
 
         <DesktopNav
@@ -108,16 +103,11 @@ export const SiteHeader = () => {
         <Link
           href="/"
           className="absolute left-1/2 -translate-x-1/2 md:hidden"
-          aria-label="Modimal home"
+          aria-label="Sable Muse home"
         >
-          <Image
-            src="/images/logo-mobile.png"
-            alt="Modimal"
-            width={120}
-            height={36}
-            priority
-            className="h-auto w-[110px]"
-          />
+          <span className="font-serif text-xl font-bold tracking-tight text-ink uppercase">
+            Sable Muse
+          </span>
         </Link>
 
         <div className="hidden items-center gap-2 md:flex lg:gap-3">

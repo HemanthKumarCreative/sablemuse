@@ -8,6 +8,7 @@ export type Product = {
   name: string
   subtitle: string
   price: number
+  compareAtPrice?: number
   image: string
   colors: ProductColor[]
   isNew?: boolean

@@ -33,21 +33,22 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Modimal | Women Clothing",
-    template: "%s | Modimal",
+    default: "Sable Muse | Contemporary Women's Fashion",
+    template: "%s | Sable Muse",
   },
   description:
-    "Modimal is a minimalist women's clothing brand offering timeless essentials with elegance in simplicity and earth's harmony.",
+    "Sable Muse is a contemporary women's fashion boutique offering elevated essentials, trending dresses, matching sets, and timeless styles.",
   keywords: [
-    "Modimal",
+    "Sable Muse",
     "women clothing",
-    "minimalist fashion",
-    "sustainable clothing",
+    "contemporary fashion",
+    "dresses",
+    "matching sets",
     "new arrivals",
     "best sellers",
   ],
-  authors: [{ name: "Modimal" }],
-  creator: "Modimal",
+  authors: [{ name: "Sable Muse" }],
+  creator: "Sable Muse",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -67,9 +68,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Modimal | Women Clothing",
+    title: "Sable Muse | Contemporary Women's Fashion",
     description:
-      "Discover curated women's fashion rooted in elegance, simplicity, and sustainability.",
+      "Discover curated women's fashion rooted in elegance, simplicity, and modern style.",
     images: ["/images/hero.jpg"],
   },
   robots: {
@@ -81,7 +82,11 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const initialCart = await fetchCart()
 
   return (
