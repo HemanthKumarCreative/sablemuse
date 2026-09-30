@@ -114,17 +114,13 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
 
           <Link
             href="/"
-            className="absolute left-1/2 -translate-x-1/2"
-            aria-label="Modimal home"
+            className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            aria-label="Sable Muse home"
             onClick={handleNavigate}
           >
-            <Image
-              src="/images/logo-mobile.png"
-              alt="Modimal"
-              width={120}
-              height={36}
-              className="h-auto w-[110px]"
-            />
+            <span className="font-serif text-xl font-bold tracking-tight text-ink uppercase">
+              Sable Muse
+            </span>
           </Link>
 
           <div className="flex items-center gap-1">
