@@ -10,7 +10,7 @@ export const HeroSection = () => {
     >
       <div className="relative min-h-[480px] w-full sm:min-h-[520px] md:min-h-[560px] lg:min-h-[600px]">
         <Image
-          src="/images/hero.jpg"
+          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1600&auto=format&fit=crop"
           alt="Two models wearing Modimal black dresses in an elegant interior"
           fill
           priority

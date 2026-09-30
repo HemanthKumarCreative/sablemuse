@@ -53,8 +53,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "Modimal",
-    title: "Modimal | Women Clothing",
+    siteName: "Sable Muse",
+    title: "Sable Muse | Contemporary Women's Fashion",
     description:
       "Discover curated women's fashion rooted in elegance, simplicity, and sustainability.",
     images: [
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
         url: "/images/hero.jpg",
         width: 1441,
         height: 600,
-        alt: "Modimal women clothing hero",
+        alt: "Sable Muse women clothing hero",
       },
     ],
   },
