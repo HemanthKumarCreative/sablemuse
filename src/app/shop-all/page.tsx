@@ -63,7 +63,7 @@ const ShopAllPage = async () => {
           Shop All
         </h1>
 
-        <div className="border-b border-border bg-[#f4f5f3] lg:hidden">
+        <div className="border-b border-brand-border bg-[#f4f5f3] lg:hidden">
           <Container>
             <Breadcrumbs
               className="py-3"
@@ -106,7 +106,7 @@ const ShopAllPage = async () => {
 
             <div className="min-w-0 flex-1">
               <p
-                className="sr-only mb-5 text-sm capitalize text-ink-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
+                className="sr-only mb-5 text-sm capitalize text-brand-navy-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
                 aria-live="polite"
               >
                 {products.length} items

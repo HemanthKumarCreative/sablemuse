@@ -118,21 +118,21 @@ export const ProductPurchasePanel = ({
 
   return (
     <div className={cn("flex w-full flex-col", className)}>
-      <h1 className="text-[1.75rem] font-bold capitalize leading-[1.3] text-ink md:text-[2.25rem]">
+      <h1 className="text-[1.75rem] font-semibold capitalize leading-[1.3] text-brand-navy md:text-[2.25rem]">
         {product.name}
       </h1>
       
       <div className="mt-3 flex items-baseline gap-3">
-        <p className="text-2xl font-bold text-ink">${product.price}</p>
+        <p className="text-2xl font-semibold text-brand-navy">${product.price}</p>
         {product.compareAtPrice ? (
-          <p className="text-lg text-ink-muted line-through">${product.compareAtPrice}</p>
+          <p className="text-lg text-brand-navy-muted line-through">${product.compareAtPrice}</p>
         ) : null}
       </div>
 
       {product.colors.length > 0 ? (
         <div className="mt-6">
-          <p className="mb-3 text-sm font-medium capitalize text-ink">
-            Color: <span className="text-ink-muted font-normal">{selectedColor}</span>
+          <p className="mb-3 text-sm font-medium capitalize text-brand-navy">
+            Color: <span className="text-brand-navy-muted font-normal">{selectedColor}</span>
           </p>
           <ul className="flex flex-wrap gap-3" aria-label="Available colors">
             {product.colors.map((color) => {
@@ -145,7 +145,7 @@ export const ProductPurchasePanel = ({
                     aria-label={color.name}
                     aria-pressed={isSelected}
                     className={cn(
-                      "size-8 rounded-full border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+                      "size-8 rounded-full border border-brand-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
                       isSelected && "ring-2 ring-brand ring-offset-2"
                     )}
                     style={{ backgroundColor: color.hex }}
@@ -159,8 +159,8 @@ export const ProductPurchasePanel = ({
 
       <div className="mt-6">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <p className="text-sm font-medium capitalize text-ink">
-            Size: <span className="text-ink-muted font-normal">{selectedSize || "Select size"}</span>
+          <p className="text-sm font-medium capitalize text-brand-navy">
+            Size: <span className="text-brand-navy-muted font-normal">{selectedSize || "Select size"}</span>
           </p>
           <Dialog>
             <DialogTrigger
@@ -180,7 +180,7 @@ export const ProductPurchasePanel = ({
               </DialogHeader>
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-brand-border">
                     <th className="py-2">Size</th>
                     <th className="py-2">Waist</th>
                     <th className="py-2">Hips</th>
@@ -189,7 +189,7 @@ export const ProductPurchasePanel = ({
                 </thead>
                 <tbody>
                   {SIZE_GUIDE_ROWS.map((row) => (
-                    <tr key={row.size} className="border-b border-border">
+                    <tr key={row.size} className="border-b border-brand-border">
                       <td className="py-2">{row.size}</td>
                       <td className="py-2">{row.waist}</td>
                       <td className="py-2">{row.hips}</td>
@@ -207,7 +207,7 @@ export const ProductPurchasePanel = ({
             value={selectedSize}
             onChange={handleSizeChange}
             aria-label="Select size"
-            className="h-12 w-full rounded-none border border-border bg-white px-4 text-base text-ink"
+            className="h-12 w-full rounded-none border border-brand-border bg-white px-4 text-base text-brand-navy"
           >
             <option value="">Select size</option>
             {product.sizes.map((size) => (
@@ -227,7 +227,7 @@ export const ProductPurchasePanel = ({
                     onClick={() => handleSelectSize(size)}
                     aria-pressed={isSelected}
                     className={cn(
-                      "inline-flex h-10 min-w-12 items-center justify-center border border-border px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+                      "inline-flex h-10 min-w-12 items-center justify-center border border-brand-border px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
                       isSelected && "border-brand bg-brand text-white"
                     )}
                   >
@@ -263,7 +263,7 @@ export const ProductPurchasePanel = ({
           onClick={handleToggleWishlist}
           aria-pressed={wishlisted}
           aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          className="h-12 rounded-none border-border px-4"
+          className="h-12 rounded-none border-brand-border px-4"
         >
           <Heart
             className={cn("size-5", wishlisted && "fill-brand text-brand")}
@@ -273,15 +273,15 @@ export const ProductPurchasePanel = ({
       </div>
 
       {product.showEasyReturn !== false ? (
-        <p className="mt-4 inline-flex items-center gap-2 text-sm text-ink-muted">
+        <p className="mt-4 inline-flex items-center gap-2 text-sm text-brand-navy-muted">
           <RefreshCcw className="size-4" aria-hidden="true" />
           Fast US Shipping (2–5 Days) & Easy 14-Day Returns
         </p>
       ) : null}
 
       {product.description ? (
-        <div className="mt-6 border-t border-border pt-6">
-          <p className="text-sm leading-[1.8] text-ink">
+        <div className="mt-6 border-t border-brand-border pt-6">
+          <p className="text-sm leading-[1.8] text-brand-navy">
             {product.description}
           </p>
         </div>

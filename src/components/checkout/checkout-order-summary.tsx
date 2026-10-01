@@ -49,13 +49,13 @@ export const CheckoutOrderSummary = ({
     >
       <h2
         id="checkout-cart-heading"
-        className="text-center text-xl font-semibold text-ink lg:text-left lg:text-2xl"
+        className="text-center text-xl font-semibold text-brand-navy lg:text-left lg:text-2xl"
       >
         Your Cart
       </h2>
 
       {items.length === 0 ? (
-        <p className="mt-6 text-sm text-ink-muted">Your bag is empty.</p>
+        <p className="mt-6 text-sm text-brand-navy-muted">Your bag is empty.</p>
       ) : (
         <ul className="mt-6 space-y-6" role="list">
           {items.map((item) => (
@@ -68,18 +68,18 @@ export const CheckoutOrderSummary = ({
                   sizes="96px"
                   className="object-cover"
                 />
-                <span className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center bg-white text-xs font-medium text-ink">
+                <span className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center bg-white text-xs font-medium text-brand-navy">
                   {item.quantity}
                 </span>
               </div>
 
               <div className="flex min-w-0 flex-1 flex-col gap-1.5 pr-7">
-                <h3 className="text-base font-semibold text-ink">{item.name}</h3>
-                <p className="text-sm text-ink-muted">Size: {item.size}</p>
-                <p className="text-sm text-ink-muted">Color: {item.color}</p>
+                <h3 className="text-base font-semibold text-brand-navy">{item.name}</h3>
+                <p className="text-sm text-brand-navy-muted">Size: {item.size}</p>
+                <p className="text-sm text-brand-navy-muted">Color: {item.color}</p>
 
                 <div className="mt-auto flex items-end justify-between gap-2 pt-2">
-                  <p className="text-base font-semibold text-ink">
+                  <p className="text-base font-semibold text-brand-navy">
                     $ {item.price}
                   </p>
                   <div
@@ -95,7 +95,7 @@ export const CheckoutOrderSummary = ({
                     >
                       <Minus className="size-3" strokeWidth={2} aria-hidden="true" />
                     </button>
-                    <span className="min-w-3 text-center text-sm text-ink">
+                    <span className="min-w-3 text-center text-sm text-brand-navy">
                       {item.quantity}
                     </span>
                     <button
@@ -114,7 +114,7 @@ export const CheckoutOrderSummary = ({
                 type="button"
                 onClick={() => removeItem(item.id)}
                 aria-label={`Remove ${item.name} from cart`}
-                className="absolute top-0 right-0 inline-flex size-7 items-center justify-center text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="absolute top-0 right-0 inline-flex size-7 items-center justify-center text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
               </button>
@@ -123,7 +123,7 @@ export const CheckoutOrderSummary = ({
         </ul>
       )}
 
-      <div className="mt-8 space-y-3 border-t border-border pt-6 text-base text-ink">
+      <div className="mt-8 space-y-3 border-t border-brand-border pt-6 text-base text-brand-navy">
         <div className="flex items-center justify-between">
           <span>Subtotal ({itemCount})</span>
           <span>${formatMoney(subtotal)}</span>
@@ -136,13 +136,13 @@ export const CheckoutOrderSummary = ({
           <span>Shipping</span>
           <span>{shippingLabel}</span>
         </div>
-        <div className="flex items-center justify-between font-bold">
+        <div className="flex items-center justify-between font-semibold">
           <span>Order Totals</span>
           <span>${formatMoney(orderTotal)}</span>
         </div>
       </div>
 
-      <p className="mt-4 text-sm font-semibold leading-[1.7] capitalize text-ink">
+      <p className="mt-4 text-sm font-semibold leading-[1.7] capitalize text-brand-navy">
         The Total Amount You Pay Includes All Applicable Customs Duties &amp;
         Taxes. We Guarantee No Additional Charges On Delivery.
       </p>

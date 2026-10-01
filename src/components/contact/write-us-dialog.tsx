@@ -40,7 +40,7 @@ export const WriteUsDialog = ({
         overlayClassName="bg-ink/70 supports-backdrop-filter:backdrop-blur-[1px]"
       >
         <DialogHeader className="flex flex-row items-center justify-between gap-3 px-5 pt-5 pb-2">
-          <DialogTitle className="flex items-center gap-3 text-lg font-semibold text-ink">
+          <DialogTitle className="flex items-center gap-3 text-lg font-semibold text-brand-navy">
             <Mail className="size-5 shrink-0" strokeWidth={1.5} aria-hidden="true" />
             Write Us
           </DialogTitle>
@@ -54,7 +54,7 @@ export const WriteUsDialog = ({
                 variant="ghost"
                 size="icon"
                 aria-label="Close write us form"
-                className="size-9 shrink-0 rounded-none text-ink hover:bg-transparent"
+                className="size-9 shrink-0 rounded-none text-brand-navy hover:bg-transparent"
               />
             }
           >

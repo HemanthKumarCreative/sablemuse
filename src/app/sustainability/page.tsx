@@ -45,7 +45,7 @@ const SustainabilityPage = () => {
         <Container>
           <h1
             id="sustainability-heading"
-            className="mt-10 text-[2rem] font-extrabold tracking-tight text-ink md:mt-16 md:text-[2.5rem]"
+            className="mt-10 text-[2rem] font-extrabold tracking-tight text-brand-navy md:mt-16 md:text-[2.5rem]"
           >
             Sustainability
           </h1>
@@ -76,7 +76,7 @@ const SustainabilityPage = () => {
         <Container>
           <h2
             id="sustainable-materials-heading"
-            className="text-[1.75rem] font-bold text-ink md:text-[2rem]"
+            className="text-[1.75rem] font-bold text-brand-navy md:text-[2rem]"
           >
             Our Sustainable Materials
           </h2>
@@ -84,8 +84,8 @@ const SustainabilityPage = () => {
           <div className="mt-8 grid gap-8 md:grid-cols-2 md:gap-12">
             {SUSTAINABILITY_MATERIALS.map((item) => (
               <article key={item.title}>
-                <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
-                <p className="mt-3 text-sm leading-[1.8] text-ink-muted md:text-base">
+                <h3 className="text-lg font-semibold text-brand-navy">{item.title}</h3>
+                <p className="mt-3 text-sm leading-[1.8] text-brand-navy-muted md:text-base">
                   {item.body}
                 </p>
               </article>
@@ -143,23 +143,23 @@ const SustainabilityPage = () => {
             <div>
               <h2
                 id="production-ethics-heading"
-                className="text-[1.75rem] font-bold text-ink md:text-[2rem]"
+                className="text-[1.75rem] font-bold text-brand-navy md:text-[2rem]"
               >
                 Production &amp; Ethics
               </h2>
-              <p className="mt-5 text-sm leading-[1.8] text-ink-muted md:text-base">
+              <p className="mt-5 text-sm leading-[1.8] text-brand-navy-muted md:text-base">
                 We partner with suppliers who share our standards for fair wages,
                 safe workplaces, and transparent processes. From sampling to final
                 stitch, every stage is chosen to protect people and planet —
                 without compromising the quiet luxury of the finished piece.
               </p>
-              <p className="mt-4 text-sm leading-[1.8] text-ink-muted md:text-base">
+              <p className="mt-4 text-sm leading-[1.8] text-brand-navy-muted md:text-base">
                 Our mission is simple: design clothing that lasts, travels
                 lightly, and feels as good to wear as it is to stand behind.
               </p>
               <Button
                 render={<Link href="/sustainability/mission" />}
-                className="mt-8 h-12 rounded-none border border-ink bg-transparent px-8 text-base font-medium capitalize text-ink hover:bg-muted"
+                className="mt-8 h-12 rounded-none border border-ink bg-transparent px-8 text-base font-medium capitalize text-brand-navy hover:bg-muted"
                 variant="outline"
               >
                 Our Mission
@@ -191,12 +191,12 @@ const SustainabilityPage = () => {
 
       <section
         aria-labelledby="sustainability-topics-heading"
-        className="border-t border-border pb-16 md:pb-24"
+        className="border-t border-brand-border pb-16 md:pb-24"
       >
         <Container>
           <h2
             id="sustainability-topics-heading"
-            className="mt-12 text-[1.75rem] font-bold text-ink md:mt-16 md:text-[2rem]"
+            className="mt-12 text-[1.75rem] font-bold text-brand-navy md:mt-16 md:text-[2rem]"
           >
             Explore Topics
           </h2>
@@ -205,7 +205,7 @@ const SustainabilityPage = () => {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="flex h-14 items-center border border-border px-5 text-base capitalize text-ink transition-colors hover:border-brand hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                  className="flex h-14 items-center border border-brand-border px-5 text-base capitalize text-brand-navy transition-colors hover:border-brand hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                 >
                   {link.label}
                 </Link>

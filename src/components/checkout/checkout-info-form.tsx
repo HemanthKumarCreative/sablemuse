@@ -21,7 +21,7 @@ const COUNTRY_CODES: Array<{ label: string; code: string }> = [
 ]
 
 const fieldClassName =
-  "h-12 rounded-none border-border bg-white px-4 text-base text-ink placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+  "h-12 rounded-none border-brand-border bg-white px-4 text-base text-brand-navy placeholder:text-brand-navy-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
 
 type CheckoutInfoFormProps = {
   className?: string
@@ -91,8 +91,8 @@ export const CheckoutInfoForm = ({
       noValidate
     >
       <div className="flex items-end justify-between gap-4">
-        <h2 className="text-xl font-semibold text-ink md:text-2xl">Contact</h2>
-        <p className="text-sm text-ink-muted">
+        <h2 className="text-xl font-semibold text-brand-navy md:text-2xl">Contact</h2>
+        <p className="text-sm text-brand-navy-muted">
           Have An Account?{" "}
           <Link
             href="/login"
@@ -108,7 +108,7 @@ export const CheckoutInfoForm = ({
           Email
         </Label>
         <User
-          className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
+          className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-brand-navy-muted"
           aria-hidden="true"
         />
         <Input
@@ -128,14 +128,14 @@ export const CheckoutInfoForm = ({
           id={newsId}
           checked={emailNews}
           onCheckedChange={(checked) => setEmailNews(checked === true)}
-          className="size-4 rounded-none border-border data-checked:border-brand data-checked:bg-brand"
+          className="size-4 rounded-none border-brand-border data-checked:border-brand data-checked:bg-brand"
         />
-        <Label htmlFor={newsId} className="text-sm font-normal text-ink">
+        <Label htmlFor={newsId} className="text-sm font-normal text-brand-navy">
           Email Me With News And Offers
         </Label>
       </div>
 
-      <h2 className="mt-10 text-xl font-semibold text-ink md:text-2xl">
+      <h2 className="mt-10 text-xl font-semibold text-brand-navy md:text-2xl">
         Shipping Address
       </h2>
 
@@ -158,7 +158,7 @@ export const CheckoutInfoForm = ({
           ))}
         </select>
         <ChevronDown
-          className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-ink"
+          className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-brand-navy"
           aria-hidden="true"
         />
       </div>
@@ -216,7 +216,7 @@ export const CheckoutInfoForm = ({
           Address
         </Label>
         <MapPin
-          className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink-muted"
+          className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-brand-navy-muted"
           aria-hidden="true"
         />
         <Input
@@ -294,7 +294,7 @@ export const CheckoutInfoForm = ({
           className={cn(fieldClassName, "pr-11")}
         />
         <Phone
-          className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-ink-muted"
+          className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-brand-navy-muted"
           aria-hidden="true"
         />
       </div>
@@ -304,9 +304,9 @@ export const CheckoutInfoForm = ({
           id={saveId}
           checked={saveInfo}
           onCheckedChange={(checked) => setSaveInfo(checked === true)}
-          className="size-4 rounded-none border-border data-checked:border-brand data-checked:bg-brand"
+          className="size-4 rounded-none border-brand-border data-checked:border-brand data-checked:bg-brand"
         />
-        <Label htmlFor={saveId} className="text-sm font-normal text-ink">
+        <Label htmlFor={saveId} className="text-sm font-normal text-brand-navy">
           Save This Information For Next Time
         </Label>
       </div>
@@ -323,7 +323,7 @@ export const CheckoutInfoForm = ({
         </Button>
         <Link
           href="/cart"
-          className="text-center text-sm text-ink-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-left md:text-base"
+          className="text-center text-sm text-brand-navy-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-left md:text-base"
         >
           &lt; Return To Cart
         </Link>

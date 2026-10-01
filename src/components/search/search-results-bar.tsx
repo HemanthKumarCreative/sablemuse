@@ -55,7 +55,7 @@ export const SearchResultsBar = ({
         Search products
       </label>
       <Search
-        className="size-5 shrink-0 text-ink-muted sm:size-6"
+        className="size-5 shrink-0 text-brand-navy-muted sm:size-6"
         strokeWidth={1.5}
         aria-hidden="true"
       />
@@ -67,14 +67,14 @@ export const SearchResultsBar = ({
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search"
         autoComplete="off"
-        className="h-full flex-1 rounded-none border-0 bg-transparent px-0 text-lg capitalize leading-[1.8] text-ink shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 sm:text-xl md:text-[20px]"
+        className="h-full flex-1 rounded-none border-0 bg-transparent px-0 text-lg capitalize leading-[1.8] text-brand-navy shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 sm:text-xl md:text-[20px]"
       />
       {query ? (
         <button
           type="button"
           onClick={handleClear}
           aria-label="Clear search"
-          className="hidden size-6 shrink-0 items-center justify-center text-ink-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:inline-flex"
+          className="hidden size-6 shrink-0 items-center justify-center text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:inline-flex"
         >
           <X className="size-5 sm:size-6" strokeWidth={1.5} />
         </button>

@@ -45,7 +45,7 @@ export const ModiweekDayNav = ({
                 </div>
                 <p
                   className={cn(
-                    "pt-3 text-sm font-semibold capitalize text-ink md:text-base",
+                    "pt-3 text-sm font-semibold capitalize text-brand-navy md:text-base",
                     isActive && "text-brand"
                   )}
                 >
@@ -92,7 +92,7 @@ export const ModiweekLookSection = ({
       <div className="flex flex-col">
         <div className="mb-3 md:mb-6">
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-bold capitalize text-ink md:text-2xl">
+            <h2 className="text-xl font-semibold capitalize text-brand-navy md:text-2xl">
               Shop The Look
             </h2>
             <Link
@@ -102,7 +102,7 @@ export const ModiweekLookSection = ({
               Shop All
             </Link>
           </div>
-          <p className="mt-1 text-sm capitalize text-ink-muted md:mt-2" aria-live="polite">
+          <p className="mt-1 text-sm capitalize text-brand-navy-muted md:mt-2" aria-live="polite">
             {itemCount} {itemCount === 1 ? "Item" : "Items"}
           </p>
         </div>

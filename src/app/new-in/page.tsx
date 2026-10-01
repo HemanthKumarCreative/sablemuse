@@ -92,11 +92,11 @@ const NewInPage = async () => {
             </p>
             <h1
               id="new-in-heading"
-              className="text-[2rem] font-extrabold tracking-tight text-ink md:text-[2.5rem]"
+              className="text-[2rem] font-extrabold tracking-tight text-brand-navy md:text-[2.5rem]"
             >
               New In
             </h1>
-            <p className="mt-3 max-w-xl text-sm text-ink-muted md:text-base">
+            <p className="mt-3 max-w-xl text-sm text-brand-navy-muted md:text-base">
               Fresh essentials across categories and trending edits — fall
               collection, blouses, dresses, and more.
             </p>
@@ -122,7 +122,7 @@ const NewInPage = async () => {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="inline-flex border border-border px-4 py-2 text-sm text-ink-muted transition-colors hover:border-brand hover:text-brand"
+                  className="inline-flex border border-brand-border px-4 py-2 text-sm text-brand-navy-muted transition-colors hover:border-brand hover:text-brand"
                 >
                   {item.label}
                 </Link>

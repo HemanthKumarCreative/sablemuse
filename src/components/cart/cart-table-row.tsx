@@ -60,37 +60,37 @@ export const CartTableRow = ({
 
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div className="flex items-start justify-between gap-3">
-            <h3 className="text-base font-semibold text-ink">{item.name}</h3>
+            <h3 className="text-base font-semibold text-brand-navy">{item.name}</h3>
             <button
               type="button"
               onClick={handleRemove}
               aria-label={`Remove ${item.name} from cart`}
-              className="inline-flex size-8 shrink-0 items-center justify-center text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:hidden"
+              className="inline-flex size-8 shrink-0 items-center justify-center text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:hidden"
             >
               <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
             </button>
           </div>
-          <p className="text-sm text-ink-muted">Size: {item.size}</p>
-          <p className="text-sm text-ink-muted">Color: {item.color}</p>
+          <p className="text-sm text-brand-navy-muted">Size: {item.size}</p>
+          <p className="text-sm text-brand-navy-muted">Color: {item.color}</p>
         </div>
 
         <button
           type="button"
           onClick={handleRemove}
           aria-label={`Remove ${item.name} from cart`}
-          className="hidden size-8 shrink-0 items-center justify-center text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline-flex"
+          className="hidden size-8 shrink-0 items-center justify-center text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline-flex"
         >
           <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
         </button>
       </div>
 
       <div className="flex items-center justify-between md:block md:pt-2">
-        <span className="text-sm text-ink-muted md:hidden">Price</span>
-        <p className="text-base text-ink">${formatMoney(item.price)}</p>
+        <span className="text-sm text-brand-navy-muted md:hidden">Price</span>
+        <p className="text-base text-brand-navy">${formatMoney(item.price)}</p>
       </div>
 
       <div className="flex items-center justify-between md:block md:pt-2">
-        <span className="text-sm text-ink-muted md:hidden">Quantity</span>
+        <span className="text-sm text-brand-navy-muted md:hidden">Quantity</span>
         <div
           className="inline-flex h-10 items-center gap-4 bg-[#D1D9CF] px-3"
           role="group"
@@ -104,7 +104,7 @@ export const CartTableRow = ({
           >
             <Minus className="size-3.5" strokeWidth={2} aria-hidden="true" />
           </button>
-          <span className="min-w-4 text-center text-sm font-medium text-ink">
+          <span className="min-w-4 text-center text-sm font-medium text-brand-navy">
             {item.quantity}
           </span>
           <button
@@ -119,8 +119,8 @@ export const CartTableRow = ({
       </div>
 
       <div className="flex items-center justify-between md:block md:pt-2 md:text-right">
-        <span className="text-sm text-ink-muted md:hidden">Total</span>
-        <p className="text-base font-medium text-ink">
+        <span className="text-sm text-brand-navy-muted md:hidden">Total</span>
+        <p className="text-base font-medium text-brand-navy">
           ${formatMoney(lineTotal)}
         </p>
       </div>

@@ -26,20 +26,20 @@ export const CheckoutSuccessContent = () => {
             />
           </div>
 
-          <h1 className="mt-8 text-[2rem] font-bold capitalize leading-tight text-brand md:text-[2.5rem]">
+          <h1 className="mt-8 text-[2rem] font-semibold capitalize leading-tight text-brand md:text-[2.5rem]">
             Payment Successful
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-[1.8] capitalize text-ink md:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-[1.8] capitalize text-brand-navy md:text-lg">
             Thank You For Choosing Modimal, Your Order Will Be Generated Based
             On Your Delivery Request.
           </p>
 
-          <p className="mt-4 text-sm capitalize text-ink md:text-base">
+          <p className="mt-4 text-sm capitalize text-brand-navy md:text-base">
             The Receipt Has Been Sent To Your Email
           </p>
 
-          <div className="mt-12 space-y-3 text-sm text-ink md:mt-14 md:text-base">
+          <div className="mt-12 space-y-3 text-sm text-brand-navy md:mt-14 md:text-base">
             <p className="font-semibold capitalize">
               Please Contact Us For Any Query
             </p>
@@ -51,7 +51,7 @@ export const CheckoutSuccessContent = () => {
                 +1(929)460-3208
               </a>
             </p>
-            <p className="text-ink">Or</p>
+            <p className="text-brand-navy">Or</p>
             <p>
               <a
                 href="mailto:hello@modimal.com"

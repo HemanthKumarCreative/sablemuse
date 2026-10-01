@@ -43,7 +43,7 @@ export const ModiWeekSection = ({ days }: ModiWeekSectionProps) => {
                     className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
                 </div>
-                <p className="pt-4 font-semibold text-ink">{item.day}</p>
+                <p className="pt-4 font-semibold text-brand-navy">{item.day}</p>
               </Link>
             </article>
           ))}
@@ -74,7 +74,7 @@ export const ModiWeekSection = ({ days }: ModiWeekSectionProps) => {
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />
                   </div>
-                  <p className="pt-3 text-sm font-semibold text-ink">{item.day}</p>
+                  <p className="pt-3 text-sm font-semibold text-brand-navy">{item.day}</p>
                 </Link>
               </article>
             ))}

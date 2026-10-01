@@ -58,7 +58,7 @@ const CollectionSlugPage = async ({
 
       <section aria-labelledby="collection-slug-heading" className="pb-12 md:pb-24 pt-8 md:pt-12">
         <Container>
-          <div className="border-b border-border bg-[#f4f5f3] lg:hidden mb-4">
+          <div className="border-b border-brand-border bg-[#f4f5f3] lg:hidden mb-4">
             <Breadcrumbs
               className="py-3"
               items={[
@@ -71,7 +71,7 @@ const CollectionSlugPage = async ({
 
           <h1
             id="collection-slug-heading"
-            className="text-[2rem] font-extrabold tracking-tight text-ink md:text-[2.5rem] mb-6 lg:hidden"
+            className="text-[2rem] font-extrabold tracking-tight text-brand-navy md:text-[2.5rem] mb-6 lg:hidden"
           >
             {categoryName}
           </h1>
@@ -86,7 +86,7 @@ const CollectionSlugPage = async ({
           />
 
           <h1
-            className="hidden lg:block text-[2.5rem] font-extrabold tracking-tight text-ink mb-10"
+            className="hidden lg:block text-[2.5rem] font-extrabold tracking-tight text-brand-navy mb-10"
           >
             {categoryName}
           </h1>
@@ -108,14 +108,14 @@ const CollectionSlugPage = async ({
 
             <div className="min-w-0 flex-1">
               <p
-                className="sr-only mb-5 text-sm capitalize text-ink-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
+                className="sr-only mb-5 text-sm capitalize text-brand-navy-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
                 aria-live="polite"
               >
                 {products.length} items
               </p>
               
               {products.length === 0 ? (
-                <div className="py-20 text-center text-ink-muted">
+                <div className="py-20 text-center text-brand-navy-muted">
                   No products found in this collection.
                 </div>
               ) : (

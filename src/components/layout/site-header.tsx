@@ -72,7 +72,7 @@ export const SiteHeader = () => {
             size="icon"
             aria-label={isSearchOpen ? "Close search" : "Search"}
             aria-expanded={isSearchOpen}
-            className="rounded-none text-ink"
+            className="rounded-none text-brand-navy"
             onClick={handleToggleSearch}
           >
             {isSearchOpen ? (
@@ -88,7 +88,7 @@ export const SiteHeader = () => {
           className="hidden shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:block"
           aria-label="Sable Muse home"
         >
-          <span className="font-serif text-2xl font-bold tracking-tight text-ink uppercase lg:text-3xl">
+          <span className="font-serif text-2xl font-semibold tracking-tight text-brand-navy uppercase lg:text-3xl">
             Sable Muse
           </span>
         </Link>
@@ -105,7 +105,7 @@ export const SiteHeader = () => {
           className="absolute left-1/2 -translate-x-1/2 md:hidden"
           aria-label="Sable Muse home"
         >
-          <span className="font-serif text-xl font-bold tracking-tight text-ink uppercase">
+          <span className="font-serif text-xl font-semibold tracking-tight text-brand-navy uppercase">
             Sable Muse
           </span>
         </Link>
@@ -116,7 +116,7 @@ export const SiteHeader = () => {
             size="icon"
             aria-label={isSearchOpen ? "Close search" : "Search"}
             aria-expanded={isSearchOpen}
-            className="rounded-none text-ink"
+            className="rounded-none text-brand-navy"
             onClick={handleToggleSearch}
           >
             {isSearchOpen ? (
@@ -129,7 +129,7 @@ export const SiteHeader = () => {
             variant="ghost"
             size="icon"
             aria-label="Account"
-            className="rounded-none text-ink"
+            className="rounded-none text-brand-navy"
             render={<Link href="/login" />}
             nativeButton={false}
           >
@@ -142,7 +142,7 @@ export const SiteHeader = () => {
             aria-current={isWishlistActive ? "page" : undefined}
             className={cn(
               "rounded-none",
-              isWishlistActive ? "text-[#CA2929]" : "text-ink"
+              isWishlistActive ? "text-[#CA2929]" : "text-brand-navy"
             )}
             render={<Link href="/wishlist" />}
             nativeButton={false}
@@ -164,7 +164,7 @@ export const SiteHeader = () => {
             aria-current={isWishlistActive ? "page" : undefined}
             className={cn(
               "rounded-none",
-              isWishlistActive ? "text-[#CA2929]" : "text-ink"
+              isWishlistActive ? "text-[#CA2929]" : "text-brand-navy"
             )}
             render={<Link href="/wishlist" />}
             nativeButton={false}
@@ -182,7 +182,7 @@ export const SiteHeader = () => {
       <SearchOverlay open={isSearchOpen} onClose={handleCloseSearch} />
 
       {!isSearchOpen && activeItem?.columns && activeItem.featured ? (
-        <div className="absolute inset-x-0 top-full z-50 hidden border-t border-border bg-white shadow-[0_16px_40px_rgba(12,12,12,0.08)] md:block">
+        <div className="absolute inset-x-0 top-full z-50 hidden border-t border-brand-border bg-white shadow-[0_16px_40px_rgba(12,12,12,0.08)] md:block">
           <MegaMenuPanel
             label={activeItem.label}
             columns={activeItem.columns}

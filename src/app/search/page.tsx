@@ -78,11 +78,11 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
           <div className="min-w-0 flex-1">
             {!query ? (
-              <p className="text-base text-ink-muted">
+              <p className="text-base text-brand-navy-muted">
                 Enter a search term to find Modimal products.
               </p>
             ) : itemCount === 0 ? (
-              <p className="text-base text-ink-muted">
+              <p className="text-base text-brand-navy-muted">
                 No products found for “{query}”.
               </p>
             ) : (

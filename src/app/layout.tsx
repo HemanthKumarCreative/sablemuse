@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
-import { Caveat, Montserrat } from "next/font/google"
-import localFont from "next/font/local"
+import { Source_Code_Pro, Source_Sans_3 } from "next/font/google"
 import { CartProvider } from "@/components/cart/cart-provider"
 import { WishlistProvider } from "@/components/wishlist/wishlist-provider"
 import { SiteFooter } from "@/components/layout/site-footer"
@@ -8,23 +7,16 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { fetchCart } from "@/lib/shopify/cart/actions"
 import "./globals.css"
 
-const montserrat = Montserrat({
+const sansVar = Source_Sans_3({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-montserrat",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-sans-var",
   display: "swap",
 })
 
-const caveat = Caveat({
+const geistMono = Source_Code_Pro({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-caveat",
-  display: "swap",
-})
-
-const gillSans = localFont({
-  src: "../../public/fonts/Gill-Sans-MT-Italic.ttf",
-  variable: "--font-gill",
+  variable: "--font-geist-mono",
   display: "swap",
 })
 
@@ -92,9 +84,9 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${montserrat.variable} ${caveat.variable} ${gillSans.variable} h-full`}
+      className={`${sansVar.variable} ${geistMono.variable} h-full tracking-tighter`}
     >
-      <body className="min-h-full flex flex-col font-sans text-ink">
+      <body className="min-h-full flex flex-col font-sans text-brand-navy antialiased selection:bg-brand-light/30">
         <WishlistProvider>
           <CartProvider initialCart={initialCart}>
             <SiteHeader />

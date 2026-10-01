@@ -28,7 +28,7 @@ export const SectionHeader = ({
       <h2
         id={titleId}
         className={cn(
-          "text-[1.25rem] font-extrabold tracking-tight text-ink sm:text-[1.4rem] md:text-[2.1rem]",
+          "text-[1.25rem] font-extrabold tracking-tight text-brand-navy sm:text-[1.4rem] md:text-[2.1rem]",
           titleClassName
         )}
       >

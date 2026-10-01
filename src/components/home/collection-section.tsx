@@ -37,13 +37,13 @@ export const CollectionSection = ({ collections }: CollectionSectionProps) => {
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               </div>
-              <span className="mt-2 block text-sm capitalize text-ink md:hidden">
+              <span className="mt-2 block text-sm capitalize text-brand-navy md:hidden">
                 {item.name}
               </span>
               <Button
                 tabIndex={-1}
                 aria-hidden="true"
-                className="pointer-events-none absolute right-6 bottom-8 hidden rounded-none bg-white px-10 py-2.5 text-base font-medium capitalize text-ink hover:bg-white md:inline-flex"
+                className="pointer-events-none absolute right-6 bottom-8 hidden rounded-none bg-white px-10 py-2.5 text-base font-medium capitalize text-brand-navy hover:bg-white md:inline-flex"
               >
                 {item.name}
               </Button>

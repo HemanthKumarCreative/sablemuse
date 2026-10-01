@@ -89,11 +89,11 @@ const PlusSizePage = async () => {
             </p>
             <h1
               id="plus-size-heading"
-              className="text-[2rem] font-extrabold tracking-tight text-ink md:text-[2.5rem]"
+              className="text-[2rem] font-extrabold tracking-tight text-brand-navy md:text-[2.5rem]"
             >
               Plus Size
             </h1>
-            <p className="mt-3 max-w-xl text-sm text-ink-muted md:text-base">
+            <p className="mt-3 max-w-xl text-sm text-brand-navy-muted md:text-base">
               Thoughtful silhouettes across categories — pants, dresses, blouses,
               and everyday essentials designed for comfort and ease.
             </p>

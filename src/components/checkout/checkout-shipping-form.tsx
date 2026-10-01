@@ -72,11 +72,11 @@ export const CheckoutShippingForm = ({
     >
       <h1 className="sr-only">Shipping</h1>
 
-      <div className="border border-border">
-        <div className="flex items-start justify-between gap-4 border-b border-border px-4 py-4 md:px-5">
+      <div className="border border-brand-border">
+        <div className="flex items-start justify-between gap-4 border-b border-brand-border px-4 py-4 md:px-5">
           <div className="min-w-0">
-            <p className="text-sm text-ink-muted">Contact</p>
-            <p className="mt-1 truncate text-sm text-ink md:text-base">
+            <p className="text-sm text-brand-navy-muted">Contact</p>
+            <p className="mt-1 truncate text-sm text-brand-navy md:text-base">
               {contactEmail || "Saved on previous step"}
             </p>
           </div>
@@ -89,8 +89,8 @@ export const CheckoutShippingForm = ({
         </div>
         <div className="flex items-start justify-between gap-4 px-4 py-4 md:px-5">
           <div className="min-w-0">
-            <p className="text-sm text-ink-muted">Ship To</p>
-            <p className="mt-1 text-sm text-ink md:text-base">
+            <p className="text-sm text-brand-navy-muted">Ship To</p>
+            <p className="mt-1 text-sm text-brand-navy md:text-base">
               {shipToSummary || "Address saved on previous step"}
             </p>
           </div>
@@ -103,12 +103,12 @@ export const CheckoutShippingForm = ({
         </div>
       </div>
 
-      <h2 className="mt-10 text-xl font-semibold text-ink md:text-2xl">
+      <h2 className="mt-10 text-xl font-semibold text-brand-navy md:text-2xl">
         Delivery Options
       </h2>
 
       {primaryGroup?.options.length ? (
-        <fieldset className="mt-4 border border-border">
+        <fieldset className="mt-4 border border-brand-border">
           <legend className="sr-only">Delivery options</legend>
           <ul className="divide-y divide-border" role="list">
             {primaryGroup.options.map((option) => {
@@ -139,16 +139,16 @@ export const CheckoutShippingForm = ({
                     />
                     <span className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                       <span>
-                        <span className="block text-base font-medium text-ink">
+                        <span className="block text-base font-medium text-brand-navy">
                           {option.title}
                         </span>
                         {option.description ? (
-                          <span className="mt-1 block text-sm text-ink-muted">
+                          <span className="mt-1 block text-sm text-brand-navy-muted">
                             {option.description}
                           </span>
                         ) : null}
                       </span>
-                      <span className="text-base font-semibold text-ink">
+                      <span className="text-base font-semibold text-brand-navy">
                         {option.price === 0
                           ? "Free"
                           : `$${option.price.toFixed(2)}`}
@@ -161,7 +161,7 @@ export const CheckoutShippingForm = ({
           </ul>
         </fieldset>
       ) : (
-        <p className="mt-4 text-sm text-ink-muted">
+        <p className="mt-4 text-sm text-brand-navy-muted">
           Delivery options will appear after Shopify calculates rates for your
           address. You can continue and choose shipping in secure checkout.
         </p>
@@ -179,7 +179,7 @@ export const CheckoutShippingForm = ({
         </Button>
         <Link
           href="/checkout"
-          className="text-center text-sm text-ink-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-left md:text-base"
+          className="text-center text-sm text-brand-navy-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-left md:text-base"
         >
           &lt; Return To Information
         </Link>

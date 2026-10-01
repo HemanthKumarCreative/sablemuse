@@ -66,7 +66,7 @@ export const SearchOverlay = ({
   return (
     <div
       className={cn(
-        "absolute inset-x-0 top-full z-50 border-t border-border bg-white shadow-[0_16px_40px_rgba(12,12,12,0.08)]",
+        "absolute inset-x-0 top-full z-50 border-t border-brand-border bg-white shadow-[0_16px_40px_rgba(12,12,12,0.08)]",
         className
       )}
       role="search"
@@ -81,7 +81,7 @@ export const SearchOverlay = ({
             Search products
           </label>
           <Search
-            className="pointer-events-none absolute left-0 size-5 text-ink-muted md:size-6"
+            className="pointer-events-none absolute left-0 size-5 text-brand-navy-muted md:size-6"
             strokeWidth={1.5}
             aria-hidden="true"
           />
@@ -93,7 +93,7 @@ export const SearchOverlay = ({
             placeholder="Search"
             autoComplete="off"
             defaultValue=""
-            className="h-11 rounded-none border-0 bg-transparent py-0 pr-2 pl-9 text-lg capitalize leading-[1.8] text-ink shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 md:h-14 md:pl-10 md:text-[20px]"
+            className="h-11 rounded-none border-0 bg-transparent py-0 pr-2 pl-9 text-lg capitalize leading-[1.8] text-brand-navy shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 md:h-14 md:pl-10 md:text-[20px]"
           />
         </form>
       </div>

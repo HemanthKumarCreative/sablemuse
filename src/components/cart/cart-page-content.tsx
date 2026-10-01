@@ -37,12 +37,12 @@ export const CartPageContent = () => {
             >
               Back
             </Link>
-            <h1 className="text-center text-[1.75rem] font-bold text-ink md:text-[2.5rem]">
+            <h1 className="text-center text-[1.75rem] font-semibold text-brand-navy md:text-[2.5rem]">
               Your Cart
             </h1>
             <span className="w-12" aria-hidden="true" />
           </div>
-          <p className="mt-10 text-center text-ink-muted">
+          <p className="mt-10 text-center text-brand-navy-muted">
             Your shopping bag is empty.
           </p>
           <div className="mt-8 flex justify-center">
@@ -68,12 +68,12 @@ export const CartPageContent = () => {
           >
             Back
           </Link>
-          <h1 className="text-center text-[1.75rem] font-bold text-ink md:text-[2.5rem]">
+          <h1 className="text-center text-[1.75rem] font-semibold text-brand-navy md:text-[2.5rem]">
             Your Cart
           </h1>
           <Link
             href="/shop-all"
-            className="hidden text-base text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline"
+            className="hidden text-base text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline"
           >
             Continue Shopping
           </Link>
@@ -84,12 +84,12 @@ export const CartPageContent = () => {
           className="mt-10 hidden border-b-2 border-[#DFDFDF] pb-4 md:grid md:grid-cols-[minmax(0,1.4fr)_0.7fr_0.7fr_0.7fr] md:gap-6"
           aria-hidden="true"
         >
-          <p className="text-base text-ink">Order Summary</p>
-          <p className="text-base text-ink">Price</p>
-          <p className="text-base text-ink">Quantity</p>
-          <p className="text-right text-base text-ink">Total</p>
+          <p className="text-base text-brand-navy">Order Summary</p>
+          <p className="text-base text-brand-navy">Price</p>
+          <p className="text-base text-brand-navy">Quantity</p>
+          <p className="text-right text-base text-brand-navy">Total</p>
         </div>
-        <h2 className="mt-8 text-lg font-semibold text-ink md:hidden">
+        <h2 className="mt-8 text-lg font-semibold text-brand-navy md:hidden">
           Order Summary
         </h2>
 
@@ -121,7 +121,7 @@ export const CartPageContent = () => {
 
         <div className="mt-10 flex justify-end md:mt-10">
           <div className="w-full max-w-md">
-            <div className="space-y-4 text-base text-ink">
+            <div className="space-y-4 text-base text-brand-navy">
               <div className="flex items-center justify-between">
                 <span>Subtotal ({itemCount})</span>
                 <span>${formatMoney(subtotal)}</span>
@@ -134,13 +134,13 @@ export const CartPageContent = () => {
                 <span>Shipping</span>
                 <span>Free</span>
               </div>
-              <div className="flex items-center justify-between font-bold">
+              <div className="flex items-center justify-between font-semibold">
                 <span>Order Totals</span>
                 <span>${formatMoney(orderTotal)}</span>
               </div>
             </div>
 
-            <p className="mt-5 text-sm font-semibold leading-[1.7] capitalize text-ink">
+            <p className="mt-5 text-sm font-semibold leading-[1.7] capitalize text-brand-navy">
               The Total Amount You Pay Includes All Applicable Customs Duties
               &amp; Taxes. We Guarantee No Additional Charges On Delivery.
             </p>

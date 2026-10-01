@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { cn } from "cn"
 
 const fieldClassName =
-  "h-12 rounded-none border-0 border-b border-border bg-transparent px-0 text-base text-ink placeholder:text-ink-muted focus-visible:border-brand focus-visible:ring-0"
+  "h-12 rounded-none border-0 border-b border-brand-border bg-transparent px-0 text-base text-brand-navy placeholder:text-brand-navy-muted focus-visible:border-brand focus-visible:ring-0"
 
 const SUBJECT_OPTIONS = [
   "Order Inquiry",
@@ -64,15 +64,15 @@ export const ContactForm = ({
     >
       {hideHeading || isModal ? null : (
         <div className="flex items-center gap-3">
-          <PenLine className="size-5 text-ink" aria-hidden="true" />
-          <h2 className="text-xl font-semibold text-ink md:text-2xl">Write Us</h2>
+          <PenLine className="size-5 text-brand-navy" aria-hidden="true" />
+          <h2 className="text-xl font-semibold text-brand-navy md:text-2xl">Write Us</h2>
         </div>
       )}
 
       {isModal ? null : (
         <p
           className={cn(
-            "text-base font-medium text-ink",
+            "text-base font-medium text-brand-navy",
             hideHeading ? "mt-0" : "mt-6"
           )}
         >
@@ -125,7 +125,7 @@ export const ContactForm = ({
                 aria-label="Subject"
                 className={cn(
                   fieldClassName,
-                  "w-full appearance-none pr-8 text-ink-muted valid:text-ink"
+                  "w-full appearance-none pr-8 text-brand-navy-muted valid:text-brand-navy"
                 )}
               >
                 <option value="" disabled>
@@ -138,7 +138,7 @@ export const ContactForm = ({
                 ))}
               </select>
               <ChevronDown
-                className="pointer-events-none absolute top-1/2 right-0 size-4 -translate-y-1/2 text-ink-muted"
+                className="pointer-events-none absolute top-1/2 right-0 size-4 -translate-y-1/2 text-brand-navy-muted"
                 strokeWidth={1.5}
                 aria-hidden="true"
               />
@@ -179,7 +179,7 @@ export const ContactForm = ({
             rows={isModal ? 3 : 4}
             placeholder="Message"
             aria-label="Message"
-            className="w-full resize-y rounded-none border-0 border-b border-border bg-transparent px-0 py-3 text-base text-ink placeholder:text-ink-muted outline-none focus-visible:border-brand"
+            className="w-full resize-y rounded-none border-0 border-b border-brand-border bg-transparent px-0 py-3 text-base text-brand-navy placeholder:text-brand-navy-muted outline-none focus-visible:border-brand"
           />
         </div>
       </div>
@@ -190,12 +190,12 @@ export const ContactForm = ({
           checked={acceptedPolicy}
           onCheckedChange={(checked) => setAcceptedPolicy(checked === true)}
           required
-          className="mt-0.5 size-4 rounded-none border-border data-checked:border-brand data-checked:bg-brand"
+          className="mt-0.5 size-4 rounded-none border-brand-border data-checked:border-brand data-checked:bg-brand"
         />
         <Label
           htmlFor={policyId}
           className={cn(
-            "text-sm font-normal leading-relaxed text-ink",
+            "text-sm font-normal leading-relaxed text-brand-navy",
             isModal && "capitalize"
           )}
         >

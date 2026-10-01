@@ -34,10 +34,10 @@ export const CategoryCard = ({ item, className }: CategoryCardProps) => {
         </AspectRatio>
       ) : (
         <div className="flex aspect-[3/4] items-end bg-muted p-5">
-          <span className="text-lg font-semibold text-ink">{item.label}</span>
+          <span className="text-lg font-semibold text-brand-navy">{item.label}</span>
         </div>
       )}
-      <span className="mt-3 block text-sm font-medium text-ink-muted transition-colors group-hover:text-brand md:text-base">
+      <span className="mt-3 block text-sm font-medium text-brand-navy-muted transition-colors group-hover:text-brand md:text-base">
         {item.label}
       </span>
     </Link>

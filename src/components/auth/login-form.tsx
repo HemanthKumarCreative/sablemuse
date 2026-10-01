@@ -12,10 +12,10 @@ type LoginFormProps = {
 export const LoginForm = ({ className, error }: LoginFormProps) => {
   return (
     <div className={cn("flex w-full flex-col justify-center", className)}>
-      <h1 className="text-center text-[2rem] font-bold capitalize leading-[1.4] text-ink md:text-[2.5rem]">
+      <h1 className="text-center text-[2rem] font-semibold capitalize leading-[1.4] text-brand-navy md:text-[2.5rem]">
         Log In
       </h1>
-      <p className="mt-4 text-center text-sm text-ink-muted md:text-base">
+      <p className="mt-4 text-center text-sm text-brand-navy-muted md:text-base">
         Sign in securely with your Shopify customer account.
       </p>
 
@@ -34,11 +34,11 @@ export const LoginForm = ({ className, error }: LoginFormProps) => {
         Continue With Shopify
       </Button>
 
-      <p className="mt-8 text-center text-sm capitalize leading-[1.8] text-ink md:text-base">
+      <p className="mt-8 text-center text-sm capitalize leading-[1.8] text-brand-navy md:text-base">
         New To Modimal?{" "}
         <Link
           href="/register"
-          className="font-medium text-ink-muted transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="font-medium text-brand-navy-muted transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           Create An Account
         </Link>

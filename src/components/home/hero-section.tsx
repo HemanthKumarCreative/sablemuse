@@ -21,7 +21,7 @@ export const HeroSection = () => {
         <div className="absolute bottom-10 left-5 z-10 max-w-[240px] sm:bottom-14 sm:left-6 sm:max-w-[280px] md:top-1/2 md:bottom-auto md:left-[10%] md:max-w-md md:-translate-y-1/2">
           <h1
             id="hero-heading"
-            className="font-heading text-[1.75rem] leading-[1.35] text-ink sm:text-[1.9rem] md:text-[2.4rem] md:leading-[1.75]"
+            className="font-heading text-[1.75rem] leading-[1.35] text-brand-navy sm:text-[1.9rem] md:text-[2.4rem] md:leading-[1.75]"
           >
             Elegance in simplicity,
             <br />
@@ -30,7 +30,7 @@ export const HeroSection = () => {
           <Button
             render={<Link href="/new-in" />}
             nativeButton={false}
-            className="mt-4 h-auto rounded-none bg-white px-8 py-2.5 text-sm font-medium text-ink hover:bg-white/90 sm:text-base md:mt-4 md:px-14"
+            className="mt-4 h-auto rounded-none bg-white px-8 py-2.5 text-sm font-medium text-brand-navy hover:bg-white/90 sm:text-base md:mt-4 md:px-14"
           >
             New In
           </Button>

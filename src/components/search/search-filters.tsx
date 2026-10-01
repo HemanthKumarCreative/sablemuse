@@ -39,7 +39,7 @@ export const SearchFilters = ({
     <aside className={cn("w-full", className)} aria-labelledby={headingId}>
       <h2
         id={headingId}
-        className="mb-4 text-[2rem] font-semibold capitalize leading-[1.4] text-ink"
+        className="mb-4 text-[2rem] font-semibold capitalize leading-[1.4] text-brand-navy"
       >
         Filters
       </h2>
@@ -49,7 +49,7 @@ export const SearchFilters = ({
           {filters.map((group) => (
             <div
               key={group.id}
-              className="flex h-12 items-center bg-brand-light px-4 text-base font-bold capitalize text-white"
+              className="flex h-12 items-center bg-brand-light px-4 text-base font-semibold capitalize text-white"
             >
               {group.label}
             </div>
@@ -61,11 +61,11 @@ export const SearchFilters = ({
             <AccordionItem
               key={group.id}
               value={group.id}
-              className="border border-transparent not-last:border-b-0 data-open:border-border"
+              className="border border-transparent not-last:border-b-0 data-open:border-brand-border"
             >
               <AccordionTrigger
                 className={cn(
-                  "h-12 rounded-none border-0 bg-brand-light px-4 py-0 text-base font-bold capitalize text-white hover:no-underline focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 aria-expanded:bg-white aria-expanded:text-ink **:data-[slot=accordion-trigger-icon]:hidden"
+                  "h-12 rounded-none border-0 bg-brand-light px-4 py-0 text-base font-semibold capitalize text-white hover:no-underline focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 aria-expanded:bg-white aria-expanded:text-brand-navy **:data-[slot=accordion-trigger-icon]:hidden"
                 )}
                 aria-label={`${group.label} filter`}
               >
@@ -98,7 +98,7 @@ export const SearchFilters = ({
                             className={cn(
                               "inline-block size-5 shrink-0 rounded-full border",
                               option.swatch === "#FFFFFF"
-                                ? "border-border"
+                                ? "border-brand-border"
                                 : "border-transparent"
                             )}
                             style={{ backgroundColor: option.swatch }}
@@ -107,7 +107,7 @@ export const SearchFilters = ({
                         ) : null}
                         <label
                           htmlFor={optionId}
-                          className="cursor-pointer text-sm capitalize leading-[1.8] text-ink"
+                          className="cursor-pointer text-sm capitalize leading-[1.8] text-brand-navy"
                         >
                           {option.label}
                         </label>

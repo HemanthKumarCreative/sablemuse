@@ -67,7 +67,7 @@ const PlusSizeShopAllPage = async () => {
           Plus Size Shop All
         </h1>
 
-        <div className="border-b border-border bg-[#f4f5f3] lg:hidden">
+        <div className="border-b border-brand-border bg-[#f4f5f3] lg:hidden">
           <Container>
             <Breadcrumbs
               className="py-3"
@@ -112,7 +112,7 @@ const PlusSizeShopAllPage = async () => {
 
             <div className="min-w-0 flex-1">
               <p
-                className="sr-only mb-5 text-sm capitalize text-ink-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
+                className="sr-only mb-5 text-sm capitalize text-brand-navy-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
                 aria-live="polite"
               >
                 {products.length} items
@@ -131,7 +131,7 @@ const PlusSizeShopAllPage = async () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-12 rounded-none border-ink bg-transparent px-10 text-base font-medium capitalize text-ink hover:bg-muted"
+                  className="h-12 rounded-none border-ink bg-transparent px-10 text-base font-medium capitalize text-brand-navy hover:bg-muted"
                   aria-label="Load more plus size products"
                 >
                   Load More

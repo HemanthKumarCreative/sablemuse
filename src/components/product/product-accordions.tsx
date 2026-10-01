@@ -32,9 +32,9 @@ const parseContentToItems = (text: string) => {
       return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 pt-1 text-sm">
           {matches.map((item, idx) => (
-            <div key={idx} className="flex flex-col border-b border-border/40 pb-1.5">
-              <span className="font-semibold text-ink text-xs uppercase tracking-wide">{item.label}</span>
-              <span className="text-ink-muted">{item.val}</span>
+            <div key={idx} className="flex flex-col border-b border-brand-border/40 pb-1.5">
+              <span className="font-semibold text-brand-navy text-xs uppercase tracking-wide">{item.label}</span>
+              <span className="text-brand-navy-muted">{item.val}</span>
             </div>
           ))}
         </div>
@@ -45,7 +45,7 @@ const parseContentToItems = (text: string) => {
   // Fallback to regular bullet points or paragraph
   if (text.includes("\n")) {
     return (
-      <ul className="list-disc space-y-1 pl-4 text-sm leading-[1.8] text-ink-muted">
+      <ul className="list-disc space-y-1 pl-4 text-sm leading-[1.8] text-brand-navy-muted">
         {text.split("\n").filter(Boolean).map((line, idx) => (
           <li key={idx}>{line.replace(/^[-•*]\s*/, "")}</li>
         ))}
@@ -53,7 +53,7 @@ const parseContentToItems = (text: string) => {
     )
   }
 
-  return <p className="text-sm leading-[1.8] text-ink-muted">{text}</p>
+  return <p className="text-sm leading-[1.8] text-brand-navy-muted">{text}</p>
 }
 
 export const ProductAccordions = ({
@@ -76,16 +76,16 @@ export const ProductAccordions = ({
     <Accordion
       multiple
       defaultValue={defaultOpen}
-      className={cn("gap-0 border border-border bg-[#F0F2EF]", className)}
+      className={cn("gap-0 border border-brand-border bg-[#F0F2EF]", className)}
     >
       {items.map((item) => (
         <AccordionItem
           key={item.id}
           value={item.id}
-          className="border-b border-border last:border-b-0"
+          className="border-b border-brand-border last:border-b-0"
         >
           <AccordionTrigger
-            className="rounded-none px-4 py-4 text-base font-medium capitalize text-ink hover:no-underline **:data-[slot=accordion-trigger-icon]:hidden"
+            className="rounded-none px-4 py-4 text-base font-medium capitalize text-brand-navy hover:no-underline **:data-[slot=accordion-trigger-icon]:hidden"
           >
             <span className="flex-1 text-left">{item.label}</span>
             <Plus

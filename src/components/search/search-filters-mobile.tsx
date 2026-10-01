@@ -37,7 +37,7 @@ export const SearchFiltersMobile = ({
             render={
               <Button
                 variant="ghost"
-                className="h-auto gap-2 rounded-none px-3 py-2 text-base font-medium text-ink hover:bg-transparent hover:text-brand"
+                className="h-auto gap-2 rounded-none px-3 py-2 text-base font-medium text-brand-navy hover:bg-transparent hover:text-brand"
               />
             }
           >
@@ -49,11 +49,11 @@ export const SearchFiltersMobile = ({
         <SheetContent
           side="bottom"
           showCloseButton={false}
-          className="inset-x-0 gap-0 overflow-hidden rounded-none border-t border-border p-0 opacity-100 data-starting-style:opacity-100 data-[side=bottom]:inset-x-0 data-[side=bottom]:h-[min(94dvh,920px)] data-[side=bottom]:max-h-[94dvh]"
+          className="inset-x-0 gap-0 overflow-hidden rounded-none border-t border-brand-border p-0 opacity-100 data-starting-style:opacity-100 data-[side=bottom]:inset-x-0 data-[side=bottom]:h-[min(94dvh,920px)] data-[side=bottom]:max-h-[94dvh]"
         >
           <div className="flex h-full min-h-0 flex-col bg-white">
             <div className="flex shrink-0 items-center justify-between px-5 pt-5 pb-2">
-              <SheetTitle className="font-sans text-[2rem] font-semibold capitalize leading-[1.4] text-ink">
+              <SheetTitle className="font-sans text-[2rem] font-semibold capitalize leading-[1.4] text-brand-navy">
                 Filters
               </SheetTitle>
               <SheetClose
@@ -62,7 +62,7 @@ export const SearchFiltersMobile = ({
                     variant="ghost"
                     size="icon"
                     aria-label="Close filters"
-                    className="rounded-none text-ink"
+                    className="rounded-none text-brand-navy"
                   />
                 }
               >
@@ -91,7 +91,7 @@ export const SearchFiltersMobile = ({
                 render={
                   <button
                     type="button"
-                    className="justify-self-start text-base font-normal capitalize text-ink transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                    className="justify-self-start text-base font-normal capitalize text-brand-navy transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                   />
                 }
               >

@@ -45,19 +45,19 @@ export const CartLineItem = ({
           className="object-cover"
         />
         {showImageBadge ? (
-          <span className="absolute top-2 right-2 flex size-7 items-center justify-center bg-white text-sm font-medium text-ink">
+          <span className="absolute top-2 right-2 flex size-7 items-center justify-center bg-white text-sm font-medium text-brand-navy">
             {item.quantity}
           </span>
         ) : null}
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-2 pr-8">
-        <h3 className="text-base font-semibold text-ink">{item.name}</h3>
-        <p className="text-sm text-ink-muted">Size: {item.size}</p>
-        <p className="text-sm text-ink-muted">Color: {item.color}</p>
+        <h3 className="text-base font-semibold text-brand-navy">{item.name}</h3>
+        <p className="text-sm text-brand-navy-muted">Size: {item.size}</p>
+        <p className="text-sm text-brand-navy-muted">Color: {item.color}</p>
 
         <div className="mt-auto flex items-end justify-between gap-3 pt-2">
-          <p className="text-base font-semibold text-ink">$ {item.price}</p>
+          <p className="text-base font-semibold text-brand-navy">$ {item.price}</p>
 
           <div
             className="inline-flex h-10 items-center gap-4 bg-[#D1D9CF] px-3"
@@ -72,7 +72,7 @@ export const CartLineItem = ({
             >
               <Minus className="size-3.5" strokeWidth={2} aria-hidden="true" />
             </button>
-            <span className="min-w-4 text-center text-sm font-medium text-ink">
+            <span className="min-w-4 text-center text-sm font-medium text-brand-navy">
               {item.quantity}
             </span>
             <button
@@ -91,7 +91,7 @@ export const CartLineItem = ({
         type="button"
         onClick={handleRemove}
         aria-label={`Remove ${item.name} from cart`}
-        className="absolute top-0 right-0 inline-flex size-8 items-center justify-center text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="absolute top-0 right-0 inline-flex size-8 items-center justify-center text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
       </button>

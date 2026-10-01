@@ -35,7 +35,7 @@ const ContactUsPage = () => {
       />
 
       <section aria-labelledby="contact-heading" className="pb-16 md:pb-24">
-        <div className="border-b border-border bg-[#f4f5f3] lg:bg-transparent lg:border-0">
+        <div className="border-b border-brand-border bg-[#f4f5f3] lg:bg-transparent lg:border-0">
           <Container>
             <Breadcrumbs
               className="py-3 lg:mt-8 lg:py-0"
@@ -47,12 +47,12 @@ const ContactUsPage = () => {
         <Container>
           <h1
             id="contact-heading"
-            className="mt-8 text-[1.75rem] font-bold tracking-tight text-ink md:mt-10 md:text-[2.5rem] md:font-extrabold"
+            className="mt-8 text-[1.75rem] font-bold tracking-tight text-brand-navy md:mt-10 md:text-[2.5rem] md:font-extrabold"
           >
             Contact Us
           </h1>
 
-          <div className="mt-6 space-y-4 bg-[#f0f2ef] p-5 text-sm leading-[1.8] capitalize text-ink md:mt-8 md:space-y-4 md:p-8 md:text-base md:normal-case">
+          <div className="mt-6 space-y-4 bg-[#f0f2ef] p-5 text-sm leading-[1.8] capitalize text-brand-navy md:mt-8 md:space-y-4 md:p-8 md:text-base md:normal-case">
             <p>
               We Always Love Hearing From Our Customers! Please Do Not Hesitate
               To Contact Us Should You Have Any Questions Regarding Our Products

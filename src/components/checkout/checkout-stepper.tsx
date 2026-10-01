@@ -32,7 +32,7 @@ export const CheckoutStepper = ({
           return (
             <li key={step.id} className="flex items-center gap-2">
               {index > 0 ? (
-                <span className="text-ink-muted" aria-hidden="true">
+                <span className="text-brand-navy-muted" aria-hidden="true">
                   /
                 </span>
               ) : null}
@@ -43,14 +43,14 @@ export const CheckoutStepper = ({
                   className={cn(
                     "capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
                     isCurrent
-                      ? "font-semibold text-ink"
-                      : "text-ink-muted hover:text-ink"
+                      ? "font-semibold text-brand-navy"
+                      : "text-brand-navy-muted hover:text-brand-navy"
                   )}
                 >
                   {step.label}
                 </Link>
               ) : (
-                <span className="capitalize text-ink-muted">{step.label}</span>
+                <span className="capitalize text-brand-navy-muted">{step.label}</span>
               )}
             </li>
           )

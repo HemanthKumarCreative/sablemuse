@@ -67,7 +67,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
             variant="ghost"
             size="icon"
             aria-label="Open menu"
-            className="rounded-none text-ink"
+            className="rounded-none text-brand-navy"
           />
         }
       >
@@ -95,7 +95,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                   variant="ghost"
                   size="icon"
                   aria-label="Close menu"
-                  className="rounded-none text-ink"
+                  className="rounded-none text-brand-navy"
                 />
               }
             >
@@ -105,7 +105,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
               variant="ghost"
               size="icon"
               aria-label="Search"
-              className="rounded-none text-ink"
+              className="rounded-none text-brand-navy"
               onClick={handleSearchClick}
             >
               <Search className="size-5" strokeWidth={1.5} />
@@ -118,7 +118,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
             aria-label="Sable Muse home"
             onClick={handleNavigate}
           >
-            <span className="font-serif text-xl font-bold tracking-tight text-ink uppercase">
+            <span className="font-serif text-xl font-semibold tracking-tight text-brand-navy uppercase">
               Sable Muse
             </span>
           </Link>
@@ -131,7 +131,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
               aria-current={isWishlistActive ? "page" : undefined}
               className={cn(
                 "rounded-none",
-                isWishlistActive ? "text-[#CA2929]" : "text-ink"
+                isWishlistActive ? "text-[#CA2929]" : "text-brand-navy"
               )}
               render={<Link href="/wishlist" onClick={handleNavigate} />}
               nativeButton={false}
@@ -150,7 +150,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                   ? `Shopping bag, ${itemCount} items`
                   : "Shopping bag"
               }
-              className="relative rounded-none text-ink"
+              className="relative rounded-none text-brand-navy"
               render={<Link href="/cart" onClick={handleNavigate} />}
               nativeButton={false}
             >
@@ -168,7 +168,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
           aria-label="Mobile"
           className="flex min-h-[calc(100dvh-96px)] flex-col px-5 pb-8 pt-2"
         >
-          <ul className="divide-y divide-border border-y border-border">
+          <ul className="divide-y divide-border border-y border-brand-border">
             {NAV_ITEMS.map((item) => {
               const links = getFlattenedLinks(item)
               const hasChildren = links.length > 0
@@ -179,7 +179,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      className="block py-4 text-base font-medium text-ink transition-colors hover:text-brand"
+                      className="block py-4 text-base font-medium text-brand-navy transition-colors hover:text-brand"
                       onClick={handleNavigate}
                     >
                       {item.label}
@@ -193,14 +193,14 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                   <div className="flex items-center justify-between gap-3">
                     <Link
                       href={item.href}
-                      className="flex-1 py-4 text-base font-medium text-ink transition-colors hover:text-brand"
+                      className="flex-1 py-4 text-base font-medium text-brand-navy transition-colors hover:text-brand"
                       onClick={handleNavigate}
                     >
                       {item.label}
                     </Link>
                     <button
                       type="button"
-                      className="inline-flex size-10 items-center justify-center text-ink"
+                      className="inline-flex size-10 items-center justify-center text-brand-navy"
                       aria-expanded={isExpanded}
                       aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.label}`}
                       onClick={() => handleToggleSection(item.label)}
@@ -221,7 +221,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                         <li key={`${item.label}-${link.label}`}>
                           <Link
                             href={link.href}
-                            className="block py-2.5 text-sm text-ink-muted transition-colors hover:text-brand"
+                            className="block py-2.5 text-sm text-brand-navy-muted transition-colors hover:text-brand"
                             onClick={handleNavigate}
                           >
                             {link.label}
@@ -238,7 +238,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
           <div className="mt-auto grid grid-cols-2 gap-3 pt-8">
             <Button
               variant="outline"
-              className="h-12 gap-2 rounded-none border-brand text-sm font-medium text-ink hover:bg-brand/5"
+              className="h-12 gap-2 rounded-none border-brand text-sm font-medium text-brand-navy hover:bg-brand/5"
               render={<Link href="/login" onClick={handleNavigate} />}
               nativeButton={false}
             >

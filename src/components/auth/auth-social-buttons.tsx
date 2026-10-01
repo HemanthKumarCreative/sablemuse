@@ -57,7 +57,7 @@ export const AuthSocialButtons = ({ className }: AuthSocialButtonsProps) => {
         type="button"
         onClick={handleGoogleClick}
         aria-label="Continue with Google"
-        className="inline-flex size-12 items-center justify-center rounded-full border border-border bg-white transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="inline-flex size-12 items-center justify-center rounded-full border border-brand-border bg-white transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         <GoogleIcon className="size-6" />
       </button>

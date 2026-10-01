@@ -47,7 +47,7 @@ const SustainabilityMissionPage = () => {
       />
 
       <section aria-labelledby="mission-heading" className="pb-16 md:pb-24">
-        <div className="border-b border-border bg-[#f4f5f3] lg:bg-transparent lg:border-0">
+        <div className="border-b border-brand-border bg-[#f4f5f3] lg:bg-transparent lg:border-0">
           <Container>
             <Breadcrumbs
               className="py-3 lg:mt-8 lg:py-0"
@@ -80,15 +80,15 @@ const SustainabilityMissionPage = () => {
         <Container>
           <h1
             id="mission-heading"
-            className="mt-8 text-[1.75rem] font-bold tracking-tight text-ink md:mt-12 md:text-[2.25rem]"
+            className="mt-8 text-[1.75rem] font-bold tracking-tight text-brand-navy md:mt-12 md:text-[2.25rem]"
           >
             Sustainability At Modimal
           </h1>
-          <p className="mt-4 max-w-3xl text-sm leading-[1.8] capitalize text-ink-muted md:text-base md:normal-case">
+          <p className="mt-4 max-w-3xl text-sm leading-[1.8] capitalize text-brand-navy-muted md:text-base md:normal-case">
             {MISSION_INTRO}
           </p>
 
-          <h2 className="mt-10 text-lg font-semibold text-ink md:mt-12 md:text-xl">
+          <h2 className="mt-10 text-lg font-semibold text-brand-navy md:mt-12 md:text-xl">
             Our Mission, The Modimal Six:
           </h2>
           <MissionPillarsAccordion className="mt-4" />
@@ -136,7 +136,7 @@ const SustainabilityMissionPage = () => {
             </div>
           </div>
 
-          <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-[1.8] capitalize text-ink md:mt-16 md:text-base">
+          <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-[1.8] capitalize text-brand-navy md:mt-16 md:text-base">
             {MISSION_STATEMENT}
           </p>
         </Container>

@@ -43,7 +43,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                 ? `Shopping bag, ${itemCount} items`
                 : "Shopping bag"
             }
-            className={cn("relative rounded-none text-ink", triggerClassName)}
+            className={cn("relative rounded-none text-brand-navy", triggerClassName)}
           />
         }
       >
@@ -58,7 +58,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
         side="right"
         showCloseButton={false}
         className={cn(
-          "w-screen max-w-none gap-0 rounded-none border-l border-border bg-white p-0 opacity-100 data-starting-style:opacity-100 data-[side=right]:w-screen data-[side=right]:max-w-none sm:max-w-[500px] sm:data-[side=right]:w-[min(100vw,500px)]",
+          "w-screen max-w-none gap-0 rounded-none border-l border-brand-border bg-white p-0 opacity-100 data-starting-style:opacity-100 data-[side=right]:w-screen data-[side=right]:max-w-none sm:max-w-[500px] sm:data-[side=right]:w-[min(100vw,500px)]",
           className
         )}
       >
@@ -68,7 +68,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
               variant="ghost"
               size="icon"
               aria-label="Close shopping bag"
-              className="absolute top-3 left-3 z-10 rounded-none text-ink"
+              className="absolute top-3 left-3 z-10 rounded-none text-brand-navy"
             />
           }
         >
@@ -82,10 +82,10 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
               Your shopping bag is currently empty
             </SheetDescription>
             <div className="flex h-full flex-col items-center px-8 pt-24 pb-10 text-center sm:px-10 sm:pt-28">
-              <h2 className="max-w-[280px] text-2xl font-bold capitalize leading-tight text-ink sm:text-[1.75rem]">
+              <h2 className="max-w-[280px] text-2xl font-semibold capitalize leading-tight text-brand-navy sm:text-[1.75rem]">
                 Your Shopping Bag Is Empty
               </h2>
-              <p className="mt-4 max-w-[260px] text-sm leading-[1.7] capitalize text-ink sm:mt-5 sm:text-base">
+              <p className="mt-4 max-w-[260px] text-sm leading-[1.7] capitalize text-brand-navy sm:mt-5 sm:text-base">
                 Discover Modimal And Add Products To Your Bag
               </p>
               <ul
@@ -117,7 +117,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
             </SheetDescription>
             <div className="flex h-full flex-col">
               <div className="px-6 py-5">
-                <h2 className="text-center text-xl font-bold text-ink">
+                <h2 className="text-center text-xl font-semibold text-brand-navy">
                   Your Cart
                 </h2>
               </div>

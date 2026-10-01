@@ -63,7 +63,7 @@ export const WelcomeDialog = ({ className }: WelcomeDialogProps) => {
               variant="ghost"
               size="icon"
               aria-label="Close welcome"
-              className="absolute top-3 right-3 z-10 rounded-none text-ink hover:bg-transparent sm:top-4 sm:right-4"
+              className="absolute top-3 right-3 z-10 rounded-none text-brand-navy hover:bg-transparent sm:top-4 sm:right-4"
             />
           }
         >
@@ -72,16 +72,16 @@ export const WelcomeDialog = ({ className }: WelcomeDialogProps) => {
 
         <div className="px-5 pt-14 pb-10 text-center sm:px-10 sm:pt-16 sm:pb-12 md:px-14 md:pt-20 md:pb-16">
           <DialogHeader className="items-center gap-0">
-            <DialogTitle className="font-sans text-xl font-bold capitalize leading-[1.4] text-ink sm:text-2xl md:text-[2rem]">
+            <DialogTitle className="font-sans text-xl font-semibold capitalize leading-[1.4] text-brand-navy sm:text-2xl md:text-[2rem]">
               Welcome To Sable Muse
             </DialogTitle>
           </DialogHeader>
 
-          <DialogDescription className="mt-3 font-display text-base italic leading-[1.6] text-ink sm:mt-4 sm:text-lg md:text-xl">
+          <DialogDescription className="mt-3 font-display text-base italic leading-[1.6] text-brand-navy sm:mt-4 sm:text-lg md:text-xl">
             Elegance In Simplicity, Earth’s Harmony
           </DialogDescription>
 
-          <p className="mt-6 text-sm capitalize leading-[1.6] text-ink sm:mt-8 sm:text-base md:text-xl md:font-bold">
+          <p className="mt-6 text-sm capitalize leading-[1.6] text-brand-navy sm:mt-8 sm:text-base md:text-xl md:font-semibold">
             Is It Your First Experience At Sable Muse?
           </p>
 

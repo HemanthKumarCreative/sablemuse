@@ -39,7 +39,7 @@ export const MegaMenuFeaturedCards = ({
             />
           </AspectRatio>
           {showLabels ? (
-            <span className="mt-3 block text-left text-base capitalize leading-[1.8] text-ink transition-colors group-hover:text-brand">
+            <span className="mt-3 block text-left text-base capitalize leading-[1.8] text-brand-navy transition-colors group-hover:text-brand">
               {item.label}
             </span>
           ) : null}

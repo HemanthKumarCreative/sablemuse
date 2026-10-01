@@ -80,7 +80,7 @@ const ModiweekDayPage = async ({ params }: ModiweekDayPageProps) => {
 
           <h1
             id="modiweek-day-heading"
-            className="mt-6 text-[2rem] font-bold capitalize leading-none text-ink md:mt-10 md:font-display md:text-[4.5rem] md:italic"
+            className="mt-6 text-[2rem] font-bold capitalize leading-none text-brand-navy md:mt-10 md:font-display md:text-[4.5rem] md:italic"
           >
             {day.day}
           </h1>
@@ -88,7 +88,7 @@ const ModiweekDayPage = async ({ params }: ModiweekDayPageProps) => {
           <ModiweekLookSection day={day} className="mt-6 md:mt-10" />
 
           <div className="mt-14 md:mt-20">
-            <h2 className="mb-6 text-xl font-bold capitalize text-ink md:text-2xl">
+            <h2 className="mb-6 text-xl font-bold capitalize text-brand-navy md:text-2xl">
               More Days
             </h2>
             <ModiweekDayNav activeSlug={day.slug} />

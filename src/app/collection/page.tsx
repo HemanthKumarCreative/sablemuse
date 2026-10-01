@@ -86,11 +86,11 @@ const CollectionPage = async () => {
             </p>
             <h1
               id="collection-page-heading"
-              className="text-[2rem] font-extrabold tracking-tight text-ink md:text-[2.5rem]"
+              className="text-[2rem] font-extrabold tracking-tight text-brand-navy md:text-[2.5rem]"
             >
               Collection
             </h1>
-            <p className="mt-3 max-w-xl text-sm text-ink-muted md:text-base">
+            <p className="mt-3 max-w-xl text-sm text-brand-navy-muted md:text-base">
               Curated women’s essentials across categories, featured edits, and
               best sellers — designed for elegance in simplicity.
             </p>
