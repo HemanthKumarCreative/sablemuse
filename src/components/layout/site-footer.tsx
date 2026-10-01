@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   FacebookIcon,
   InstagramIcon,
   PinterestIcon,
-  TwitterIcon,
-} from "@/components/icons/social-icons"
-import { Container } from "@/components/shared/container"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { FOOTER_LINKS } from "@/data/navigation"
+  TwitterIcon } from
+"@/components/icons/social-icons";
+import { Container } from "@/components/shared/container";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { FOOTER_LINKS } from "@/data/navigation";
 
 export const SiteFooter = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   return (
     <footer className="bg-footer text-white">
@@ -39,23 +39,23 @@ export const SiteFooter = () => {
                     name="email"
                     required
                     placeholder="Enter your email"
-                    className="h-12 rounded-none border-white bg-transparent pr-12 text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-white/30"
-                  />
+                    className="h-12 rounded-none border-white bg-transparent pr-12 text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-white/30" />
+                  
                   <Button
                     type="submit"
                     variant="ghost"
                     size="icon"
                     aria-label="Subscribe to newsletter"
-                    className="absolute top-1/2 right-1 size-10 -translate-y-1/2 rounded-none text-white hover:bg-white/10 hover:text-white"
-                  >
+                    className="absolute top-1/2 right-1 size-10 -translate-y-1/2 rounded-none text-white hover:bg-white/10 hover:text-white">
+                    
                     <ArrowRight className="size-5" strokeWidth={1.5} />
                   </Button>
                 </div>
                 <label className="flex items-start gap-3 text-sm font-semibold leading-relaxed text-white/90">
                   <Checkbox
                     className="mt-0.5 rounded-none border-white data-checked:border-white data-checked:bg-white data-checked:text-footer"
-                    aria-label="Agree to receive advertising emails"
-                  />
+                    aria-label="Agree to receive advertising emails" />
+                  
                   <span>
                     By Submitting your email, you agree to receive advertising
                     emails from Modimal.
@@ -72,8 +72,8 @@ export const SiteFooter = () => {
                     aria-label="Instagram"
                     className="inline-flex transition-opacity hover:opacity-80"
                     target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                    rel="noopener noreferrer">
+                    
                     <InstagramIcon className="size-7" />
                   </Link>
                 </li>
@@ -83,8 +83,8 @@ export const SiteFooter = () => {
                     aria-label="Facebook"
                     className="inline-flex transition-opacity hover:opacity-80"
                     target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                    rel="noopener noreferrer">
+                    
                     <FacebookIcon className="size-7" />
                   </Link>
                 </li>
@@ -94,8 +94,8 @@ export const SiteFooter = () => {
                     aria-label="Pinterest"
                     className="inline-flex transition-opacity hover:opacity-80"
                     target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                    rel="noopener noreferrer">
+                    
                     <PinterestIcon className="size-7" />
                   </Link>
                 </li>
@@ -105,8 +105,8 @@ export const SiteFooter = () => {
                     aria-label="Twitter"
                     className="inline-flex transition-opacity hover:opacity-80"
                     target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                    rel="noopener noreferrer">
+                    
                     <TwitterIcon className="size-7" />
                   </Link>
                 </li>
@@ -122,16 +122,16 @@ export const SiteFooter = () => {
               About Sable Muse
             </h3>
             <ul className="space-y-3.5">
-              {FOOTER_LINKS.about.map((link) => (
-                <li key={link.label}>
+              {FOOTER_LINKS.about.map((link) =>
+              <li key={link.label}>
                   <Link
-                    href={link.href}
-                    className="text-sm text-white/90 transition-colors hover:text-white"
-                  >
+                  href={link.href}
+                  className="text-sm text-white/90 transition-colors hover:text-white">
+                  
                     {link.label}
                   </Link>
                 </li>
-              ))}
+              )}
             </ul>
           </div>
 
@@ -140,16 +140,16 @@ export const SiteFooter = () => {
               Help & Support
             </h3>
             <ul className="space-y-3.5">
-              {FOOTER_LINKS.help.map((link) => (
-                <li key={link.label}>
+              {FOOTER_LINKS.help.map((link) =>
+              <li key={link.label}>
                   <Link
-                    href={link.href}
-                    className="text-sm text-white/90 transition-colors hover:text-white"
-                  >
+                  href={link.href}
+                  className="text-sm text-white/90 transition-colors hover:text-white">
+                  
                     {link.label}
                   </Link>
                 </li>
-              ))}
+              )}
             </ul>
           </div>
 
@@ -158,16 +158,16 @@ export const SiteFooter = () => {
               Sable Muse Club
             </h3>
             <ul className="space-y-3.5">
-              {FOOTER_LINKS.club.map((link) => (
-                <li key={link.label}>
+              {FOOTER_LINKS.club.map((link) =>
+              <li key={link.label}>
                   <Link
-                    href={link.href}
-                    className="text-sm text-white/90 transition-colors hover:text-white"
-                  >
+                  href={link.href}
+                  className="text-sm text-white/90 transition-colors hover:text-white">
+                  
                     {link.label}
                   </Link>
                 </li>
-              ))}
+              )}
             </ul>
           </div>
 
@@ -179,8 +179,8 @@ export const SiteFooter = () => {
                   aria-label="Instagram"
                   className="inline-flex transition-opacity hover:opacity-80"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
+                  
                   <InstagramIcon className="size-7" />
                 </Link>
               </li>
@@ -190,8 +190,8 @@ export const SiteFooter = () => {
                   aria-label="Facebook"
                   className="inline-flex transition-opacity hover:opacity-80"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
+                  
                   <FacebookIcon className="size-7" />
                 </Link>
               </li>
@@ -201,8 +201,8 @@ export const SiteFooter = () => {
                   aria-label="Pinterest"
                   className="inline-flex transition-opacity hover:opacity-80"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
+                  
                   <PinterestIcon className="size-7" />
                 </Link>
               </li>
@@ -212,8 +212,8 @@ export const SiteFooter = () => {
                   aria-label="Twitter"
                   className="inline-flex transition-opacity hover:opacity-80"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
+                  
                   <TwitterIcon className="size-7" />
                 </Link>
               </li>
@@ -224,6 +224,6 @@ export const SiteFooter = () => {
           </div>
         </div>
       </Container>
-    </footer>
-  )
-}
+    <form className="flex flex-col gap-2 mt-4 max-w-sm"><p className="text-sm font-medium">Join our newsletter for 15% off</p><div className="flex gap-2"><input type="email" placeholder="Enter your email" className="flex h-10 w-full rounded-brand border border-brand-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" required aria-label="Email address" /><button type="submit" className="inline-flex items-center justify-center rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Subscribe</button></div></form></footer>);
+
+};
