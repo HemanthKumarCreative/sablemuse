@@ -1,5 +1,3 @@
-import type { Product } from "@/data/home"
-
 export type SearchFilterOption = {
   id: string
   label: string

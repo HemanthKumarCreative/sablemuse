@@ -1,3 +1,7 @@
+# Shopify setup notes
+
+The live client, queries, and cart actions are in `src/lib/shopify`. Customer login is in `src/lib/customer` and `src/app/api/auth`. Environment names below match `.env.example`. The walkthrough after the code layout is the original store-setup guide. Do not add a second client at `lib/shopify.ts`.
+
 # Integrating Headless Shopify with Next.js
 
 This project uses the Storefront API + Customer Account API. Copy `.env.example` to `.env.local` and fill in credentials from the Headless sales channel.

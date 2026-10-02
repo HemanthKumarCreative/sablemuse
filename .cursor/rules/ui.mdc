@@ -1,0 +1,19 @@
+---
+description: UI, routes, static content, and styling conventions
+globs: src/components/**/*.tsx,src/app/**/*.tsx,src/data/**/*.ts,src/app/globals.css
+alwaysApply: false
+---
+
+# UI and pages
+
+`"use client"` only when the file needs state, events, or context. Pages stay server components and pass fetched data into client children.
+
+`Container` is `max-w-[1240px]`. Tokens in `src/app/globals.css`: brand `#533afd` (`--brand`, also `brand-purple` on `Button`), ink/navy `#061b31`, footer `#1c1e54`. Fonts: Source Sans 3 (`--font-sans-var`), Source Code Pro. Button variants come from `src/components/ui/button.tsx` (`default`, `outline`, `secondary`, `ghost`, `destructive`, `link`). `cn` is the `cn` package, re-exported by `src/lib/utils.ts`.
+
+ProductCard links to `/product/${product.id}`. The heart on the card is decorative. Wishlist toggles live on the purchase panel.
+
+Header and mobile nav read `NAV_ITEMS` from `src/data/navigation.ts`. Only Collection has a mega menu. `fetchShopifyNavItems` is not wired up. `NEW_IN_MEGA_MENU`, `PLUS_SIZE_MEGA_MENU`, and `SUSTAINABILITY_MEGA_MENU` feed landing pages, not the header.
+
+Static and still the source of truth: `navigation.ts`, `home.ts`, `faq.ts`, `modiweek.ts`, `sustainability.ts`, and the filter/hero objects in `search.ts`, `shop-all.ts`, `plus-size.ts`. Contact, newsletter, and “Start Chat” do not call an API. `/modiweek` redirects to the default day slug. `/sustainability/mission` links to `/sustainability/suppliers`, which has no page.
+
+Do not add `data-testid` unless a test needs it. E2E uses roles and accessible names from `e2e/helpers/fixtures.ts`, not `@playwright/test` directly. Prefer the components the page already imports.

@@ -1,0 +1,21 @@
+---
+description: Storefront API client, mappers, collections, and catalog queries
+globs: src/lib/shopify/**/*.ts
+alwaysApply: false
+---
+
+# Shopify Storefront
+
+Public barrel `src/lib/shopify/index.ts` exports `shopifyFetch`, `shopifyConfig`, `getProducts`, `getProduct`, `getCollectionProducts`, `getProductRecommendations`, `searchProducts`, `predictiveSearchProducts`, `fetchShopifyNavItems`, `COLLECTION_HANDLES`. Cart actions are **not** on that barrel. Import them from `@/lib/shopify/cart/actions`.
+
+Env (server only): `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_ACCESS_TOKEN`, `SHOPIFY_STOREFRONT_API_VERSION` (default `2025-10`). Endpoint is `https://{domain}/api/{version}/graphql.json`.
+
+`shopifyFetch` POSTs `{ query, variables }`. Default cache is `revalidate: 3600`. A leading `mutation`, `cache: "no-store"`, or `revalidate: false` forces `no-store`. No cache tags. GraphQL `errors[0].message` is thrown. Callers of catalog queries catch and return empty data.
+
+Map in `mappers/product.ts`. Card `id` = handle. Price is `minVariantPrice` parsed with `Number.parseFloat`. Images fall back to `/images/placeholder.jpg`. Color options are `color` or `colour` (`mappers/color.ts`); unknown names map to `#0C0C0C`. Detail copy for fit, fabric, and returns is hardcoded in the mapper, not metafields.
+
+`getCollectionProducts` uses `COLLECTION_HANDLES` (`src/lib/shopify/collections.ts`). `shop-all` → `all`, `new-in` → `new-arrivals`, `collection` → `frontpage`. A missing collection falls back to `getProducts`. `getProductRecommendations` needs a GID (`product.gid`), not a handle.
+
+`fetchShopifyNavItems` is unused. The header reads `NAV_ITEMS` from `src/data/navigation.ts`. Collection pages call `getCollectionProducts`.
+
+Cart cookie `modimal_cart_id` stores only the cart id (httpOnly, 14 days). Mutations live in `mutations/cart.ts` and return `CartSummary` via `mapCart`. `checkoutUrl` is passed through. `cost.subtotalAmount` becomes `subtotal`. Do not map a payment or card field onto the cart.
