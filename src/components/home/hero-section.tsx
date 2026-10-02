@@ -6,17 +6,17 @@ const HERO_COPY = (
   <>
     <h1
       id="hero-heading"
-      className="font-serif text-[1.75rem] font-medium leading-[1.1] tracking-[0.01em] text-ink sm:text-[2.25rem] lg:text-[3rem]"
+      className="font-serif text-[1.05rem] font-medium leading-[1.15] tracking-[0.01em] text-ink sm:text-[1.5rem] lg:text-[2.35rem]"
     >
-      Women&apos;s clothing,
+      Elevated essentials,
       <br />
-      shipped free in the US
+      made to last
     </h1>
     <Button
       render={<Link href="/collection/new-arrivals" />}
       nativeButton={false}
       size="xl"
-      className="mt-4 h-auto border border-brand-border bg-background px-6 py-2.5 font-medium normal-case tracking-normal text-ink hover:bg-muted sm:px-8 sm:text-base lg:mt-5 lg:px-14"
+      className="mt-3 h-auto border border-brand-border bg-background px-3 py-2 text-xs font-medium normal-case tracking-normal text-ink hover:bg-muted sm:mt-4 sm:px-6 sm:py-2.5 sm:text-sm lg:mt-5 lg:px-14 lg:text-base"
     >
       Shop New Arrivals
     </Button>
@@ -25,24 +25,11 @@ const HERO_COPY = (
 
 export const HeroSection = () => {
   return (
-    <section aria-labelledby="hero-heading" className="bg-background lg:bg-[#c9b59c]">
+    <section aria-labelledby="hero-heading" className="bg-[#c9b59c]">
       <div className="relative">
-        <div className="absolute inset-x-0 bottom-0 z-10 px-5 pt-24 pb-6 sm:px-8 sm:pb-8 lg:inset-y-0 lg:right-auto lg:flex lg:w-[min(40%,28rem)] lg:items-center lg:px-14 lg:py-0">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/45 to-transparent lg:hidden"
-          />
-          <div className="relative">{HERO_COPY}</div>
+        <div className="absolute inset-y-0 left-0 z-10 flex w-[34%] items-center px-3 sm:w-[40%] sm:px-8 lg:w-[min(40%,28rem)] lg:px-14">
+          <div>{HERO_COPY}</div>
         </div>
-        <Image
-          src="/images/sustainability/lifestyle.png"
-          alt="A woman in a white dress standing on pale steps"
-          width={784}
-          height={876}
-          priority
-          sizes="100vw"
-          className="h-auto w-full lg:hidden"
-        />
         <Image
           src="/images/hero.jpg"
           alt="Two women in black clothing beside a marble fireplace"
@@ -50,7 +37,7 @@ export const HeroSection = () => {
           height={1200}
           priority
           sizes="100vw"
-          className="hidden h-auto w-full lg:block"
+          className="h-auto w-full"
         />
       </div>
     </section>
