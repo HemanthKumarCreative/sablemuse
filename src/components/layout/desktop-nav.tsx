@@ -19,7 +19,7 @@ export const DesktopNav = ({
 }: DesktopNavProps) => {
   return (
     <nav className="hidden md:block" aria-label="Primary">
-      <ul className="flex items-center gap-6 lg:gap-8">
+      <ul className="flex items-center gap-4 lg:gap-7">
         {items.map((item) => {
           const hasMegaMenu = Boolean(item.columns)
           const isOpen = activeLabel === item.label && hasMegaMenu
@@ -37,8 +37,9 @@ export const DesktopNav = ({
             >
               <Link
                 href={item.href}
+                title={item.title}
                 className={cn(
-                  "relative text-sm font-medium tracking-[0.06em] text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  "relative whitespace-nowrap text-sm font-medium tracking-[0.04em] text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   isOpen && "text-brand-navy underline decoration-1 underline-offset-8"
                 )}
                 aria-expanded={hasMegaMenu ? isOpen : undefined}

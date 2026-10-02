@@ -54,8 +54,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/images/hero.jpg",
-        width: 1441,
-        height: 600,
+        width: 2880,
+        height: 1200,
         alt: "Sable Muse women clothing hero",
       },
     ],

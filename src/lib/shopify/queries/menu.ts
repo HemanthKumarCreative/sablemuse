@@ -68,8 +68,6 @@ export const fetchShopifyNavItems = async (handle: string = "main-menu"): Promis
         label: item.title,
         href,
         columns: matchingDefault?.columns,
-        featured: matchingDefault?.featured,
-        megaMenuVariant: matchingDefault?.megaMenuVariant,
       }
     })
   } catch (error) {

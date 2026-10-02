@@ -15,14 +15,11 @@ export type MegaMenuFeatured = {
   alt: string
 }
 
-export type MegaMenuVariant = "collection" | "new-in" | "plus-size" | "sustainability"
-
 export type NavItem = {
   label: string
   href: string
+  title?: string
   columns?: MegaMenuColumn[]
-  featured?: MegaMenuFeatured[]
-  megaMenuVariant?: MegaMenuVariant
 }
 
 const DRESSES_IMAGE =
@@ -96,27 +93,30 @@ export const NAV_ITEMS: NavItem[] = [
     label: "Collection",
     href: "/collection",
     columns: COLLECTION_MEGA_MENU.columns,
-    featured: COLLECTION_MEGA_MENU.featured,
-    megaMenuVariant: "collection",
   },
   {
-    label: "New Arrivals",
+    label: "New",
+    title: "New Arrivals",
     href: "/collection/new-arrivals",
   },
   {
-    label: "Dresses & Jumpsuits",
+    label: "Dresses",
+    title: "Dresses & Jumpsuits",
     href: "/collection/dresses-jumpsuits",
   },
   {
-    label: "Tops & Blouses",
+    label: "Tops",
+    title: "Tops & Blouses",
     href: "/collection/tops-blouses",
   },
   {
-    label: "Jeans & Pants",
+    label: "Jeans",
+    title: "Jeans & Pants",
     href: "/collection/jeans-pants",
   },
   {
-    label: "Matching Sets",
+    label: "Sets",
+    title: "Matching Sets",
     href: "/collection/matching-sets-lounge",
   },
 ]

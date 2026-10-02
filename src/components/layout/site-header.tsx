@@ -182,13 +182,11 @@ export const SiteHeader = () => {
 
       <SearchOverlay open={isSearchOpen} onClose={handleCloseSearch} />
 
-      {!isSearchOpen && activeItem?.columns && activeItem.featured ? (
+      {!isSearchOpen && activeItem?.columns ? (
         <div className="absolute inset-x-0 top-full z-50 hidden border-t border-brand-border bg-background md:block">
           <MegaMenuPanel
             label={activeItem.label}
             columns={activeItem.columns}
-            featured={activeItem.featured}
-            variant={activeItem.megaMenuVariant ?? "collection"}
             onNavigate={handleCloseMegaMenu}
           />
         </div>

@@ -32,13 +32,13 @@ test.describe("Header navigation", () => {
     await nav.getByRole("link", { name: "Collection" }).click()
     await expect(page).toHaveURL(/\/collection$/)
 
-    await nav.getByRole("link", { name: "New Arrivals" }).click()
+    await nav.getByRole("link", { name: "New", exact: true }).click()
     await expect(page).toHaveURL(/\/collection\/new-arrivals$/)
 
-    await nav.getByRole("link", { name: "Dresses & Jumpsuits" }).click()
+    await nav.getByRole("link", { name: "Dresses", exact: true }).click()
     await expect(page).toHaveURL(/\/collection\/dresses-jumpsuits$/)
 
-    await nav.getByRole("link", { name: "Jeans & Pants" }).click()
+    await nav.getByRole("link", { name: "Jeans", exact: true }).click()
     await expect(page).toHaveURL(/\/collection\/jeans-pants$/)
   })
 

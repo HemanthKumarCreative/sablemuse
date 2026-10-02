@@ -4,7 +4,6 @@ import type { Metadata } from "next"
 import { BestSellersSection } from "@/components/home/best-sellers-section"
 import { CollectionSection } from "@/components/home/collection-section"
 import { HeroSection } from "@/components/home/hero-section"
-import { ShopStorySection } from "@/components/home/shop-story-section"
 import { WelcomeDialog } from "@/components/home/welcome-dialog"
 import { COLLECTION_TILES } from "@/data/home"
 import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
@@ -62,12 +61,6 @@ const HomePage = async () => {
     ]
   })
 
-  const storyImages = [...newArrivals, ...matchingSets].slice(0, 4).map((product) => ({
-    src: product.image,
-    alt: product.name,
-    href: `/product/${product.id}`,
-  }))
-
   return (
     <>
       <script
@@ -75,10 +68,7 @@ const HomePage = async () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <WelcomeDialog />
-      <HeroSection
-        image={newArrivals[0]?.image}
-        imageAlt={newArrivals[0]?.name ?? "Sable Muse women's clothing"}
-      />
+      <HeroSection />
       <BestSellersSection products={newArrivals} />
       <CollectionSection collections={collections} />
       <BestSellersSection
@@ -87,8 +77,8 @@ const HomePage = async () => {
         href="/collection/matching-sets-lounge"
         headingId="matching-sets-heading"
         carouselLabel="Matching sets"
+        className="pb-12 md:pb-20"
       />
-      <ShopStorySection images={storyImages} />
     </>
   )
 }

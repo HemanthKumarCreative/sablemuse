@@ -1,8 +1,12 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import type { MouseEvent } from "react"
 import { Heart } from "lucide-react"
 import { ColorSwatch } from "@/components/product/color-swatch"
 import { Badge } from "@/components/ui/badge"
+import { useWishlist } from "@/components/wishlist/wishlist-provider"
 import { formatMoney } from "@/lib/format-money"
 import type { Product } from "@/types/commerce"
 import { cn } from "cn"
@@ -22,6 +26,17 @@ export const ProductCard = ({
   favorited = false,
   href,
 }: ProductCardProps) => {
+  const { isHydrated, isWishlisted, toggleWishlist } = useWishlist()
+  const saved = isHydrated && (favorited || isWishlisted(product.id))
+  const visibleColors = product.colors.slice(0, 4)
+  const hiddenColorCount = product.colors.length - visibleColors.length
+
+  const handleToggleWishlist = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    toggleWishlist(product.id)
+  }
+
   return (
     <article className={cn("group relative flex flex-col", className)}>
       <Link
@@ -74,35 +89,45 @@ export const ProductCard = ({
             </Badge>
           ) : null}
         </div>
-        <span
-          className={cn(
-            "absolute top-2.5 right-2.5 inline-flex size-7 items-center justify-center sm:top-4 sm:right-4 sm:size-9",
-            favorited ? "text-ink" : "text-brand-navy sm:bg-background/90"
-          )}
-          aria-hidden="true"
-        >
-          <Heart
-            className="size-4 sm:size-5"
-            strokeWidth={1.5}
-            fill={favorited ? "currentColor" : "none"}
-          />
-        </span>
       </Link>
+      <button
+        type="button"
+        aria-pressed={saved}
+        aria-label={
+          saved
+            ? `Remove ${product.name} from wish list`
+            : `Add ${product.name} to wish list`
+        }
+        className={cn(
+          "absolute top-2.5 right-2.5 z-10 inline-flex size-7 items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:top-4 sm:right-4 sm:size-9",
+          saved ? "text-ink" : "text-brand-navy sm:bg-background/90"
+        )}
+        onClick={handleToggleWishlist}
+      >
+        <Heart
+          className="size-4 sm:size-5"
+          strokeWidth={1.5}
+          fill={saved ? "currentColor" : "none"}
+        />
+      </button>
 
       <div className="mt-2 flex items-start justify-between gap-2 p-1 sm:gap-3 sm:p-1.5">
         <div className="flex min-w-0 flex-col gap-0.5">
-          <h3 className="truncate text-base font-medium capitalize text-brand-navy">
+          <h3 className="line-clamp-2 text-base font-medium text-brand-navy">
             {product.name}
           </h3>
-          <p className="truncate text-xs capitalize text-brand-navy-muted sm:text-sm">
+          <p className="truncate text-xs text-brand-navy-muted sm:text-sm">
             {product.subtitle}
           </p>
-          <ul className="mt-1.5 flex gap-1 sm:mt-2 sm:gap-1.5" aria-label="Available colors">
-            {product.colors.map((color) => (
+          <ul className="mt-1.5 flex flex-wrap items-center gap-1 sm:mt-2 sm:gap-1.5" aria-label="Available colors">
+            {visibleColors.map((color) => (
               <li key={color.name}>
                 <ColorSwatch hex={color.hex} name={color.name} />
               </li>
             ))}
+            {hiddenColorCount > 0 ? (
+              <li className="text-xs text-brand-navy-muted">+{hiddenColorCount}</li>
+            ) : null}
           </ul>
         </div>
         <div className="shrink-0 pr-1 text-right sm:pr-2">

@@ -17,35 +17,33 @@ export const CollectionSection = ({ collections }: CollectionSectionProps) => {
           title="Collection"
           titleId="collection-heading"
         />
-        <div className="columns-2 gap-3 sm:gap-4 md:gap-6 [column-fill:_balance]">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
           {collections.map((item) => (
             <Link
               key={item.id}
               href={item.href}
-              className="group relative mb-3 block break-inside-avoid sm:mb-4 md:mb-6"
+              className="group relative block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label={`Shop ${item.name}`}
             >
-              <div
-                className={`relative w-full overflow-hidden bg-muted ${item.heightClass}`}
-              >
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
                 <Image
                   src={item.image}
                   alt={`${item.name} collection`}
                   fill
                   sizes="(max-width: 768px) 50vw, 40vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  className="object-cover object-[center_20%] transition-transform duration-500 group-hover:scale-[1.02]"
                 />
               </div>
-              <span className="mt-2 block text-sm capitalize text-brand-navy md:hidden">
+              <span className="mt-2 block text-sm text-brand-navy md:hidden">
                 {item.name}
               </span>
               <Button
                 tabIndex={-1}
                 aria-hidden="true"
                 size="xl"
-                className="pointer-events-none absolute right-6 bottom-8 hidden h-auto bg-background px-10 py-2.5 font-medium normal-case tracking-normal text-ink capitalize hover:bg-muted md:inline-flex"
+                className="pointer-events-none absolute right-3 bottom-3 hidden h-auto max-w-[calc(100%-1.5rem)] bg-background px-4 py-2.5 font-medium normal-case tracking-normal text-ink hover:bg-muted md:right-6 md:bottom-6 md:inline-flex md:px-6"
               >
-                {item.name}
+                <span className="truncate">{item.name}</span>
               </Button>
             </Link>
           ))}

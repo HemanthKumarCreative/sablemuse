@@ -182,6 +182,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                   <li key={item.label}>
                     <Link
                       href={item.href}
+                      title={item.title}
                       className="block py-4 text-base font-medium text-brand-navy underline-offset-2 hover:underline"
                       onClick={handleNavigate}
                     >
