@@ -28,12 +28,20 @@ export const PRODUCT_CARD_FRAGMENT = `
       minVariantPrice {
         ...MoneyFields
       }
+      maxVariantPrice {
+        ...MoneyFields
+      }
+    }
+    compareAtPriceRange {
+      minVariantPrice {
+        ...MoneyFields
+      }
     }
     options {
       name
       values
     }
-    images(first: 1) {
+    images(first: 2) {
       edges {
         node {
           ...ImageFields
@@ -55,10 +63,41 @@ export const PRODUCT_DETAIL_FRAGMENT = `
       name
       values
     }
-    images(first: 12) {
+    featuredImage {
+      ...ImageFields
+    }
+    images(first: 2) {
       edges {
         node {
           ...ImageFields
+        }
+      }
+    }
+    media(first: 50) {
+      edges {
+        node {
+          mediaContentType
+          alt
+          ... on MediaImage {
+            image {
+              ...ImageFields
+            }
+          }
+          ... on Video {
+            sources {
+              url
+              mimeType
+            }
+            previewImage {
+              ...ImageFields
+            }
+          }
+          ... on ExternalVideo {
+            embedUrl
+            previewImage {
+              ...ImageFields
+            }
+          }
         }
       }
     }
@@ -70,17 +109,26 @@ export const PRODUCT_DETAIL_FRAGMENT = `
         ...MoneyFields
       }
     }
+    compareAtPriceRange {
+      minVariantPrice {
+        ...MoneyFields
+      }
+    }
     variants(first: 100) {
       edges {
         node {
           id
           title
           availableForSale
+          sku
           selectedOptions {
             name
             value
           }
           price {
+            ...MoneyFields
+          }
+          compareAtPrice {
             ...MoneyFields
           }
           image {

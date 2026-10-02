@@ -40,7 +40,7 @@ export const ContactForm = ({
   const messageId = useId()
   const policyId = useId()
   const [acceptedPolicy, setAcceptedPolicy] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [mailNote, setMailNote] = useState("")
   const isModal = variant === "modal"
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -50,9 +50,26 @@ export const ContactForm = ({
       return
     }
 
-    setIsSubmitted(true)
-    event.currentTarget.reset()
-    setAcceptedPolicy(false)
+    const data = new FormData(event.currentTarget)
+    const fullName = String(data.get("fullName") ?? "")
+    const email = String(data.get("email") ?? "")
+    const subject = String(data.get("subject") ?? "Sable Muse")
+    const orderNumber = String(data.get("orderNumber") ?? "")
+    const message = String(data.get("message") ?? "")
+    const body = [
+      `Name: ${fullName}`,
+      `Email: ${email}`,
+      orderNumber ? `Order: ${orderNumber}` : "",
+      "",
+      message,
+    ]
+      .filter((line) => line !== "")
+      .join("\n")
+
+    window.location.href = `mailto:hello@sablemuse.shop?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    setMailNote(
+      "Your email app should open with this message. If it does not, write to hello@sablemuse.shop."
+    )
     onSubmitted?.()
   }
 
@@ -203,10 +220,10 @@ export const ContactForm = ({
             <>
               I Have Read And Understood The{" "}
               <Link
-                href="/faq"
+                href="/privacy"
                 className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                Contact Us Privacy And Policy
+                Privacy Policy
               </Link>
               .
             </>
@@ -214,10 +231,10 @@ export const ContactForm = ({
             <>
               I have read and understood the{" "}
               <Link
-                href="/faq"
+                href="/privacy"
                 className="text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                contact us privacy and policy
+                privacy policy
               </Link>
               .
             </>
@@ -225,10 +242,9 @@ export const ContactForm = ({
         </Label>
       </div>
 
-      {isSubmitted ? (
+      {mailNote ? (
         <p className="mt-4 text-sm text-brand-navy" role="status">
-          Thanks — your message is on its way. We&apos;ll reply within 1–2
-          business days.
+          {mailNote}
         </p>
       ) : null}
 

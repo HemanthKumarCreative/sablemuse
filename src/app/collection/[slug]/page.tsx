@@ -1,14 +1,11 @@
 import type { Metadata } from "next"
-import { ProductCard } from "@/components/product/product-card"
-import { SearchFilters } from "@/components/search/search-filters"
-import { SearchFiltersMobile } from "@/components/search/search-filters-mobile"
+import { Suspense } from "react"
+import { CatalogBrowser } from "@/components/catalog/catalog-browser"
 import { Breadcrumbs } from "@/components/shared/breadcrumbs"
 import { Container } from "@/components/shared/container"
-import {
-  SHOP_ALL_FILTERS,
-  SHOP_ALL_FILTERS_DEFAULT_OPEN,
-} from "@/data/shop-all"
-import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
+import { parseCatalogFilters, parseCatalogSort } from "@/lib/catalog-params"
+import { getCatalogPage } from "@/lib/shopify/catalog"
+import { COLLECTION_HANDLES } from "@/lib/shopify"
 import type { CollectionRouteKey } from "@/lib/shopify/collections"
 
 export const metadata: Metadata = {
@@ -18,14 +15,29 @@ export const metadata: Metadata = {
 
 const CollectionSlugPage = async ({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{
+    sort?: string | string[]
+    filter?: string | string[]
+  }>
 }) => {
   const { slug } = await params
-  
-  // Verify if slug is a valid collection route key
+  const query = await searchParams
+  const sort = parseCatalogSort(query.sort)
+  const selectedFilters = !query.filter
+    ? []
+    : Array.isArray(query.filter)
+      ? query.filter
+      : [query.filter]
   const handle = COLLECTION_HANDLES[slug as CollectionRouteKey] || slug
-  const products = await getCollectionProducts(handle, 24)
+  const page = await getCatalogPage({
+    source: { kind: "collection", handle },
+    sort,
+    filters: parseCatalogFilters(query.filter),
+  })
+  const products = page.products
   const categoryName = slug
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -91,46 +103,17 @@ const CollectionSlugPage = async ({
             {categoryName}
           </h1>
 
-          <SearchFiltersMobile
-            className="lg:hidden mb-6"
-            filters={SHOP_ALL_FILTERS}
-            defaultOpen={SHOP_ALL_FILTERS_DEFAULT_OPEN}
-            headingId={`${slug}-mobile-filters-heading`}
-          />
-
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-6">
-            <SearchFilters
-              className="hidden w-full shrink-0 lg:sticky lg:top-[120px] lg:block lg:w-[320px] xl:w-[392px]"
-              filters={SHOP_ALL_FILTERS}
-              defaultOpen={SHOP_ALL_FILTERS_DEFAULT_OPEN}
+          <Suspense>
+            <CatalogBrowser
+              key={`${sort}:${selectedFilters.join("|")}`}
+              page={page}
+              sort={sort}
+              selectedFilters={selectedFilters}
+              source={{ kind: "collection", handle }}
+              emptyLabel="No products found in this collection."
               headingId={`${slug}-filters-heading`}
             />
-
-            <div className="min-w-0 flex-1">
-              <p
-                className="sr-only mb-5 text-sm capitalize text-brand-navy-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
-                aria-live="polite"
-              >
-                {products.length} items
-              </p>
-              
-              {products.length === 0 ? (
-                <div className="py-20 text-center text-brand-navy-muted">
-                  No products found in this collection.
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                  {products.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+          </Suspense>
         </Container>
       </section>
     </>

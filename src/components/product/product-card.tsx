@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Heart } from "lucide-react"
 import { ColorSwatch } from "@/components/product/color-swatch"
 import { Badge } from "@/components/ui/badge"
+import { formatMoney } from "@/lib/format-money"
 import type { Product } from "@/types/commerce"
 import { cn } from "cn"
 
@@ -34,18 +35,45 @@ export const ProductCard = ({
             alt={`${product.name} ${product.subtitle}`}
             fill
             sizes="(max-width: 768px) 46vw, (max-width: 1200px) 33vw, 392px"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className={cn(
+              "object-cover",
+              product.secondaryImage
+                ? "transition-opacity duration-500 group-hover:opacity-0"
+                : "transition-transform duration-500 group-hover:scale-[1.03]"
+            )}
           />
+          {product.secondaryImage ? (
+            <Image
+              src={product.secondaryImage}
+              alt=""
+              fill
+              sizes="(max-width: 768px) 46vw, (max-width: 1200px) 33vw, 392px"
+              className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            />
+          ) : null}
         </div>
-        {product.isRestock ? (
-          <Badge className="absolute top-2.5 left-2.5 px-3 py-1 text-xs capitalize sm:top-4 sm:left-4 sm:px-6 sm:py-2 sm:text-sm">
-            Restock
-          </Badge>
-        ) : product.isNew ? (
-          <Badge className="absolute top-2.5 left-2.5 px-3 py-1 text-xs capitalize sm:top-4 sm:left-4 sm:px-6 sm:py-2 sm:text-sm">
-            New
-          </Badge>
-        ) : null}
+        <div className="absolute top-2.5 left-2.5 flex flex-col items-start gap-1 sm:top-4 sm:left-4">
+          {product.isRestock ? (
+            <Badge className="px-3 py-1 text-xs capitalize sm:px-6 sm:py-2 sm:text-sm">
+              Restock
+            </Badge>
+          ) : null}
+          {product.isNew ? (
+            <Badge className="px-3 py-1 text-xs capitalize sm:px-6 sm:py-2 sm:text-sm">
+              New
+            </Badge>
+          ) : null}
+          {product.isBestSeller ? (
+            <Badge className="px-3 py-1 text-xs capitalize sm:px-6 sm:py-2 sm:text-sm">
+              Best Seller
+            </Badge>
+          ) : null}
+          {product.shipsFromUs ? (
+            <Badge className="px-3 py-1 text-xs capitalize sm:px-6 sm:py-2 sm:text-sm">
+              Ships from US
+            </Badge>
+          ) : null}
+        </div>
         <span
           className={cn(
             "absolute top-2.5 right-2.5 inline-flex size-7 items-center justify-center sm:top-4 sm:right-4 sm:size-9",
@@ -77,9 +105,18 @@ export const ProductCard = ({
             ))}
           </ul>
         </div>
-        <p className="shrink-0 pr-1 text-base font-medium text-brand-navy sm:pr-2">
-          ${product.price}
-        </p>
+        <div className="shrink-0 pr-1 text-right sm:pr-2">
+          <p className="text-base font-medium text-brand-navy">
+            {product.priceMax && product.priceMax > product.price
+              ? `From $${formatMoney(product.price)}`
+              : `$${formatMoney(product.price)}`}
+          </p>
+          {product.compareAtPrice ? (
+            <p className="text-sm text-brand-navy-muted line-through">
+              ${formatMoney(product.compareAtPrice)}
+            </p>
+          ) : null}
+        </div>
       </div>
     </article>
   )

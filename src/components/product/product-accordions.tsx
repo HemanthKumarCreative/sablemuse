@@ -67,8 +67,10 @@ export const ProductAccordions = ({
     { id: "detail", label: "Product Specifications", content: product.productDetail },
     {
       id: "shipping",
-      label: "US Shipping & 14-Day Returns",
-      content: product.shippingReturns || "Standard US delivery takes 2–5 business days. We offer hassle-free 14-day returns on all unworn items with original tags intact.",
+      label: "Shipping and returns",
+      content:
+        product.shippingReturns ||
+        "Free shipping in the United States. Most orders ship in 1–2 business days. Returns are accepted within 30 days of delivery for unworn items.",
     },
   ].filter(item => Boolean(item.content))
 

@@ -40,12 +40,19 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
       <p className="mt-8 text-center text-xs leading-relaxed text-brand-navy-muted md:text-sm">
         By continuing you agree to our{" "}
         <Link
-          href="/faq"
+          href="/terms"
           className="text-brand-navy underline underline-offset-2 transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          Terms & Conditions
+          Terms
         </Link>{" "}
-        and Privacy Policy.
+        and{" "}
+        <Link
+          href="/privacy"
+          className="text-brand-navy underline underline-offset-2 transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          Privacy Policy
+        </Link>
+        .
       </p>
     </div>
   )

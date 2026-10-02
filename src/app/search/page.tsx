@@ -1,16 +1,16 @@
 import type { Metadata } from "next"
-import { ProductCard } from "@/components/product/product-card"
-import { SearchActiveChips } from "@/components/search/search-active-chips"
-import { SearchFilters } from "@/components/search/search-filters"
-import { SearchFiltersMobile } from "@/components/search/search-filters-mobile"
+import { Suspense } from "react"
+import { CatalogBrowser } from "@/components/catalog/catalog-browser"
 import { SearchResultsBar } from "@/components/search/search-results-bar"
 import { Container } from "@/components/shared/container"
-import { SEARCH_FILTERS } from "@/data/search"
-import { searchProducts } from "@/lib/shopify/queries/search"
+import { parseCatalogFilters, parseCatalogSort } from "@/lib/catalog-params"
+import { getCatalogPage } from "@/lib/shopify/catalog"
 
 type SearchPageProps = {
   searchParams: Promise<{
     q?: string | string[]
+    sort?: string | string[]
+    filter?: string | string[]
   }>
 }
 
@@ -45,9 +45,21 @@ export const generateMetadata = async ({
 }
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
-  const query = resolveQuery((await searchParams).q)
-  const products = query ? await searchProducts(query) : []
-  const itemCount = products.length
+  const params = await searchParams
+  const query = resolveQuery(params.q)
+  const sort = parseCatalogSort(params.sort)
+  const selectedFilters = !params.filter
+    ? []
+    : Array.isArray(params.filter)
+      ? params.filter
+      : [params.filter]
+  const page = query
+    ? await getCatalogPage({
+        source: { kind: "search", query },
+        sort,
+        filters: parseCatalogFilters(params.filter),
+      })
+    : null
 
   return (
     <section aria-labelledby="search-heading" className="pb-12 md:pb-24">
@@ -61,43 +73,23 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           initialQuery={query}
         />
 
-        <SearchActiveChips className="mt-4" />
-
-        <SearchFiltersMobile
-          className="mt-5 lg:mt-6"
-          filters={SEARCH_FILTERS}
-          headingId="search-mobile-filters-heading"
-        />
-
-        <div className="mt-5 flex flex-col gap-8 lg:mt-8 lg:flex-row lg:items-start lg:gap-6">
-          <SearchFilters
-            className="hidden w-full shrink-0 lg:sticky lg:top-[120px] lg:block lg:w-[320px] xl:w-[392px]"
-            filters={SEARCH_FILTERS}
-            headingId="search-filters-heading"
-          />
-
-          <div className="min-w-0 flex-1">
-            {!query ? (
-              <p className="text-base text-brand-navy-muted">
-                Enter a search term to find Sable Muse products.
-              </p>
-            ) : itemCount === 0 ? (
-              <p className="text-base text-brand-navy-muted">
-                No products found for “{query}”.
-              </p>
-            ) : (
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                {products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+        {!query || !page ? (
+          <p className="mt-8 text-base text-brand-navy-muted">
+            Enter a search term to find Sable Muse products.
+          </p>
+        ) : (
+          <Suspense>
+            <CatalogBrowser
+              key={`${query}:${sort}:${selectedFilters.join("|")}`}
+              page={page}
+              sort={sort}
+              selectedFilters={selectedFilters}
+              source={{ kind: "search", query }}
+              emptyLabel={`No products found for “${query}”.`}
+              headingId="search-filters-heading"
+            />
+          </Suspense>
+        )}
       </Container>
     </section>
   )

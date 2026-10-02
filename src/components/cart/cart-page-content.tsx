@@ -18,8 +18,7 @@ export const CartPageContent = () => {
     removeItem,
   } = useCart()
 
-  const tax = Number((subtotal * 0.08).toFixed(2))
-  const orderTotal = subtotal + tax
+  const orderTotal = subtotal
 
   if (items.length === 0) {
     return (
@@ -124,7 +123,7 @@ export const CartPageContent = () => {
               </div>
               <div className="flex items-center justify-between">
                 <span>Tax</span>
-                <span>${formatMoney(tax)}</span>
+                <span>Calculated at checkout</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Shipping</span>
@@ -136,9 +135,8 @@ export const CartPageContent = () => {
               </div>
             </div>
 
-            <p className="mt-5 text-sm font-semibold leading-[1.7] capitalize text-brand-navy">
-              The Total Amount You Pay Includes All Applicable Customs Duties
-              &amp; Taxes. We Guarantee No Additional Charges On Delivery.
+            <p className="mt-5 text-sm leading-[1.7] text-brand-navy">
+              Tax is calculated at checkout from your shipping address.
             </p>
 
             <div className="mt-8 flex justify-end">

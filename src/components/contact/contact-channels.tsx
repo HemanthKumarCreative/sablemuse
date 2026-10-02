@@ -78,12 +78,13 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                     We Are Here And Ready To Chat
                   </p>
                   <Button
-                    type="button"
+                    render={<Link href="mailto:hello@sablemuse.shop" />}
+                    nativeButton={false}
                     variant="outline"
                     className="h-11 w-full max-w-xs rounded-none border-ink/40 bg-background text-base font-medium capitalize text-brand-navy-muted hover:bg-background hover:text-brand-navy"
-                    aria-label="Start chat with Sable Muse customer care"
+                    aria-label="Email Sable Muse customer care"
                   >
-                    Start Chat
+                    Email Us
                   </Button>
                 </div>
               </AccordionContent>
@@ -188,12 +189,13 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                 We are here and ready to chat
               </p>
               <Button
-                type="button"
+                render={<Link href="mailto:hello@sablemuse.shop" />}
+                nativeButton={false}
                 variant="outline"
                 className="mt-6 h-11 w-full rounded-none border-brand-border text-base font-medium capitalize text-brand-navy hover:bg-brand hover:text-ink"
-                aria-label="Start chat with Sable Muse customer care"
+                aria-label="Email Sable Muse customer care"
               >
-                Start Chat
+                Email Us
               </Button>
             </article>
           </li>

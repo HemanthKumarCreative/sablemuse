@@ -16,7 +16,8 @@ import { inputVariants } from "@/components/ui/input"
 import { ProductAccordions } from "@/components/product/product-accordions"
 import { useCart } from "@/components/cart/cart-provider"
 import { useWishlist } from "@/components/wishlist/wishlist-provider"
-import type { ProductDetail } from "@/types/commerce"
+import { formatMoney } from "@/lib/format-money"
+import type { ProductDetail, ProductVariant } from "@/types/commerce"
 import { isColorOption, isSizeOption } from "@/lib/shopify/mappers/color"
 import { cn } from "cn"
 
@@ -26,12 +27,21 @@ type ProductPurchasePanelProps = {
   showAccordions?: boolean
 }
 
-const SIZE_GUIDE_ROWS = [
-  { size: "1X", waist: "86–91", hips: "112–117", bust: "107–112" },
-  { size: "2X", waist: "94–99", hips: "119–124", bust: "114–119" },
-  { size: "3X", waist: "102–107", hips: "127–132", bust: "122–127" },
-  { size: "4X", waist: "109–114", hips: "135–140", bust: "130–135" },
-]
+const variantMatches = (
+  variant: ProductVariant,
+  selectedSize: string,
+  selectedColor: string
+) => {
+  const sizeValue = variant.selectedOptions.find((option) =>
+    isSizeOption(option.name)
+  )?.value
+  const colorValue = variant.selectedOptions.find((option) =>
+    isColorOption(option.name)
+  )?.value
+  const sizeOk = selectedSize ? sizeValue === selectedSize : true
+  const colorOk = selectedColor ? colorValue === selectedColor : true
+  return sizeOk && colorOk
+}
 
 const findVariantId = (
   product: ProductDetail,
@@ -43,20 +53,13 @@ const findVariantId = (
     return null
   }
 
-  const match = variants.find((variant) => {
-    const sizeValue = variant.selectedOptions.find((option) =>
-      isSizeOption(option.name)
-    )?.value
-    const colorValue = variant.selectedOptions.find((option) =>
-      isColorOption(option.name)
-    )?.value
+  const match = variants.find(
+    (variant) =>
+      variant.availableForSale &&
+      variantMatches(variant, selectedSize, selectedColor)
+  )
 
-    const sizeOk = selectedSize ? sizeValue === selectedSize : true
-    const colorOk = selectedColor ? colorValue === selectedColor : true
-    return sizeOk && colorOk
-  })
-
-  return match?.availableForSale ? match.id : match?.id ?? null
+  return match?.id ?? null
 }
 
 export const ProductPurchasePanel = ({
@@ -82,17 +85,9 @@ export const ProductPurchasePanel = ({
       return null
     }
 
-    const relevant = variants.filter((variant) => {
-      const sizeValue = variant.selectedOptions.find((option) =>
-        isSizeOption(option.name)
-      )?.value
-      const colorValue = variant.selectedOptions.find((option) =>
-        isColorOption(option.name)
-      )?.value
-      const sizeOk = selectedSize ? sizeValue === selectedSize : true
-      const colorOk = selectedColor ? colorValue === selectedColor : true
-      return sizeOk && colorOk
-    })
+    const relevant = variants.filter((variant) =>
+      variantMatches(variant, selectedSize, selectedColor)
+    )
 
     if (relevant.length === 0) {
       return false
@@ -105,6 +100,32 @@ export const ProductPurchasePanel = ({
     () => findVariantId(product, selectedSize, selectedColor),
     [product, selectedSize, selectedColor]
   )
+
+  const scopedVariants = useMemo(() => {
+    const variants = product.variants ?? []
+    return variants.filter((variant) =>
+      variantMatches(variant, selectedSize, selectedColor)
+    )
+  }, [product.variants, selectedColor, selectedSize])
+
+  const displayPrice = scopedVariants.length
+    ? Math.min(...scopedVariants.map((variant) => variant.price))
+    : product.price
+  const displayMax = scopedVariants.length
+    ? Math.max(...scopedVariants.map((variant) => variant.price))
+    : product.price
+  const showFrom = displayMax > displayPrice
+  const selectedVariant =
+    scopedVariants.length === 1 ? scopedVariants[0] : undefined
+  const sizeRequired = (product.sizes?.length ?? 0) > 0
+  const selectionSoldOut = Boolean(selectedSize) && inStock === false
+
+  const isSizeAvailable = (size: string) =>
+    (product.variants ?? []).some(
+      (variant) =>
+        variant.availableForSale &&
+        variantMatches(variant, size, selectedColor)
+    )
 
   const handleSelectColor = (colorName: string) => {
     setSelectedColor(colorName)
@@ -128,12 +149,12 @@ export const ProductPurchasePanel = ({
   }
 
   const handleAddToBag = async () => {
-    if (!selectedSize && (product.sizes?.length ?? 0) > 0) {
+    if (!selectedSize && sizeRequired) {
       setError("Please select a size")
       return
     }
 
-    if (!selectedVariantId) {
+    if (!selectedVariantId || selectionSoldOut) {
       setError("This combination is unavailable")
       return
     }
@@ -143,6 +164,31 @@ export const ProductPurchasePanel = ({
     setAdded(true)
   }
 
+  const handleBuyNow = async () => {
+    if (!selectedSize && sizeRequired) {
+      setError("Please select a size")
+      return
+    }
+
+    if (!selectedVariantId || selectionSoldOut) {
+      setError("This combination is unavailable")
+      return
+    }
+
+    setError("")
+    const nextCart = await addItem({
+      merchandiseId: selectedVariantId,
+      quantity: 1,
+    })
+
+    if (!nextCart.checkoutUrl) {
+      setError("Checkout is unavailable right now")
+      return
+    }
+
+    window.location.assign(nextCart.checkoutUrl)
+  }
+
   return (
     <div className={cn("flex w-full flex-col", className)}>
       <h1 id="product-heading" className="heading-page capitalize">
@@ -150,11 +196,20 @@ export const ProductPurchasePanel = ({
       </h1>
 
       <div className="mt-3 flex items-baseline gap-3">
-        <p className="text-2xl font-semibold text-brand-navy">${product.price}</p>
-        {product.compareAtPrice ? (
-          <p className="text-lg text-brand-navy-muted line-through">${product.compareAtPrice}</p>
+        <p className="text-2xl font-semibold text-brand-navy">
+          {showFrom ? "From " : null}${formatMoney(displayPrice)}
+        </p>
+        {selectedVariant?.compareAtPrice ? (
+          <p className="text-lg text-brand-navy-muted line-through">
+            ${formatMoney(selectedVariant.compareAtPrice)}
+          </p>
         ) : null}
       </div>
+      {selectedVariant?.sku ? (
+        <p className="mt-2 text-xs text-brand-navy-muted">
+          SKU {selectedVariant.sku}
+        </p>
+      ) : null}
 
       {inStock !== null ? (
         <Badge
@@ -221,26 +276,18 @@ export const ProductPurchasePanel = ({
               <DialogHeader>
                 <DialogTitle>Size Guide</DialogTitle>
               </DialogHeader>
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-brand-border">
-                    <th className="py-2">Size</th>
-                    <th className="py-2">Waist</th>
-                    <th className="py-2">Hips</th>
-                    <th className="py-2">Bust</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {SIZE_GUIDE_ROWS.map((row) => (
-                    <tr key={row.size} className="border-b border-brand-border">
-                      <td className="py-2">{row.size}</td>
-                      <td className="py-2">{row.waist}</td>
-                      <td className="py-2">{row.hips}</td>
-                      <td className="py-2">{row.bust}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <p className="text-sm leading-copy text-brand-navy">
+                Compare a piece you already own with the size options on this
+                page. Measurements are listed in inches when the product
+                description includes them. Email{" "}
+                <a
+                  href="mailto:hello@sablemuse.shop"
+                  className="underline underline-offset-2"
+                >
+                  hello@sablemuse.shop
+                </a>{" "}
+                if you want help before you order.
+              </p>
             </DialogContent>
           </Dialog>
         </div>
@@ -253,16 +300,20 @@ export const ProductPurchasePanel = ({
             className={inputVariants({ size: "xl", className: "appearance-none" })}
           >
             <option value="">Select size</option>
-            {product.sizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
+            {product.sizes.map((size) => {
+              const available = isSizeAvailable(size)
+              return (
+                <option key={size} value={size} disabled={!available}>
+                  {available ? size : `${size} — Sold out`}
+                </option>
+              )
+            })}
           </select>
         ) : (
           <ul className="flex flex-wrap gap-2" aria-label="Available sizes">
             {product.sizes.map((size) => {
               const isSelected = selectedSize === size
+              const available = isSizeAvailable(size)
               return (
                 <li key={size}>
                   <Button
@@ -270,9 +321,10 @@ export const ProductPurchasePanel = ({
                     variant="outline"
                     onClick={() => handleSelectSize(size)}
                     aria-pressed={isSelected}
+                    disabled={!available}
                     className="h-10 min-w-12 px-3 font-medium normal-case tracking-normal"
                   >
-                    {size}
+                    {available ? size : `${size} — Sold out`}
                   </Button>
                 </li>
               )
@@ -291,10 +343,24 @@ export const ProductPurchasePanel = ({
           type="button"
           size="xl"
           onClick={() => void handleAddToBag()}
-          disabled={isPending}
+          disabled={isPending || selectionSoldOut}
           className="flex-1"
         >
-          {isPending ? "Adding..." : `Add To Bag — $${product.price}`}
+          {isPending
+            ? "Adding..."
+            : selectionSoldOut
+              ? "Sold Out"
+              : `Add To Bag — $${formatMoney(displayPrice)}`}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="xl"
+          onClick={() => void handleBuyNow()}
+          disabled={isPending || selectionSoldOut}
+          className="flex-1"
+        >
+          Buy Now
         </Button>
         <Button
           type="button"
@@ -315,7 +381,8 @@ export const ProductPurchasePanel = ({
       {product.showEasyReturn !== false ? (
         <p className="mt-4 inline-flex items-center gap-2 text-sm text-brand-navy-muted">
           <RefreshCcw className="size-4" aria-hidden="true" />
-          Fast US Shipping (2–5 Days) & Easy 14-Day Returns
+          Free shipping in the United States. Most orders ship in 1–2 business
+          days. Returns within 30 days of delivery.
         </p>
       ) : null}
 

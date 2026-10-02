@@ -1,16 +1,12 @@
 import type { Metadata } from "next"
-import { ProductCard } from "@/components/product/product-card"
-import { SearchFilters } from "@/components/search/search-filters"
-import { SearchFiltersMobile } from "@/components/search/search-filters-mobile"
+import { Suspense } from "react"
+import { CatalogBrowser } from "@/components/catalog/catalog-browser"
 import { Breadcrumbs } from "@/components/shared/breadcrumbs"
 import { Container } from "@/components/shared/container"
 import { ShopAllHero } from "@/components/shop/shop-all-hero"
-import {
-  SHOP_ALL_FILTERS,
-  SHOP_ALL_FILTERS_DEFAULT_OPEN,
-  SHOP_ALL_HERO_SLIDES,
-} from "@/data/shop-all"
-import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
+import { SHOP_ALL_HERO_SLIDES } from "@/data/shop-all"
+import { parseCatalogFilters, parseCatalogSort } from "@/lib/catalog-params"
+import { getCatalogPage } from "@/lib/shopify/catalog"
 
 export const metadata: Metadata = {
   title: "Shop All",
@@ -27,11 +23,27 @@ export const metadata: Metadata = {
   },
 }
 
-const ShopAllPage = async () => {
-  const products = await getCollectionProducts(
-    COLLECTION_HANDLES["shop-all"],
-    24
-  )
+const ShopAllPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    sort?: string | string[]
+    filter?: string | string[]
+  }>
+}) => {
+  const params = await searchParams
+  const sort = parseCatalogSort(params.sort)
+  const selectedFilters = !params.filter
+    ? []
+    : Array.isArray(params.filter)
+      ? params.filter
+      : [params.filter]
+  const page = await getCatalogPage({
+    source: { kind: "products" },
+    sort,
+    filters: parseCatalogFilters(params.filter),
+  })
+  const products = page.products
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -89,39 +101,17 @@ const ShopAllPage = async () => {
             ]}
           />
 
-          <SearchFiltersMobile
-            className="mt-5 lg:mt-6"
-            filters={SHOP_ALL_FILTERS}
-            defaultOpen={SHOP_ALL_FILTERS_DEFAULT_OPEN}
-            headingId="shop-all-mobile-filters-heading"
-          />
-
-          <div className="mt-5 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-start lg:gap-6">
-            <SearchFilters
-              className="hidden w-full shrink-0 lg:sticky lg:top-[120px] lg:block lg:w-[320px] xl:w-[392px]"
-              filters={SHOP_ALL_FILTERS}
-              defaultOpen={SHOP_ALL_FILTERS_DEFAULT_OPEN}
+          <Suspense>
+            <CatalogBrowser
+              key={`${sort}:${selectedFilters.join("|")}`}
+              page={page}
+              sort={sort}
+              selectedFilters={selectedFilters}
+              source={{ kind: "products" }}
+              emptyLabel="No products match these filters."
               headingId="shop-all-filters-heading"
             />
-
-            <div className="min-w-0 flex-1">
-              <p
-                className="sr-only mb-5 text-sm capitalize text-brand-navy-muted sm:text-left md:mb-6 md:text-base lg:not-sr-only"
-                aria-live="polite"
-              >
-                {products.length} items
-              </p>
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
-                {products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          </Suspense>
         </Container>
       </section>
     </>

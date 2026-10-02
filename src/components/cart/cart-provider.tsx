@@ -26,7 +26,10 @@ type CartContextValue = {
   checkoutUrl: string
   isHydrated: boolean
   isPending: boolean
-  addItem: (input: { merchandiseId: string; quantity?: number }) => Promise<void>
+  addItem: (input: {
+    merchandiseId: string
+    quantity?: number
+  }) => Promise<CartSummary>
   removeItem: (lineId: string) => Promise<void>
   incrementItem: (lineId: string) => Promise<void>
   decrementItem: (lineId: string) => Promise<void>
@@ -53,6 +56,7 @@ export const CartProvider = ({ children, initialCart }: CartProviderProps) => {
     }
   )
   const [isHydrated, setIsHydrated] = useState(Boolean(initialCart))
+  const [isAdding, setIsAdding] = useState(false)
   const [isPending, startTransition] = useTransition()
 
   const refreshCart = useCallback(async () => {
@@ -71,12 +75,14 @@ export const CartProvider = ({ children, initialCart }: CartProviderProps) => {
 
   const addItem = useCallback(
     async (input: { merchandiseId: string; quantity?: number }) => {
-      startTransition(() => {
-        void (async () => {
-          const next = await addToCartAction(input)
-          setCart(next)
-        })()
-      })
+      setIsAdding(true)
+      try {
+        const next = await addToCartAction(input)
+        setCart(next)
+        return next
+      } finally {
+        setIsAdding(false)
+      }
     },
     []
   )
@@ -153,7 +159,7 @@ export const CartProvider = ({ children, initialCart }: CartProviderProps) => {
       subtotal: cart.subtotal,
       checkoutUrl: cart.checkoutUrl,
       isHydrated,
-      isPending,
+      isPending: isPending || isAdding,
       addItem,
       removeItem,
       incrementItem,
@@ -165,6 +171,7 @@ export const CartProvider = ({ children, initialCart }: CartProviderProps) => {
       cart,
       isHydrated,
       isPending,
+      isAdding,
       addItem,
       removeItem,
       incrementItem,

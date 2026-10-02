@@ -66,7 +66,9 @@ const ProductPage = async ({ params }: ProductPageProps) => {
     "@type": "Product",
     name: product.name,
     description: product.description,
-    image: product.gallery,
+    image: product.gallery.map((item) =>
+      item.type === "image" ? item.url : item.poster
+    ).filter((url): url is string => Boolean(url)),
     sku: product.id,
     brand: {
       "@type": "Brand",
@@ -110,7 +112,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           <div className="mt-5 grid gap-8 md:mt-8 md:gap-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
             <div className="min-w-0">
               <ProductGallery
-                images={product.gallery}
+                media={product.gallery}
                 alt={`${product.name} ${product.subtitle}`}
               />
               {placeAccordionsUnderGallery ? (

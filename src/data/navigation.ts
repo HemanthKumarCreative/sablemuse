@@ -128,12 +128,15 @@ export const FOOTER_LINKS = {
     { label: "Our Story", href: "/sustainability" },
   ],
   help: [
-    { label: "Orders & Shipping", href: "/faq" },
+    { label: "Shipping", href: "/shipping" },
+    { label: "Returns", href: "/returns" },
     { label: "FAQs", href: "/faq" },
     { label: "Contact Us", href: "/contact-us" },
   ],
   club: [
     { label: "Our Mission", href: "/sustainability/mission" },
-    { label: "Care & Shipping", href: "/sustainability/materials" },
+    { label: "Care", href: "/sustainability/materials" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
   ],
 }

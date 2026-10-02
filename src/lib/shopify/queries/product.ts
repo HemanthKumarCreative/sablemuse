@@ -1,5 +1,4 @@
 import { shopifyFetch } from "../client"
-import { shopifyConfig } from "../config"
 import {
   IMAGE_FRAGMENT,
   MONEY_FRAGMENT,
@@ -7,6 +6,7 @@ import {
   PRODUCT_DETAIL_FRAGMENT,
 } from "../fragments/product"
 import { mapProductCard, mapProductDetail } from "../mappers/product"
+import { getCatalogPage } from "../catalog"
 import type { Product, ProductDetail } from "@/types/commerce"
 type ProductsResponse = {
   products: {
@@ -16,17 +16,6 @@ type ProductsResponse = {
 
 type ProductResponse = {
   product: (Parameters<typeof mapProductDetail>[0] & { id: string }) | null
-}
-
-type CollectionProductsResponse = {
-  collection: {
-    id: string
-    title: string
-    handle: string
-    products: {
-      edges: Array<{ node: Parameters<typeof mapProductCard>[0] }>
-    }
-  } | null
 }
 
 type RecommendationsResponse = {
@@ -96,43 +85,11 @@ export const getCollectionProducts = async (
   handle: string,
   limit = 24
 ): Promise<Product[]> => {
-  try {
-    const data = await shopifyFetch<CollectionProductsResponse>({
-      query: `
-        ${MONEY_FRAGMENT}
-        ${IMAGE_FRAGMENT}
-        ${PRODUCT_CARD_FRAGMENT}
-        query getCollectionProducts($handle: String!, $first: Int!) {
-          collection(handle: $handle) {
-            id
-            title
-            handle
-            products(first: $first) {
-              edges {
-                node {
-                  ...ProductCardFields
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: { handle, first: limit },
-    })
-
-    const products =
-      data.collection?.products.edges.map(({ node }) => mapProductCard(node)) ??
-      []
-
-    if (products.length === 0) {
-      return getProducts(limit)
-    }
-
-    return products
-  } catch (error) {
-    console.error("Failed to fetch collection products from Shopify", error)
-    return getProducts(limit)
-  }
+  const page = await getCatalogPage({
+    source: { kind: "collection", handle },
+    limit,
+  })
+  return page.products
 }
 
 export const getProductRecommendations = async (

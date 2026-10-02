@@ -3,27 +3,31 @@
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { CarouselDots } from "@/components/shared/carousel-dots"
+import type { ProductMedia } from "@/types/commerce"
 import { cn } from "cn"
 
 type ProductGalleryProps = {
-  images: string[]
+  media: ProductMedia[]
   alt: string
   className?: string
 }
 
+const posterFor = (item: ProductMedia) =>
+  item.type === "image" ? item.url : item.poster
+
 export const ProductGallery = ({
-  images,
+  media,
   alt,
   className,
 }: ProductGalleryProps) => {
   const trackRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
-  const activeImage = images[activeIndex] ?? images[0]
+  const activeItem = media[activeIndex] ?? media[0]
 
   useEffect(() => {
     const track = trackRef.current
 
-    if (!track || images.length <= 1) {
+    if (!track || media.length <= 1) {
       return
     }
 
@@ -34,7 +38,7 @@ export const ProductGallery = ({
       }
 
       const nextIndex = Math.min(
-        images.length - 1,
+        media.length - 1,
         Math.max(0, Math.round(track.scrollLeft / width))
       )
       setActiveIndex(nextIndex)
@@ -48,9 +52,9 @@ export const ProductGallery = ({
       track.removeEventListener("scroll", handleScroll)
       window.removeEventListener("resize", handleScroll)
     }
-  }, [images.length])
+  }, [media.length])
 
-  if (!activeImage) {
+  if (!activeItem) {
     return null
   }
 
@@ -79,25 +83,24 @@ export const ProductGallery = ({
           aria-label={`${alt} gallery`}
           className="-mx-4 flex snap-x snap-mandatory overflow-x-auto scrollbar-none sm:-mx-5"
         >
-          {images.map((image, index) => (
+          {media.map((item, index) => (
             <div
-              key={`${image}-mobile-${index}`}
+              key={`${item.url}-mobile-${index}`}
               className="relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-muted"
             >
-              <Image
-                src={image}
-                alt={`${alt} — image ${index + 1}`}
-                fill
+              <MediaFrame
+                item={item}
+                alt={alt}
+                index={index}
                 priority={index === 0}
                 sizes="100vw"
-                className="object-cover"
               />
             </div>
           ))}
         </div>
 
         <CarouselDots
-          count={images.length}
+          count={media.length}
           activeIndex={activeIndex}
           onSelect={handleDotClick}
           ariaLabel="Product image pagination"
@@ -107,14 +110,15 @@ export const ProductGallery = ({
 
       <div className="hidden gap-4 md:grid md:grid-cols-[88px_minmax(0,1fr)] md:gap-5">
         <ul
-          className="flex flex-col gap-3"
+          className="flex max-h-[640px] flex-col gap-3 overflow-y-auto"
           aria-label="Product image thumbnails"
         >
-          {images.map((image, index) => {
+          {media.map((item, index) => {
             const isActive = index === activeIndex
+            const thumb = posterFor(item)
 
             return (
-              <li key={`${image}-thumb-${index}`} className="shrink-0">
+              <li key={`${item.url}-thumb-${index}`} className="shrink-0">
                 <button
                   type="button"
                   onClick={() => handleSelectImage(index)}
@@ -125,30 +129,85 @@ export const ProductGallery = ({
                     isActive ? "ring-2 ring-brand" : "ring-1 ring-transparent"
                   )}
                 >
-                  <Image
-                    src={image}
-                    alt=""
-                    fill
-                    sizes="88px"
-                    className="object-cover"
-                  />
+                  {thumb ? (
+                    <Image
+                      src={thumb}
+                      alt=""
+                      fill
+                      sizes="88px"
+                      className="object-cover"
+                    />
+                  ) : null}
                 </button>
               </li>
             )
           })}
         </ul>
 
-        <div className="relative min-h-[640px] w-full overflow-hidden bg-muted">
-          <Image
-            src={activeImage}
+        <div className="relative aspect-[3/4] min-h-[640px] w-full overflow-hidden bg-muted">
+          <MediaFrame
+            item={activeItem}
             alt={alt}
-            fill
+            index={activeIndex}
             priority
             sizes="50vw"
-            className="object-cover"
           />
         </div>
       </div>
     </div>
+  )
+}
+
+const MediaFrame = ({
+  item,
+  alt,
+  index,
+  priority,
+  sizes,
+}: {
+  item: ProductMedia
+  alt: string
+  index: number
+  priority?: boolean
+  sizes: string
+}) => {
+  const label = item.alt || `${alt} — image ${index + 1}`
+
+  if (item.type === "video") {
+    return (
+      <video
+        key={item.url}
+        controls
+        poster={item.poster}
+        preload="none"
+        className="h-full w-full object-cover"
+        aria-label={label}
+      >
+        <source src={item.url} />
+      </video>
+    )
+  }
+
+  if (item.type === "external-video") {
+    return (
+      <iframe
+        src={item.url}
+        title={label}
+        className="absolute inset-0 h-full w-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    )
+  }
+
+  return (
+    <Image
+      src={item.url}
+      alt={label}
+      fill
+      priority={priority}
+      sizes={sizes}
+      className="object-cover"
+    />
   )
 }

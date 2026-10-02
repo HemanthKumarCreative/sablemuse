@@ -27,9 +27,9 @@ export const HeroSection = ({ image, imageAlt }: HeroSectionProps) => {
         <div className="absolute inset-0 bg-gradient-to-r from-ink/50 via-ink/10 to-transparent" />
         <div className="absolute bottom-10 left-5 z-10 max-w-[260px] sm:bottom-14 sm:left-6 sm:max-w-[320px] md:top-1/2 md:bottom-auto md:left-[10%] md:max-w-md md:-translate-y-1/2">
           <h1 id="hero-heading" className="heading-page">
-            Everyday women&apos;s clothing,
+            Women&apos;s clothing,
             <br />
-            for the United States
+            shipped free in the US
           </h1>
           <Button
             render={<Link href="/collection/new-arrivals" />}
