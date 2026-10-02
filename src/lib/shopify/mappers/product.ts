@@ -125,7 +125,7 @@ const mapSubtitle = (product: ShopifyProductCard) => {
     return "New Arrival"
   }
 
-  return "Modimal"
+  return "Sable Muse"
 }
 
 export const mapProductCard = (
@@ -189,7 +189,7 @@ export const mapProductDetail = (
     fabricCare: "Machine wash cold. Do not tumble dry.",
     productDetail: product.description || "Detailed product information.",
     shippingReturns:
-      "Free shipping on orders over $150. Returns accepted within 30 days.",
+      "Prices are in US dollars. Free shipping on orders within the United States. Returns accepted within 30 days.",
     sizeSelector: "select",
     ctaStyle: "brand",
     showCtaPrice: true,

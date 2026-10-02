@@ -17,4 +17,4 @@ Read `docs/agent-guide.md` before non-trivial changes. Always-on constraints liv
 - `Product.id` is the Shopify handle. `/product/[id]` queries by handle. The GID is `ProductDetail.gid`.
 - Do not collect card data, do not call the Admin API, and do not expose store tokens with `NEXT_PUBLIC_`.
 - Search and shop filters do not change the product query.
-- Much of the UI copy still says Modimal. Do not rename brands unless asked.
+- Customer-facing copy is Sable Muse for the United States, with prices in US dollars. Do not reintroduce Modimal, ModiWeek, or another brand's sustainability claims. Internal cart and customer cookies still use the older `modimal_` names so existing sessions stay intact.

@@ -77,7 +77,7 @@ export const WelcomeDialog = ({ className }: WelcomeDialogProps) => {
           </DialogHeader>
 
           <DialogDescription className="mt-3 font-display text-base italic leading-[1.6] text-brand-navy sm:mt-4 sm:text-lg md:text-xl">
-            Elegance In Simplicity, Earth’s Harmony
+            Dresses, Tops, Jeans, And Matching Sets. Prices In US Dollars.
           </DialogDescription>
 
           <p className="mt-6 text-sm capitalize leading-[1.6] text-brand-navy sm:mt-8 sm:text-base md:text-xl md:font-semibold">

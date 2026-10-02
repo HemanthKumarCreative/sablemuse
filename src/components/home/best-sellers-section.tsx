@@ -8,16 +8,30 @@ import type { Product } from "@/types/commerce"
 
 type BestSellersSectionProps = {
   products: Product[]
+  title?: string
+  href?: string
+  headingId?: string
+  carouselLabel?: string
 }
 
-export const BestSellersSection = ({ products }: BestSellersSectionProps) => {
+export const BestSellersSection = ({
+  products,
+  title = "New Arrivals",
+  href = "/collection/new-arrivals",
+  headingId = "new-arrivals-heading",
+  carouselLabel = "New arrivals",
+}: BestSellersSectionProps) => {
+  if (products.length === 0) {
+    return null
+  }
+
   return (
-    <section aria-labelledby="best-sellers-heading">
+    <section aria-labelledby={headingId}>
       <Container>
         <SectionHeader
-          title="New Arrivals"
-          href="/collection/new-arrivals"
-          titleId="best-sellers-heading"
+          title={title}
+          href={href}
+          titleId={headingId}
         />
 
         <div className="hidden md:grid md:grid-cols-3 md:gap-6">
@@ -29,7 +43,7 @@ export const BestSellersSection = ({ products }: BestSellersSectionProps) => {
         <div className="md:hidden">
           <ScrollCarousel
             itemCount={products.length}
-            ariaLabel="New arrivals"
+            ariaLabel={carouselLabel}
             trackClassName="gap-3"
           >
             {products.map((product) => (

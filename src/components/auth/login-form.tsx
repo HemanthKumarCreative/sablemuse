@@ -36,7 +36,7 @@ export const LoginForm = ({ className, error }: LoginFormProps) => {
       </Button>
 
       <p className="mt-8 text-center text-sm capitalize leading-copy text-brand-navy md:text-base">
-        New To Modimal?{" "}
+        New To Sable Muse?{" "}
         <Link
           href="/register"
           className="font-medium text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"

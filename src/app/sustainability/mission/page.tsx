@@ -15,11 +15,11 @@ import {
 export const metadata: Metadata = {
   title: "Our Mission",
   description:
-    "Discover Modimal’s sustainability mission — minimalism, ethics, eco-friendly materials, circularity, transparency, and community.",
+    "Sable Muse sells women's clothing for the United States. Prices are in US dollars, with free shipping on US orders.",
   openGraph: {
-    title: "Our Mission | Modimal",
+    title: "Our Mission | Sable Muse",
     description:
-      "Elegance in simplicity, earth’s harmony — the Modimal Six guiding our sustainability mission.",
+      "How Sable Muse shops, ships, and supports orders in the United States.",
     images: [MISSION_HERO.src],
   },
   alternates: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Sustainability At Modimal",
+  name: "Sable Muse Mission",
   description: MISSION_INTRO,
   url: "/sustainability/mission",
 }
@@ -82,14 +82,14 @@ const SustainabilityMissionPage = () => {
             id="mission-heading"
             className="heading-page mt-8 md:mt-12"
           >
-            Sustainability At Modimal
+            Our Mission
           </h1>
           <p className="mt-4 max-w-3xl text-sm leading-copy capitalize text-brand-navy-muted md:text-base md:normal-case">
             {MISSION_INTRO}
           </p>
 
           <h2 className="mt-10 text-lg font-semibold text-brand-navy md:mt-12 md:text-xl">
-            Our Mission, The Modimal Six:
+            How We Work
           </h2>
           <MissionPillarsAccordion className="mt-4" />
 
@@ -109,7 +109,7 @@ const SustainabilityMissionPage = () => {
             <ul
               className="mt-3 grid grid-cols-3 gap-3 md:mt-4 md:gap-4"
               role="list"
-              aria-label="Modimal suppliers"
+              aria-label="Sable Muse clothing"
             >
               {supplierGrid.map((item) => (
                 <li key={item.src}>
@@ -128,10 +128,10 @@ const SustainabilityMissionPage = () => {
 
             <div className="mt-8 flex justify-center">
               <Button
-                render={<Link href="/sustainability/suppliers" />}
+                render={<Link href="/contact-us" />}
                 size="xl"
               >
-                Our Suppliers
+                Contact Us
               </Button>
             </div>
           </div>

@@ -31,7 +31,7 @@ export const CheckoutSuccessContent = () => {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-copy capitalize text-brand-navy md:text-lg">
-            Thank You For Choosing Modimal, Your Order Will Be Generated Based
+            Thank You For Choosing Sable Muse. Your Order Will Be Generated Based
             On Your Delivery Request.
           </p>
 
@@ -45,19 +45,10 @@ export const CheckoutSuccessContent = () => {
             </p>
             <p>
               <a
-                href="tel:+19294603208"
+                href="mailto:hello@sablemuse.shop"
                 className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                +1(929)460-3208
-              </a>
-            </p>
-            <p className="text-brand-navy">Or</p>
-            <p>
-              <a
-                href="mailto:hello@modimal.com"
-                className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                Hello@Modimal.Com
+                hello@sablemuse.shop
               </a>
             </p>
           </div>

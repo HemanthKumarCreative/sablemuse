@@ -10,13 +10,13 @@ import {
 } from "@/data/sustainability"
 
 export const metadata: Metadata = {
-  title: "Sustainability",
+  title: "Our Story",
   description:
-    "Explore Modimal sustainability — responsible materials, ethical production, and earth-conscious design.",
+    "Sable Muse is a women's clothing shop for the United States. Prices are in US dollars, with free shipping on US orders.",
   openGraph: {
-    title: "Sustainability | Modimal",
+    title: "Our Story | Sable Muse",
     description:
-      "Responsible selection, earthly harmony — how Modimal approaches materials and production.",
+      "What Sable Muse sells, how United States orders ship, and how to reach customer care.",
     images: ["/images/sustainability/materials.png"],
   },
   alternates: {
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Modimal Sustainability",
+  name: "Sable Muse",
   description:
-    "Learn how Modimal approaches sustainable materials, ethical production, and product care.",
+    "Learn what Sable Muse sells and how orders ship within the United States.",
   url: "/sustainability",
 }
 
@@ -47,14 +47,14 @@ const SustainabilityPage = () => {
             id="sustainability-heading"
             className="heading-page mt-10 md:mt-16"
           >
-            Sustainability
+            Our Story
           </h1>
         </Container>
 
         <div className="relative mt-8 min-h-[280px] w-full overflow-hidden md:mt-10 md:min-h-[420px] lg:min-h-[520px]">
           <Image
             src="/images/sustainability/materials.png"
-            alt="Sustainable Modimal fabrics and natural materials"
+            alt="Women's clothing from Sable Muse"
             fill
             priority
             sizes="100vw"
@@ -63,7 +63,7 @@ const SustainabilityPage = () => {
           <div className="absolute inset-0 bg-ink/20" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10 lg:p-14">
             <p className="max-w-md text-xl font-semibold leading-snug text-white md:text-2xl lg:text-[2rem]">
-              Responsible Selection, Earthly Harmony
+              Women's clothing, priced in US dollars
             </p>
           </div>
         </div>
@@ -78,7 +78,7 @@ const SustainabilityPage = () => {
             id="sustainable-materials-heading"
             className="heading-section"
           >
-            Our Sustainable Materials
+            The Shop
           </h2>
 
           <div className="mt-8 grid gap-8 md:grid-cols-2 md:gap-12">
@@ -96,7 +96,7 @@ const SustainabilityPage = () => {
             <figure className="relative aspect-square overflow-hidden bg-muted">
               <Image
                 src="/images/sustainability/lifestyle.png"
-                alt="Modimal garment crafted from thoughtful materials"
+                alt="A Sable Muse outfit"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
@@ -105,7 +105,7 @@ const SustainabilityPage = () => {
             <figure className="relative aspect-square overflow-hidden bg-muted">
               <Image
                 src="/images/sustainability.png"
-                alt="Natural cotton detail representing Modimal fiber choices"
+                alt="Sable Muse clothing detail"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
@@ -118,7 +118,7 @@ const SustainabilityPage = () => {
               render={<Link href="/sustainability/materials" />}
               size="xl"
             >
-              Explore Materials
+              Care And Shipping
             </Button>
           </div>
         </Container>
@@ -133,7 +133,7 @@ const SustainabilityPage = () => {
             <figure className="relative aspect-[4/5] overflow-hidden bg-muted lg:aspect-[5/6]">
               <Image
                 src={SUSTAINABILITY_MEGA_MENU.featured[0].image}
-                alt="Modimal garment label and ethical production detail"
+                alt="Sable Muse clothing"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
@@ -145,17 +145,16 @@ const SustainabilityPage = () => {
                 id="production-ethics-heading"
                 className="heading-section"
               >
-                Production &amp; Ethics
+                Orders In The United States
               </h2>
               <p className="mt-5 text-sm leading-copy text-brand-navy-muted md:text-base">
-                We partner with suppliers who share our standards for fair wages,
-                safe workplaces, and transparent processes. From sampling to final
-                stitch, every stage is chosen to protect people and planet —
-                without compromising the quiet luxury of the finished piece.
+                Sable Muse ships within the United States. Prices are in US
+                dollars, and shipping is free on US orders. Most orders leave
+                within one to two business days, with tracking sent by email.
               </p>
               <p className="mt-4 text-sm leading-copy text-brand-navy-muted md:text-base">
-                Our mission is simple: design clothing that lasts, travels
-                lightly, and feels as good to wear as it is to stand behind.
+                Returns are accepted within 30 days. Questions about an order
+                can go to hello@sablemuse.shop.
               </p>
               <Button
                 render={<Link href="/sustainability/mission" />}
@@ -171,7 +170,7 @@ const SustainabilityPage = () => {
           <ul
             className="mt-12 grid grid-cols-2 gap-3 md:mt-16 md:grid-cols-3 md:gap-6"
             role="list"
-            aria-label="Behind the scenes at Modimal"
+            aria-label="Sable Muse clothing"
           >
             {SUSTAINABILITY_GALLERY.map((item) => (
               <li key={item.src}>

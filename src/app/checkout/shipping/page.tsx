@@ -4,7 +4,7 @@ import { fetchCartDelivery } from "@/lib/shopify/cart/actions"
 
 export const metadata: Metadata = {
   title: "Shipping",
-  description: "Choose a shipping method for your Modimal order.",
+  description: "Choose a shipping method for your Sable Muse order in the United States.",
   alternates: {
     canonical: "/checkout/shipping",
   },

@@ -90,7 +90,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                 Your Shopping Bag Is Empty
               </h2>
               <p className="mt-4 max-w-[260px] text-sm leading-[1.7] capitalize text-brand-navy sm:mt-5 sm:text-base">
-                Discover Modimal And Add Products To Your Bag
+                Discover Sable Muse And Add Products To Your Bag
               </p>
               <ul
                 className="mt-10 flex w-full max-w-[280px] flex-col gap-4 sm:mt-12 sm:gap-5"

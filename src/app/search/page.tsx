@@ -28,14 +28,14 @@ export const generateMetadata = async ({
   const query = resolveQuery((await searchParams).q)
   const title = query ? `Search: ${query}` : "Search"
   const description = query
-    ? `Shop Modimal results for “${query}” — women’s clothing and essentials.`
-    : "Search Modimal women’s clothing, collections, and essentials."
+    ? `Shop Sable Muse results for “${query}”. Prices are in US dollars.`
+    : "Search Sable Muse women's clothing and collections."
 
   return {
     title,
     description,
     openGraph: {
-      title: `${title} | Modimal`,
+      title: `${title} | Sable Muse`,
       description,
     },
     alternates: {
@@ -79,7 +79,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
           <div className="min-w-0 flex-1">
             {!query ? (
               <p className="text-base text-brand-navy-muted">
-                Enter a search term to find Modimal products.
+                Enter a search term to find Sable Muse products.
               </p>
             ) : itemCount === 0 ? (
               <p className="text-base text-brand-navy-muted">

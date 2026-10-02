@@ -3,7 +3,7 @@ import { CheckoutSuccessContent } from "@/components/checkout/checkout-success-c
 
 export const metadata: Metadata = {
   title: "Order Confirmed",
-  description: "Thank you for your Modimal order.",
+  description: "Thank you for your Sable Muse order.",
   alternates: {
     canonical: "/checkout/success",
   },

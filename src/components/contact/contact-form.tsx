@@ -203,7 +203,7 @@ export const ContactForm = ({
             <>
               I Have Read And Understood The{" "}
               <Link
-                href="/privacy-policy"
+                href="/faq"
                 className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Contact Us Privacy And Policy
@@ -214,7 +214,7 @@ export const ContactForm = ({
             <>
               I have read and understood the{" "}
               <Link
-                href="/privacy-policy"
+                href="/faq"
                 className="text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 contact us privacy and policy

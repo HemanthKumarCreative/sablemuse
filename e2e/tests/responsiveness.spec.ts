@@ -26,8 +26,8 @@ test.describe("Responsiveness", () => {
         ).toBeAttached()
       }
 
-      if (route.path === "/modiweek") {
-        await expect(page).toHaveURL(/\/modiweek\/saturday$/)
+      if (route.path === "/modiweek" || route.path === "/new-in" || route.path === "/plus-size") {
+        await expect(page).toHaveURL(/\/collection\/new-arrivals$/)
       }
     })
   }

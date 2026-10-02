@@ -67,11 +67,11 @@ export const PLUS_SIZE_FILTERS_DEFAULT_OPEN = PLUS_SIZE_FILTERS.filter(
 export const PLUS_SIZE_HERO_SLIDES = [
   {
     src: "/images/plus-size/pants.png",
-    alt: "Modimal plus size look featuring an olive shirt and black trousers",
+    alt: "Sable Muse plus size denim",
   },
   {
     src: "/images/plus-size/dresses.png",
-    alt: "Modimal plus size dress lookbook",
+    alt: "Sable Muse dress",
   },
 ] as const
 

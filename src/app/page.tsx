@@ -1,65 +1,96 @@
-export const revalidate = 3600;import type { Metadata } from "next";
-import { BestSellersSection } from "@/components/home/best-sellers-section";
-import { CollectionSection } from "@/components/home/collection-section";
-import { FollowUsSection } from "@/components/home/follow-us-section";
-import { HeroSection } from "@/components/home/hero-section";
-import { ModiWeekSection } from "@/components/home/modiweek-section";
-import { SustainabilitySection } from "@/components/home/sustainability-section";
-import { WelcomeDialog } from "@/components/home/welcome-dialog";
-import { COLLECTIONS, MODIWEEK } from "@/data/home";
-import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify";
+export const revalidate = 3600
+
+import type { Metadata } from "next"
+import { BestSellersSection } from "@/components/home/best-sellers-section"
+import { CollectionSection } from "@/components/home/collection-section"
+import { HeroSection } from "@/components/home/hero-section"
+import { ShopStorySection } from "@/components/home/shop-story-section"
+import { WelcomeDialog } from "@/components/home/welcome-dialog"
+import { COLLECTION_TILES } from "@/data/home"
+import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
+import type { CollectionRouteKey } from "@/lib/shopify/collections"
+import type { CollectionTile } from "@/data/home"
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Modimal | Women Clothing"
+    absolute: "Sable Muse | Women's Clothing",
   },
   description:
-  "Shop Modimal women's clothing — best sellers, collections, ModiWeek looks, and sustainable fashion essentials.",
+    "Shop Sable Muse women's clothing in the United States. Dresses, tops, jeans, and matching sets, priced in US dollars, with free shipping on US orders.",
   openGraph: {
-    title: "Modimal | Women Clothing",
+    title: "Sable Muse | Women's Clothing",
     description:
-    "Elegance in simplicity, Earth’s Harmony. Explore Modimal’s curated women's fashion.",
-    images: ["/images/hero.jpg"]
-  }
-};
+      "Contemporary women's fashion from Sable Muse. Shop new arrivals, dresses, tops, jeans, and matching sets.",
+    images: ["/images/hero.jpg"],
+  },
+}
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Modimal",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  name: "Sable Muse",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sablemuse.shop",
   logo: "/images/logo.png",
   description:
-  "Minimalist women's clothing brand focused on timeless design and sustainability.",
-  sameAs: [
-  "https://instagram.com",
-  "https://facebook.com",
-  "https://pinterest.com",
-  "https://twitter.com"]
-
-};
+    "Sable Muse is a women's clothing shop for the United States. Prices are in US dollars.",
+}
 
 const HomePage = async () => {
-  const bestSellers = await getCollectionProducts(
-    COLLECTION_HANDLES["new-in"],
-    3
-  );
+  const [newArrivals, matchingSets, ...tileProducts] = await Promise.all([
+    getCollectionProducts(COLLECTION_HANDLES["new-in"], 3),
+    getCollectionProducts(COLLECTION_HANDLES["matching-sets-lounge"], 4),
+    ...COLLECTION_TILES.map((tile) =>
+      getCollectionProducts(COLLECTION_HANDLES[tile.handle as CollectionRouteKey], 1)
+    ),
+  ])
+
+  const collections: CollectionTile[] = COLLECTION_TILES.flatMap((tile, index) => {
+    const image = tileProducts[index]?.[0]?.image
+
+    if (!image) {
+      return []
+    }
+
+    return [
+      {
+        id: tile.id,
+        name: tile.name,
+        href: tile.href,
+        image,
+        heightClass: tile.heightClass,
+      },
+    ]
+  })
+
+  const storyImages = [...newArrivals, ...matchingSets].slice(0, 4).map((product) => ({
+    src: product.image,
+    alt: product.name,
+    href: `/product/${product.id}`,
+  }))
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <WelcomeDialog />
-      <HeroSection />
-      <BestSellersSection products={bestSellers} />
-      <CollectionSection collections={COLLECTIONS} />
-      <ModiWeekSection days={MODIWEEK} />
-      <SustainabilitySection />
-      <FollowUsSection />
-    </>);
+      <HeroSection
+        image={newArrivals[0]?.image}
+        imageAlt={newArrivals[0]?.name ?? "Sable Muse women's clothing"}
+      />
+      <BestSellersSection products={newArrivals} />
+      <CollectionSection collections={collections} />
+      <BestSellersSection
+        products={matchingSets}
+        title="Matching Sets & Lounge"
+        href="/collection/matching-sets-lounge"
+        headingId="matching-sets-heading"
+        carouselLabel="Matching sets"
+      />
+      <ShopStorySection images={storyImages} />
+    </>
+  )
+}
 
-};
-
-export default HomePage;
+export default HomePage

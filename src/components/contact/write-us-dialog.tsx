@@ -44,7 +44,7 @@ export const WriteUsDialog = ({
             Write Us
           </DialogTitle>
           <DialogDescription className="sr-only">
-            Send a message to Modimal customer care
+            Send a message to Sable Muse customer care
           </DialogDescription>
           <DialogClose
             render={

@@ -81,7 +81,7 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                     type="button"
                     variant="outline"
                     className="h-11 w-full max-w-xs rounded-none border-ink/40 bg-background text-base font-medium capitalize text-brand-navy-muted hover:bg-background hover:text-brand-navy"
-                    aria-label="Start chat with Modimal customer care"
+                    aria-label="Start chat with Sable Muse customer care"
                   >
                     Start Chat
                   </Button>
@@ -97,7 +97,7 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                     strokeWidth={1.5}
                     aria-hidden="true"
                   />
-                  Call Us
+                  Support Hours
                 </span>
                 <Plus
                   className="size-4 shrink-0 text-brand-navy group-aria-expanded/accordion-trigger:hidden"
@@ -113,15 +113,15 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
               <AccordionContent className="bg-muted px-4 pb-6">
                 <div className="flex flex-col items-center gap-4 py-2 text-center">
                   <p className="text-sm capitalize text-brand-navy">
-                    We&apos;re Here To Talk To You
+                    Monday Through Friday, 9 Am To 5 Pm Eastern Time
                   </p>
                   <Button
-                    render={<Link href="tel:+19294603208" />}
+                    render={<Link href="mailto:hello@sablemuse.shop" />}
                     nativeButton={false}
                     variant="outline"
                     className="h-11 w-full max-w-xs rounded-none border-ink/40 bg-background text-base font-medium text-brand-navy hover:bg-background"
                   >
-                    +1 (929) 460-3208
+                    hello@sablemuse.shop
                   </Button>
                 </div>
               </AccordionContent>
@@ -150,7 +150,7 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                     We Are Here And Ready To Help
                   </p>
                   <Button
-                    render={<Link href="mailto:hello@modimal.com" />}
+                    render={<Link href="mailto:hello@sablemuse.shop" />}
                     nativeButton={false}
                     variant="outline"
                     className="h-11 w-full max-w-xs rounded-none border-ink/40 bg-background text-base font-medium capitalize text-brand-navy hover:bg-background"
@@ -191,7 +191,7 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                 type="button"
                 variant="outline"
                 className="mt-6 h-11 w-full rounded-none border-brand-border text-base font-medium capitalize text-brand-navy hover:bg-brand hover:text-ink"
-                aria-label="Start chat with Modimal customer care"
+                aria-label="Start chat with Sable Muse customer care"
               >
                 Start Chat
               </Button>
@@ -204,17 +204,17 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                 strokeWidth={1.5}
                 aria-hidden="true"
               />
-              <h2 className="mt-4 text-lg font-semibold text-brand-navy">Call Us</h2>
+              <h2 className="mt-4 text-lg font-semibold text-brand-navy">Support Hours</h2>
               <p className="mt-2 text-sm text-brand-navy-muted">
-                We&apos;re here to talk to you
+                Monday through Friday, 9 am to 5 pm Eastern Time
               </p>
               <Button
-                render={<Link href="tel:+19294603208" />}
+                render={<Link href="mailto:hello@sablemuse.shop" />}
                 nativeButton={false}
                 variant="outline"
                 className="mt-6 h-11 w-full rounded-none border-brand-border text-base font-medium text-brand-navy hover:bg-brand hover:text-ink"
               >
-                +1 (929) 460-3208
+                hello@sablemuse.shop
               </Button>
             </article>
           </li>
@@ -230,7 +230,7 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                 We are here and ready to help
               </p>
               <Button
-                render={<Link href="mailto:hello@modimal.com" />}
+                render={<Link href="mailto:hello@sablemuse.shop" />}
                 nativeButton={false}
                 variant="outline"
                 className="mt-6 h-11 w-full rounded-none border-brand-border text-base font-medium capitalize text-brand-navy hover:bg-brand hover:text-ink"

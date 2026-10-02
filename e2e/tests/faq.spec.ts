@@ -8,7 +8,7 @@ test.describe("FAQ", () => {
     await expect(
       page.getByRole("button", { name: /How Do I Contact Your Customer Service/i })
     ).toBeVisible()
-    await expect(page.getByText(/Hello@Modimal.Com/i).first()).toBeVisible()
+    await expect(page.getByText(/hello@sablemuse.shop/i).first()).toBeVisible()
     await expect(page.getByText(/Size Guide/i).first()).toBeVisible()
   })
 

@@ -13,11 +13,6 @@ import { cn } from "cn"
 
 const COUNTRY_CODES: Array<{ label: string; code: string }> = [
   { label: "United States", code: "US" },
-  { label: "Canada", code: "CA" },
-  { label: "United Kingdom", code: "GB" },
-  { label: "Australia", code: "AU" },
-  { label: "Germany", code: "DE" },
-  { label: "France", code: "FR" },
 ]
 
 const fieldClassName =

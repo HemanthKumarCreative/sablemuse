@@ -4,7 +4,7 @@ import { CheckoutErrorContent } from "@/components/checkout/checkout-error-conte
 export const metadata: Metadata = {
   title: "Payment Failed",
   description:
-    "Your Modimal payment could not be completed. Please try again or use a different payment method.",
+    "Your Sable Muse payment could not be completed. Please try again or use a different payment method.",
   robots: {
     index: false,
     follow: false,

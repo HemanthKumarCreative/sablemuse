@@ -51,7 +51,7 @@ const MaterialCompositeImage = ({
 }
 
 export const MaterialsList = ({ className }: MaterialsListProps) => {
-  const [expandedId, setExpandedId] = useState<string | null>("wool")
+  const [expandedId, setExpandedId] = useState<string | null>("shipping")
 
   const handleToggle = (id: string) => {
     setExpandedId((current) => (current === id ? null : id))

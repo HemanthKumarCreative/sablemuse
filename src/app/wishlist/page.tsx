@@ -6,10 +6,10 @@ import type { Product } from "@/types/commerce"
 export const metadata: Metadata = {
   title: "My Wish List",
   description:
-    "View your Modimal wish list — saved women’s clothing and essentials.",
+    "View your Sable Muse wish list — saved women's clothing.",
   openGraph: {
-    title: "My Wish List | Modimal",
-    description: "Saved Modimal pieces you’re watching — ready when you are.",
+    title: "My Wish List | Sable Muse",
+    description: "Saved Sable Muse pieces you’re watching — ready when you are.",
   },
   alternates: {
     canonical: "/wishlist",

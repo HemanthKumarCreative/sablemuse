@@ -6,11 +6,11 @@ import { Container } from "@/components/shared/container"
 export const metadata: Metadata = {
   title: "Log In",
   description:
-    "Log in to your Modimal account to shop women’s clothing, track orders, and manage your wish list.",
+    "Log in to your Sable Muse account to shop women’s clothing, track orders, and manage your wish list.",
   openGraph: {
-    title: "Log In | Modimal",
+    title: "Log In | Sable Muse",
     description:
-      "Sign in to Modimal — access your account, orders, and saved favorites.",
+      "Sign in to Sable Muse — access your account, orders, and saved favorites.",
     images: ["/images/auth/register.jpg"],
   },
   alternates: {
@@ -26,7 +26,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "Log In",
-  description: "Sign in to your Modimal account",
+  description: "Sign in to your Sable Muse account",
   url: "/login",
 }
 
@@ -48,7 +48,7 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
         <div className="relative aspect-[390/280] w-full overflow-hidden bg-muted sm:aspect-[16/10] lg:hidden">
           <Image
             src="/images/auth/register.jpg"
-            alt="Modimal model in a white shirt and dark trousers seated by a window"
+            alt="Sable Muse outfit of a white shirt and dark trousers"
             fill
             priority
             sizes="100vw"
@@ -61,7 +61,7 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
             <div className="relative hidden min-h-[720px] overflow-hidden bg-muted lg:block">
               <Image
                 src="/images/auth/register.jpg"
-                alt="Modimal model in a white shirt and dark trousers seated by a window"
+                alt="Sable Muse outfit of a white shirt and dark trousers"
                 fill
                 priority
                 sizes="50vw"

@@ -6,7 +6,7 @@ test.describe("Catalog pages", () => {
     await gotoPath(page, "/collection")
     await expect(page.getByRole("heading", { name: "Collection" })).toBeVisible()
     await expect(page.getByRole("link", { name: /Shop Shop All/i })).toBeVisible()
-    await expect(page.getByRole("heading", { name: /Best Sellers/i })).toBeVisible()
+    await expect(page.getByRole("heading", { name: "New Arrivals" })).toBeVisible()
   })
 
   test("collection Shop All card opens the shop listing", async ({ page }) => {
@@ -16,12 +16,14 @@ test.describe("Catalog pages", () => {
     await expect(page.getByRole("heading", { name: "Shop All" })).toBeAttached()
   })
 
-  test("new in and plus-size landing pages render", async ({ page }) => {
+  test("retired landings redirect to new arrivals", async ({ page }) => {
     await gotoPath(page, "/new-in")
-    await expect(page.getByRole("heading", { name: "New In" })).toBeVisible()
+    await expect(page).toHaveURL(/\/collection\/new-arrivals$/)
+    await expect(page.getByRole("heading", { name: "New Arrivals" })).toBeVisible()
 
     await gotoPath(page, "/plus-size")
-    await expect(page.getByRole("heading", { name: "Plus Size" })).toBeVisible()
+    await expect(page).toHaveURL(/\/collection\/new-arrivals$/)
+    await expect(page.getByRole("heading", { name: "New Arrivals" })).toBeVisible()
   })
 
   test("shop all shows products and breakpoint-specific filters", async ({
@@ -40,9 +42,10 @@ test.describe("Catalog pages", () => {
     await expect(page.getByRole("dialog").getByRole("heading", { name: "Filters" }).first()).toBeVisible()
   })
 
-  test("plus-size shop all lists inclusive products", async ({ page }) => {
+  test("plus-size shop all redirects to new arrivals", async ({ page }) => {
     await gotoPath(page, "/plus-size/shop-all")
-    await expect(page.getByRole("heading", { name: "Plus Size Shop All" })).toBeAttached()
+    await expect(page).toHaveURL(/\/collection\/new-arrivals$/)
+    await expect(page.getByRole("heading", { name: "New Arrivals" })).toBeVisible()
     await expect(page.getByRole("link", { name: /View /i }).first()).toBeVisible()
   })
 

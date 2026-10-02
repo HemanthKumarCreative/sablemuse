@@ -11,7 +11,7 @@ export const SustainabilitySection = () => {
       <div className="relative min-h-[360px] w-full sm:min-h-[420px] md:min-h-[520px] lg:min-h-[600px]">
         <Image
           src="/images/sustainability.png"
-          alt="Sustainable fashion lifestyle imagery for Modimal"
+          alt="Women's clothing from Sable Muse"
           fill
           sizes="100vw"
           className="object-cover object-center"
@@ -21,8 +21,8 @@ export const SustainabilitySection = () => {
             id="sustainability-heading"
             className="max-w-[280px] text-sm leading-copy text-brand-navy sm:max-w-sm md:max-w-none md:text-base"
           >
-            Stylish sustainability in clothing promotes eco-friendly choices for
-            a greater future
+            Women's clothing for the United States, priced in US dollars, with
+            free shipping on US orders
           </p>
           <Button
             render={<Link href="/sustainability" />}

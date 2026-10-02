@@ -1,19 +1,30 @@
 import Image from "next/image"
 import { Container } from "@/components/shared/container"
 import { SectionHeader } from "@/components/shared/section-header"
-import { FOLLOW_US } from "@/data/home"
 import { cn } from "cn"
 
-export const FollowUsSection = () => {
+type FollowItem = {
+  id: string
+  image: string
+  alt: string
+  className: string
+}
+
+type FollowUsSectionProps = {
+  items: FollowItem[]
+}
+
+export const FollowUsSection = ({ items }: FollowUsSectionProps) => {
+  if (items.length === 0) {
+    return null
+  }
+
   return (
     <section aria-labelledby="follow-us-heading" className="pb-12 md:pb-20">
       <Container>
-        <SectionHeader
-          title="Follow us @modimal"
-          titleId="follow-us-heading"
-        />
+        <SectionHeader title="The Sable Muse Edit" titleId="follow-us-heading" />
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:auto-rows-[315px] md:gap-0">
-          {FOLLOW_US.map((item, index) => (
+          {items.map((item, index) => (
             <figure
               key={item.id}
               className={cn(

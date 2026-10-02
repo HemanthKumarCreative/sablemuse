@@ -6,13 +6,13 @@ import { Container } from "@/components/shared/container"
 import { MATERIALS_CLOSING, MATERIALS_INTRO, MATERIALS_REPORT_PREFIX } from "@/data/sustainability"
 
 export const metadata: Metadata = {
-  title: "Sustainably Sourced Materials",
+  title: "Care And Shipping",
   description:
-    "Explore Modimal’s sustainably sourced materials — cotton, wool, linen, silk, and cashmere.",
+    "How Sable Muse ships within the United States, how returns work, and how to care for your clothes.",
   openGraph: {
-    title: "Sustainably Sourced Materials | Modimal",
+    title: "Care And Shipping | Sable Muse",
     description:
-      "Learn how Modimal chooses cotton, wool, linen, silk, and cashmere with people and planet in mind.",
+      "US shipping, US dollar prices, returns, and everyday garment care at Sable Muse.",
     images: ["/images/sustainability/materials.png"],
   },
   alternates: {
@@ -23,9 +23,8 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Sustainably Sourced Materials",
-  description:
-    "Modimal materials including cotton, wool, linen, silk, and cashmere.",
+  name: "Care And Shipping",
+  description: "Sable Muse shipping, returns, and garment care for United States orders.",
   url: "/sustainability/materials",
 }
 
@@ -48,7 +47,7 @@ const SustainabilityMaterialsPage = () => {
               items={[
                 { label: "Home", href: "/" },
                 { label: "Sustainability", href: "/sustainability" },
-                { label: "Materials" },
+                { label: "Care And Shipping" },
               ]}
             />
           </Container>
@@ -59,7 +58,7 @@ const SustainabilityMaterialsPage = () => {
             id="materials-heading"
             className="heading-page mt-8 max-w-3xl md:mt-10"
           >
-            Sustainably Sourced Materials
+            Care And Shipping
           </h1>
           <p className="mt-4 max-w-3xl text-sm leading-copy capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
             {MATERIALS_INTRO}
@@ -71,17 +70,8 @@ const SustainabilityMaterialsPage = () => {
             <p className="max-w-3xl text-sm leading-copy capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
               {MATERIALS_CLOSING[0]}
             </p>
-            <p className="max-w-3xl text-sm leading-copy capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
-              {MATERIALS_REPORT_PREFIX}{" "}
-              <Link
-                href="https://textileexchange.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-brand-navy-muted underline underline-offset-2 transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                Here
-              </Link>
-              .
+            <p className="max-w-3xl text-sm leading-copy text-brand-navy md:text-base md:text-brand-navy-muted">
+              {MATERIALS_REPORT_PREFIX}
             </p>
           </div>
 

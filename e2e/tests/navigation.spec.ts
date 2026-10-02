@@ -12,9 +12,9 @@ import {
 test.describe("Header navigation", () => {
   test("logo returns home", async ({ page }) => {
     await gotoPath(page, "/faq")
-    await header(page).getByRole("link", { name: /Modimal/i }).first().click()
+    await header(page).getByRole("link", { name: /Sable Muse/i }).first().click()
     await expect(page).toHaveURL(/\/$/)
-    await expect(page.getByRole("heading", { name: /Elegance in simplicity/i })).toBeVisible()
+    await expect(page.getByRole("heading", { name: /Everyday women's clothing/i })).toBeVisible()
   })
 
   test("wishlist icon opens the wish list", async ({ page }) => {
@@ -32,17 +32,14 @@ test.describe("Header navigation", () => {
     await nav.getByRole("link", { name: "Collection" }).click()
     await expect(page).toHaveURL(/\/collection$/)
 
-    await nav.getByRole("link", { name: "New In" }).click()
-    await expect(page).toHaveURL(/\/new-in$/)
+    await nav.getByRole("link", { name: "New Arrivals" }).click()
+    await expect(page).toHaveURL(/\/collection\/new-arrivals$/)
 
-    await nav.getByRole("link", { name: "Modiweek" }).click()
-    await expect(page).toHaveURL(/\/modiweek\/saturday$/)
+    await nav.getByRole("link", { name: "Dresses & Jumpsuits" }).click()
+    await expect(page).toHaveURL(/\/collection\/dresses-jumpsuits$/)
 
-    await nav.getByRole("link", { name: "Plus Size" }).click()
-    await expect(page).toHaveURL(/\/plus-size$/)
-
-    await nav.getByRole("link", { name: "Sustainability" }).click()
-    await expect(page).toHaveURL(/\/sustainability$/)
+    await nav.getByRole("link", { name: "Jeans & Pants" }).click()
+    await expect(page).toHaveURL(/\/collection\/jeans-pants$/)
   })
 
   test("desktop account icon opens login", async ({ page }) => {

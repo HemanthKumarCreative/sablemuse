@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     siteName: "Sable Muse",
     title: "Sable Muse | Contemporary Women's Fashion",
     description:
-      "Discover curated women's fashion rooted in elegance, simplicity, and sustainability.",
+      "Women's clothing from Sable Muse for the United States. Prices are in US dollars.",
     images: [
       {
         url: "/images/hero.jpg",

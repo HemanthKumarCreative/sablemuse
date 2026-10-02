@@ -8,7 +8,7 @@ import { getCustomerSession } from "@/lib/customer/session"
 export const metadata: Metadata = {
   title: "Checkout Information",
   description:
-    "Enter your contact and shipping details to continue your Modimal order.",
+    "Enter your contact and a United States shipping address to continue your Sable Muse order.",
   alternates: {
     canonical: "/checkout",
   },

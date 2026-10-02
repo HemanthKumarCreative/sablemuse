@@ -15,11 +15,11 @@ import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
 export const metadata: Metadata = {
   title: "Shop All",
   description:
-    "Shop all Modimal women’s clothing — filter by size, color, collection, and fabric.",
+    "Shop all Sable Muse women's clothing. Prices are in US dollars, with free shipping on orders within the United States.",
   openGraph: {
-    title: "Shop All | Modimal",
+    title: "Shop All | Sable Muse",
     description:
-      "Browse the full Modimal collection with filters for size, color, collection, and fabric.",
+      "Browse Sable Muse dresses, tops, jeans, and matching sets.",
     images: [SHOP_ALL_HERO_SLIDES[0].src],
   },
   alternates: {
@@ -37,7 +37,7 @@ const ShopAllPage = async () => {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Shop All",
-    description: "Shop all Modimal women’s clothing",
+    description: "Shop all Sable Muse women's clothing",
     url: "/shop-all",
     mainEntity: {
       "@type": "ItemList",

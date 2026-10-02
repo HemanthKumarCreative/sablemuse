@@ -25,11 +25,19 @@ export type NavItem = {
   megaMenuVariant?: MegaMenuVariant
 }
 
+const DRESSES_IMAGE =
+  "https://cdn.shopify.com/s/files/1/0837/3767/3967/files/a1c77587142f47a3a297470e58d8cd05-Max.jpg?v=1788868696"
+const TOPS_IMAGE =
+  "https://cdn.shopify.com/s/files/1/0837/3767/3967/files/7f277721bd234f4db3cba707ffe5b721-Max.jpg?v=1788868751"
+const SETS_IMAGE =
+  "https://cdn.shopify.com/s/files/1/0837/3767/3967/files/1f72c81784154f1faf3133ab9d13b778-Max.jpg?v=1788868563"
+
 export const COLLECTION_MEGA_MENU = {
   columns: [
     {
       title: "Collections",
       links: [
+        { label: "Shop All", href: "/shop-all" },
         { label: "New Arrivals", href: "/collection/new-arrivals" },
         { label: "Dresses & Jumpsuits", href: "/collection/dresses-jumpsuits" },
         { label: "Tops & Blouses", href: "/collection/tops-blouses" },
@@ -37,110 +45,19 @@ export const COLLECTION_MEGA_MENU = {
         { label: "Matching Sets & Lounge", href: "/collection/matching-sets-lounge" },
       ],
     },
-    {
-      title: "Featured",
-      links: [
-        { label: "New Arrivals", href: "/collection/new-arrivals" },
-        { label: "Best Sellers", href: "/collection/tops-blouses" },
-      ],
-    },
-    {
-      title: "Trending",
-      links: [
-        { label: "Dresses & Jumpsuits", href: "/collection/dresses-jumpsuits" },
-        { label: "Matching Sets", href: "/collection/matching-sets-lounge" },
-      ],
-    },
   ] satisfies MegaMenuColumn[],
   featured: [
     {
-      label: "Tops & Blouses",
-      href: "/collection/tops-blouses",
-      image:
-        "/images/collection/Lifestyle_Detail_Something_Tailored_Shirt_White_1400x.webp",
-      alt: "Woman wearing a white tailored blouse",
+      label: "Dresses & Jumpsuits",
+      href: "/collection/dresses-jumpsuits",
+      image: DRESSES_IMAGE,
+      alt: "A dress from the Sable Muse dresses and jumpsuits collection",
     },
     {
-      label: "Plus Size",
-      href: "/plus-size",
-      image: "/images/products/dress-offwhite.webp",
-      alt: "Woman wearing a navy plus size dress",
-    },
-  ] satisfies MegaMenuFeatured[],
-}
-
-export const NEW_IN_MEGA_MENU = {
-  columns: [
-    {
-      title: "Category",
-      links: [
-        { label: "Shop All", href: "/new-in" },
-        { label: "Tops & Blouses", href: "/new-in/tops" },
-        { label: "Pants", href: "/new-in/pants" },
-        { label: "Dresses & Jumpsuits", href: "/new-in/dresses" },
-      ],
-    },
-    {
-      title: "Trending",
-      links: [
-        { label: "Plus Size", href: "/plus-size" },
-        { label: "Fall Collection", href: "/new-in/fall" },
-        { label: "Modiweek", href: "/modiweek" },
-      ],
-    },
-  ] satisfies MegaMenuColumn[],
-  featured: [
-    {
-      label: "Fall Collection",
-      href: "/new-in/fall",
-      image: "/images/new-in/fall-collection.png",
-      alt: "Woman in olive green dress from the fall collection",
-    },
-    {
-      label: "Blouses",
-      href: "/new-in/tops",
-      image: "/images/new-in/blouses.png",
-      alt: "Woman wearing a white blouse and olive pants",
-    },
-    {
-      label: "Dresses",
-      href: "/new-in/dresses",
-      image: "/images/new-in/dresses.png",
-      alt: "Woman wearing a black sleeveless dress",
-    },
-  ] satisfies MegaMenuFeatured[],
-}
-
-export const PLUS_SIZE_MEGA_MENU = {
-  columns: [
-    {
-      title: "Category",
-      links: [
-        { label: "Shop All", href: "/plus-size/shop-all" },
-        { label: "Tops & Blouses", href: "/plus-size/tops" },
-        { label: "Pants", href: "/plus-size/pants" },
-        { label: "Dresses & Jumpsuits", href: "/plus-size/dresses" },
-      ],
-    },
-  ] satisfies MegaMenuColumn[],
-  featured: [
-    {
-      label: "Pants",
-      href: "/plus-size/pants",
-      image: "/images/plus-size/pants.png",
-      alt: "Plus size pants look featuring patterned top and blue trousers",
-    },
-    {
-      label: "Dresses",
-      href: "/plus-size/dresses",
-      image: "/images/plus-size/dresses.png",
-      alt: "Plus size white sleeveless wrap dress",
-    },
-    {
-      label: "Blouses",
-      href: "/plus-size/tops",
-      image: "/images/plus-size/blouses.png",
-      alt: "Plus size black blouse with blue leggings",
+      label: "Matching Sets & Lounge",
+      href: "/collection/matching-sets-lounge",
+      image: SETS_IMAGE,
+      alt: "A matching set from the Sable Muse lounge collection",
     },
   ] satisfies MegaMenuFeatured[],
 }
@@ -148,29 +65,28 @@ export const PLUS_SIZE_MEGA_MENU = {
 export const SUSTAINABILITY_MEGA_MENU = {
   columns: [
     {
-      title: "Sustainability",
+      title: "Sable Muse",
       links: [
+        { label: "Our Story", href: "/sustainability" },
         { label: "Mission", href: "/sustainability/mission" },
-        { label: "Processing", href: "/sustainability/processing" },
-        { label: "Materials", href: "/sustainability/materials" },
-        { label: "Packaging", href: "/sustainability/packaging" },
-        { label: "Product Care", href: "/sustainability/product-care" },
-        { label: "Our Suppliers", href: "/sustainability/suppliers" },
+        { label: "Care & Shipping", href: "/sustainability/materials" },
+        { label: "FAQs", href: "/faq" },
+        { label: "Contact Us", href: "/contact-us" },
       ],
     },
   ] satisfies MegaMenuColumn[],
   featured: [
     {
-      label: "Mission",
-      href: "/sustainability/mission",
+      label: "Our Story",
+      href: "/sustainability",
       image: "/images/sustainability/lifestyle.png",
-      alt: "Woman in a linen dress standing in a minimalist natural interior",
+      alt: "Women's clothing from the Sable Muse collection",
     },
     {
-      label: "Materials",
+      label: "Care & Shipping",
       href: "/sustainability/materials",
-      image: "/images/sustainability/materials.png",
-      alt: "Sustainable linen fabric stacks with wooden thread spools and dried flowers",
+      image: TOPS_IMAGE,
+      alt: "A top from the Sable Muse collection",
     },
   ] satisfies MegaMenuFeatured[],
 }
@@ -208,20 +124,16 @@ export const NAV_ITEMS: NavItem[] = [
 export const FOOTER_LINKS = {
   about: [
     { label: "Collection", href: "/collection" },
-    { label: "Sustainability", href: "/sustainability" },
-    { label: "Privacy Policy", href: "/privacy-policy" },
-    { label: "Support System", href: "/support" },
-    { label: "Terms & Condition", href: "/terms" },
-    { label: "Copyright Notice", href: "/copyright" },
+    { label: "New Arrivals", href: "/collection/new-arrivals" },
+    { label: "Our Story", href: "/sustainability" },
   ],
   help: [
-    { label: "Orders & Shipping", href: "/shipping" },
-    { label: "Returns & Refunds", href: "/returns" },
+    { label: "Orders & Shipping", href: "/faq" },
     { label: "FAQs", href: "/faq" },
     { label: "Contact Us", href: "/contact-us" },
   ],
   club: [
-    { label: "Careers", href: "/careers" },
-    { label: "Visit Us", href: "/visit-us" },
+    { label: "Our Mission", href: "/sustainability/mission" },
+    { label: "Care & Shipping", href: "/sustainability/materials" },
   ],
 }

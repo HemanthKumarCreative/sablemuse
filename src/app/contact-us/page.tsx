@@ -6,11 +6,11 @@ import { Container } from "@/components/shared/container"
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Contact Modimal customer care by form, email, phone, or live chat for product questions and order support.",
+    "Email Sable Muse customer care about products, sizing, and orders in the United States.",
   openGraph: {
-    title: "Contact Us | Modimal",
+    title: "Contact Us | Sable Muse",
     description:
-      "Reach Modimal customer care — we aim to respond within 1–2 business days.",
+      "Reach Sable Muse at hello@sablemuse.shop. We aim to respond within one business day.",
   },
   alternates: {
     canonical: "/contact-us",
@@ -23,7 +23,7 @@ const jsonLd = {
   name: "Contact Us",
   url: "/contact-us",
   description:
-    "Contact Modimal customer care by form, email, phone, or live chat.",
+    "Email Sable Muse customer care about products, sizing, and United States orders.",
 }
 
 const ContactUsPage = () => {
@@ -54,23 +54,17 @@ const ContactUsPage = () => {
 
           <div className="mt-6 space-y-4 bg-muted p-5 text-sm leading-copy capitalize text-brand-navy md:mt-8 md:space-y-4 md:p-8 md:text-base md:normal-case">
             <p>
-              We Always Love Hearing From Our Customers! Please Do Not Hesitate
-              To Contact Us Should You Have Any Questions Regarding Our Products
-              And Sizing Recommendations Or Inquiries About Your Current Order.
-            </p>
-            <p>
-              Contact Our Customer Care Team Through The Contact Form Below,
-              Email Us At{" "}
+              Questions about a product, a size, or an order can come to us by
+              email. Write to{" "}
               <a
-                href="mailto:hello@modimal.com"
+                href="mailto:hello@sablemuse.shop"
                 className="text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:normal-case"
               >
-                Hello@Modimal.Com
-              </a>{" "}
-              Or Live Chat With Us Via Our Chat Widget On The Bottom Right Hand
-              Corner Of This Page.
+                hello@sablemuse.shop
+              </a>
+              . We are available Monday through Friday, 9 am to 5 pm Eastern
+              Time, and we aim to reply within one business day.
             </p>
-            <p>We Will Aim To Respond To You Within 1-2 Business Days.</p>
           </div>
 
           <ContactChannels />

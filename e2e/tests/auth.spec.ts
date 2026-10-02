@@ -33,7 +33,7 @@ test.describe("Authentication", () => {
     page,
   }) => {
     await gotoPath(page, "/login")
-    const loginImage = page.getByRole("img", { name: /Modimal model/i })
+    const loginImage = page.getByRole("img", { name: /Sable Muse outfit/i })
 
     if (isLargeDesktop(page)) {
       await expect(loginImage.first()).toBeVisible()

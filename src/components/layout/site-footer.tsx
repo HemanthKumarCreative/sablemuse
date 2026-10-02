@@ -59,7 +59,7 @@ export const SiteFooter = () => {
                   
                   <span>
                     By Submitting your email, you agree to receive advertising
-                    emails from Modimal.
+                    emails from Sable Muse.
                   </span>
                 </label>
               </form>

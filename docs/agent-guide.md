@@ -8,10 +8,10 @@ A headless storefront for a women's fashion shop.
 
 - Product grids, product detail, search, cart, and the checkout steps before payment read the **Shopify Storefront API**.
 - Sign-in uses the **Shopify Customer Account API** (hosted OAuth). There is no local user database.
-- Nav, FAQ, ModiWeek, sustainability, homepage tiles, and filter chrome are **static files** in `src/data`.
+- Nav, FAQ, the shop story, homepage tiles, and filter chrome are **static files** in `src/data`.
 - Payment happens on **Shopify hosted checkout**. This app never sees card data.
 
-The storefront name in layout metadata, the header wordmark, and the footer copyright is **Sable Muse**. Many headings, alt texts, and older pages still say **Modimal**. Change the brand only on the surface you were asked to change.
+Customer-facing copy is **Sable Muse**, for the United States, with prices in US dollars. `/modiweek` and `/plus-size` redirect to `/collection/new-arrivals`. Do not reintroduce Modimal copy or another brand's material statistics. Internal cookies (`modimal_cart_id` and the customer cookies) keep their names so existing carts and sessions stay intact.
 
 ## Stack
 
@@ -171,13 +171,11 @@ Every `page.tsx` is a server component. Client pieces are children.
 
 | Path | Data |
 | --- | --- |
-| `/` | Collection `new-arrivals` (3) plus `src/data/home`. `revalidate = 3600` |
-| `/shop-all` | Collection `all`, limit 24, plus `src/data/shop-all` |
-| `/collection` | Category tiles from `COLLECTION_MEGA_MENU`. 3 products from `new-arrivals` |
+| `/` | Collection `new-arrivals` and `matching-sets-lounge`, plus tiles from the live collections |
+| `/shop-all` | Collection `all`, limit 24, plus `src/data/shop-all`. Missing collection falls back to products |
+| `/collection` | Category tiles from `COLLECTION_MEGA_MENU`. Products from `new-arrivals` |
 | `/collection/[slug]` | `getCollectionProducts`. Filters from `shop-all.ts` |
-| `/new-in` | `NEW_IN_MEGA_MENU` plus 3 from `new-arrivals` |
-| `/plus-size` | `PLUS_SIZE_MEGA_MENU` plus 3 from `plus-size` |
-| `/plus-size/shop-all` | Collection `plus-size`, limit 24. Load More has no handler |
+| `/new-in`, `/plus-size`, `/plus-size/shop-all`, `/modiweek`, `/modiweek/[day]` | Redirect to `/collection/new-arrivals` |
 | `/product/[id]` | `getProduct(id)` then recommendations by GID, else `getProducts(4)`. Unknown handle → `notFound()` |
 | `/search?q=` | `searchProducts`. Empty query shows a prompt |
 | `/cart` | Cart context |
@@ -186,16 +184,15 @@ Every `page.tsx` is a server component. Client pieces are children.
 | `/login`, `/register` | Link to `/api/auth/login` |
 | `/contact-us` | Static. Form only sets local submitted state |
 | `/faq` | `FAQ_ITEMS` in `src/data/faq.ts` |
-| `/modiweek` | Redirects to `/modiweek/{MODIWEEK_DEFAULT_SLUG}` |
-| `/modiweek/[day]` | `src/data/modiweek.ts`. Unknown slug → `notFound()`. `shopTheLook` is two hardcoded demo products |
-| `/sustainability`, `/sustainability/materials`, `/sustainability/mission` | `src/data/sustainability.ts` |
+| `/modiweek` | Redirects to `/collection/new-arrivals` |
+| `/sustainability`, `/sustainability/materials`, `/sustainability/mission` | Sable Muse shop story in `src/data/sustainability.ts` |
 
 ## Static data vs live data
 
 Still the source of truth:
 
 - `src/data/navigation.ts` — header, mobile nav, footer links, landing-page mega-menu images
-- `src/data/home.ts` — homepage collection tiles, ModiWeek strip, follow-us images
+- `src/data/home.ts` — homepage collection tile layout. Product images come from the live collections.
 - `src/data/faq.ts`, `src/data/modiweek.ts`, `src/data/sustainability.ts`
 - Filter and hero copy in `src/data/search.ts`, `shop-all.ts`, `plus-size.ts`
 

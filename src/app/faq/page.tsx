@@ -7,11 +7,11 @@ import { FAQ_ITEMS } from "@/data/faq"
 export const metadata: Metadata = {
   title: "FAQs",
   description:
-    "Answers to common Modimal questions about shipping, orders, sizing, payment, product care, and sustainability.",
+    "Answers to common Sable Muse questions about US shipping, orders, sizing, payment, and product care.",
   openGraph: {
-    title: "FAQs | Modimal",
+    title: "FAQs | Sable Muse",
     description:
-      "Find help with orders, shipping, sizing, payment methods, and how Modimal works with suppliers.",
+      "Find help with Sable Muse orders, US shipping, sizing, and payments in US dollars.",
   },
   alternates: {
     canonical: "/faq",

@@ -5,7 +5,7 @@ alwaysApply: true
 
 # shop-ui
 
-Headless fashion storefront. Chrome and root metadata say **Sable Muse**. A lot of page copy still says Modimal. Do not mass-rename one brand to the other unless asked.
+Headless fashion storefront for **Sable Muse** (`sablemuse.shop`). Customer-facing copy is Sable Muse, United States shipping, and US dollars. Do not reintroduce Modimal or ModiWeek. Internal cart and customer cookies still use the older `modimal_` names.
 
 Stack: Next.js 16 App Router, React 19, Tailwind v4, shadcn style `base-nova` on **Base UI** (`@base-ui/react`), not Radix. Alias `@/*` → `src/*`.
 
@@ -16,7 +16,7 @@ Before changing Next.js APIs, read `node_modules/next/dist/docs/`. Before non-tr
 - `src/app` — routes. Pages are Server Components. No `middleware.ts`, `loading.tsx`, `error.tsx`, or `not-found.tsx`.
 - `src/lib/shopify` — Storefront GraphQL, mappers, cart server actions.
 - `src/lib/customer` + `src/app/api/auth` — Customer Account OAuth. Login and register both hit `/api/auth/login`.
-- `src/data` — nav, FAQ, ModiWeek, sustainability, filter chrome, homepage tiles. Not the product catalog.
+- `src/data` — nav, FAQ, sustainability story, filter chrome, homepage tiles. Not the product catalog. `/modiweek` and `/plus-size` redirect to `/collection/new-arrivals`.
 - `src/types/commerce.ts` — `Product`, `ProductDetail`, `CartSummary`.
 - `src/components/ui` — primitives. App UI is the other folders under `src/components`.
 

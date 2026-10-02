@@ -13,7 +13,7 @@ import type { CollectionRouteKey } from "@/lib/shopify/collections"
 
 export const metadata: Metadata = {
   title: "Collection",
-  description: "Shop Modimal collections.",
+  description: "Shop Sable Muse collections. Prices are in US dollars.",
 }
 
 const CollectionSlugPage = async ({
@@ -35,7 +35,7 @@ const CollectionSlugPage = async ({
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: categoryName,
-    description: `Shop Modimal ${categoryName}`,
+    description: `Shop ${categoryName} at Sable Muse`,
     url: `/collection/${slug}`,
     mainEntity: {
       "@type": "ItemList",

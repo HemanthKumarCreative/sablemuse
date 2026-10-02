@@ -6,11 +6,11 @@ import { Container } from "@/components/shared/container"
 export const metadata: Metadata = {
   title: "Create Account",
   description:
-    "Create your Modimal account to shop women’s clothing, track orders, and save favorites.",
+    "Create your Sable Muse account to shop women’s clothing, track orders, and save favorites.",
   openGraph: {
-    title: "Create Account | Modimal",
+    title: "Create Account | Sable Muse",
     description:
-      "Join Modimal — register for a cleaner, simpler way to shop women’s essentials.",
+      "Join Sable Muse — register to shop women’s clothing in the United States.",
     images: ["/images/auth/register.jpg"],
   },
   alternates: {
@@ -22,7 +22,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "Create Account",
-  description: "Register for a Modimal account",
+  description: "Register for a Sable Muse account",
   url: "/register",
 }
 
@@ -42,7 +42,7 @@ const RegisterPage = () => {
         <div className="relative aspect-[390/280] w-full overflow-hidden bg-muted sm:aspect-[16/10] lg:hidden">
           <Image
             src="/images/auth/register.jpg"
-            alt="Modimal model in a white shirt and dark trousers seated by a window"
+            alt="Sable Muse outfit of a white shirt and dark trousers"
             fill
             priority
             sizes="100vw"
@@ -55,7 +55,7 @@ const RegisterPage = () => {
             <div className="relative hidden min-h-[720px] overflow-hidden bg-muted lg:block">
               <Image
                 src="/images/auth/register.jpg"
-                alt="Modimal model in a white shirt and dark trousers seated by a window"
+                alt="Sable Muse outfit of a white shirt and dark trousers"
                 fill
                 priority
                 sizes="50vw"
