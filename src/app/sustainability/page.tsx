@@ -45,7 +45,7 @@ const SustainabilityPage = () => {
         <Container>
           <h1
             id="sustainability-heading"
-            className="mt-10 text-[2rem] font-extrabold tracking-tight text-brand-navy md:mt-16 md:text-[2.5rem]"
+            className="heading-page mt-10 md:mt-16"
           >
             Sustainability
           </h1>
@@ -76,7 +76,7 @@ const SustainabilityPage = () => {
         <Container>
           <h2
             id="sustainable-materials-heading"
-            className="text-[1.75rem] font-bold text-brand-navy md:text-[2rem]"
+            className="heading-section"
           >
             Our Sustainable Materials
           </h2>
@@ -85,7 +85,7 @@ const SustainabilityPage = () => {
             {SUSTAINABILITY_MATERIALS.map((item) => (
               <article key={item.title}>
                 <h3 className="text-lg font-semibold text-brand-navy">{item.title}</h3>
-                <p className="mt-3 text-sm leading-[1.8] text-brand-navy-muted md:text-base">
+                <p className="mt-3 text-sm leading-copy text-brand-navy-muted md:text-base">
                   {item.body}
                 </p>
               </article>
@@ -116,7 +116,7 @@ const SustainabilityPage = () => {
           <div className="mt-8">
             <Button
               render={<Link href="/sustainability/materials" />}
-              className="h-12 rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90"
+              size="xl"
             >
               Explore Materials
             </Button>
@@ -143,24 +143,25 @@ const SustainabilityPage = () => {
             <div>
               <h2
                 id="production-ethics-heading"
-                className="text-[1.75rem] font-bold text-brand-navy md:text-[2rem]"
+                className="heading-section"
               >
                 Production &amp; Ethics
               </h2>
-              <p className="mt-5 text-sm leading-[1.8] text-brand-navy-muted md:text-base">
+              <p className="mt-5 text-sm leading-copy text-brand-navy-muted md:text-base">
                 We partner with suppliers who share our standards for fair wages,
                 safe workplaces, and transparent processes. From sampling to final
                 stitch, every stage is chosen to protect people and planet —
                 without compromising the quiet luxury of the finished piece.
               </p>
-              <p className="mt-4 text-sm leading-[1.8] text-brand-navy-muted md:text-base">
+              <p className="mt-4 text-sm leading-copy text-brand-navy-muted md:text-base">
                 Our mission is simple: design clothing that lasts, travels
                 lightly, and feels as good to wear as it is to stand behind.
               </p>
               <Button
                 render={<Link href="/sustainability/mission" />}
-                className="mt-8 h-12 rounded-none border border-ink bg-transparent px-8 text-base font-medium capitalize text-brand-navy hover:bg-muted"
                 variant="outline"
+                size="xl"
+                className="mt-8 border-ink bg-transparent font-medium normal-case tracking-normal text-brand-navy capitalize hover:bg-muted"
               >
                 Our Mission
               </Button>
@@ -196,7 +197,7 @@ const SustainabilityPage = () => {
         <Container>
           <h2
             id="sustainability-topics-heading"
-            className="mt-12 text-[1.75rem] font-bold text-brand-navy md:mt-16 md:text-[2rem]"
+            className="heading-section mt-12 md:mt-16"
           >
             Explore Topics
           </h2>
@@ -205,7 +206,7 @@ const SustainabilityPage = () => {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="flex h-14 items-center border border-brand-border px-5 text-base capitalize text-brand-navy transition-colors hover:border-brand hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                  className="flex h-14 items-center border border-brand-border px-5 text-base capitalize text-brand-navy underline-offset-2 transition-colors hover:border-ink hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   {link.label}
                 </Link>

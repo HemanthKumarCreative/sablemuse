@@ -17,7 +17,7 @@ export const MegaMenuColumns = ({
     <div className={cn("grid grid-cols-3 gap-10 lg:gap-16", className)}>
       {columns.map((column) => (
         <div key={column.title}>
-          <p className="mb-6 text-lg capitalize leading-[1.8] text-brand-navy md:text-[18px]">
+          <p className="mb-6 text-lg capitalize leading-copy text-brand-navy">
             {column.title}
           </p>
           <ul className="space-y-2">
@@ -26,7 +26,7 @@ export const MegaMenuColumns = ({
                 <Link
                   href={link.href}
                   onClick={onNavigate}
-                  className="block text-lg capitalize leading-[1.8] text-brand-navy-muted transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:text-[18px]"
+                  className="block text-lg capitalize leading-copy text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   {link.label}
                 </Link>

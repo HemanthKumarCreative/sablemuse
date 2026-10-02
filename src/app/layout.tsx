@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Source_Code_Pro, Source_Sans_3 } from "next/font/google"
+import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google"
 import { CartProvider } from "@/components/cart/cart-provider"
 import { WishlistProvider } from "@/components/wishlist/wishlist-provider"
 import { SiteFooter } from "@/components/layout/site-footer"
@@ -9,14 +9,16 @@ import "./globals.css"
 
 const sansVar = Source_Sans_3({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
   variable: "--font-sans-var",
   display: "swap",
 })
 
-const geistMono = Source_Code_Pro({
+const serifVar = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-serif-var",
   display: "swap",
 })
 
@@ -84,7 +86,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sansVar.variable} ${geistMono.variable} h-full tracking-tighter`}
+      className={`${sansVar.variable} ${serifVar.variable} h-full`}
     >
       <body className="min-h-full flex flex-col font-sans text-brand-navy antialiased selection:bg-brand-light/30">
         <WishlistProvider>

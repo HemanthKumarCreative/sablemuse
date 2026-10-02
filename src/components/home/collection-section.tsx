@@ -15,7 +15,6 @@ export const CollectionSection = ({ collections }: CollectionSectionProps) => {
       <Container>
         <SectionHeader
           title="Collection"
-          titleClassName="font-sans"
           titleId="collection-heading"
         />
         <div className="columns-2 gap-3 sm:gap-4 md:gap-6 [column-fill:_balance]">
@@ -43,7 +42,8 @@ export const CollectionSection = ({ collections }: CollectionSectionProps) => {
               <Button
                 tabIndex={-1}
                 aria-hidden="true"
-                className="pointer-events-none absolute right-6 bottom-8 hidden rounded-none bg-white px-10 py-2.5 text-base font-medium capitalize text-brand-navy hover:bg-white md:inline-flex"
+                size="xl"
+                className="pointer-events-none absolute right-6 bottom-8 hidden h-auto bg-background px-10 py-2.5 font-medium normal-case tracking-normal text-ink capitalize hover:bg-muted md:inline-flex"
               >
                 {item.name}
               </Button>

@@ -38,8 +38,8 @@ export const DesktopNav = ({
               <Link
                 href={item.href}
                 className={cn(
-                  "relative text-sm font-medium text-brand-navy-muted transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-                  isOpen && "text-brand"
+                  "relative text-sm font-medium tracking-[0.06em] text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  isOpen && "text-brand-navy underline decoration-1 underline-offset-8"
                 )}
                 aria-expanded={hasMegaMenu ? isOpen : undefined}
                 aria-haspopup={hasMegaMenu ? "true" : undefined}

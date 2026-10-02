@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { getCheckoutUrlAction } from "@/lib/shopify/cart/actions"
 import { cn } from "cn"
@@ -55,22 +56,25 @@ export const CheckoutPaymentForm = ({
           aria-label="Accepted payment methods"
         >
           {PAYMENT_BRANDS.map((brand) => (
-            <li
-              key={brand}
-              className="inline-flex h-9 items-center border border-brand-border bg-white px-3 text-xs font-semibold tracking-wide text-brand-navy uppercase"
-            >
-              {brand}
+            <li key={brand}>
+              <Badge
+                variant="outline"
+                className="h-9 px-3 text-xs font-semibold tracking-wide uppercase"
+              >
+                {brand}
+              </Badge>
             </li>
           ))}
         </ul>
 
-        {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+        {error ? <p className="mt-4 text-sm text-destructive">{error}</p> : null}
 
         <Button
           type="button"
           onClick={() => void handlePay()}
           disabled={isSubmitting}
-          className="mt-8 h-12 w-full rounded-none bg-brand text-base font-medium capitalize text-white hover:bg-brand/90"
+          size="xl"
+          className="mt-8 w-full"
         >
           {isSubmitting ? "Redirecting..." : "Continue To Secure Payment"}
         </Button>
@@ -84,7 +88,7 @@ export const CheckoutPaymentForm = ({
         <div className="mt-8">
           <Link
             href="/checkout/shipping"
-            className="text-sm text-brand-navy-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:text-base"
+            className="text-sm text-brand-navy-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-base"
           >
             &lt; Return To Shipping
           </Link>

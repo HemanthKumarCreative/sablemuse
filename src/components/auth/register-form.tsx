@@ -11,7 +11,7 @@ type RegisterFormProps = {
 export const RegisterForm = ({ className }: RegisterFormProps) => {
   return (
     <div className={cn("flex w-full flex-col justify-center", className)}>
-      <h1 className="text-center text-[2rem] font-semibold capitalize leading-[1.4] text-brand-navy lg:text-left md:text-[2.5rem]">
+      <h1 className="heading-page text-center capitalize lg:text-left">
         Create Account
       </h1>
       <p className="mt-4 text-center text-sm text-brand-navy-muted lg:text-left md:text-base">
@@ -21,16 +21,17 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
 
       <Button
         render={<Link href="/api/auth/login" />}
-        className="mt-8 h-12 w-full rounded-none bg-brand text-base font-medium capitalize text-white hover:bg-brand/90"
+        size="xl"
+        className="mt-8 w-full"
       >
         Continue With Shopify
       </Button>
 
-      <p className="mt-6 text-center text-sm capitalize leading-[1.8] text-brand-navy md:text-base">
+      <p className="mt-6 text-center text-sm capitalize leading-copy text-brand-navy md:text-base">
         Already Have An Account?{" "}
         <Link
           href="/login"
-          className="font-semibold underline underline-offset-2 transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="font-semibold text-brand-navy underline underline-offset-2 transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Log In
         </Link>
@@ -40,7 +41,7 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
         By continuing you agree to our{" "}
         <Link
           href="/faq"
-          className="underline underline-offset-2 transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="text-brand-navy underline underline-offset-2 transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Terms & Conditions
         </Link>{" "}

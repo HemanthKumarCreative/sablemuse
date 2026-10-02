@@ -37,7 +37,7 @@ export const SearchFiltersMobile = ({
             render={
               <Button
                 variant="ghost"
-                className="h-auto gap-2 rounded-none px-3 py-2 text-base font-medium text-brand-navy hover:bg-transparent hover:text-brand"
+                className="h-auto gap-2 rounded-none px-3 py-2 text-base font-medium text-brand-navy underline-offset-2 hover:bg-transparent hover:underline"
               />
             }
           >
@@ -51,9 +51,9 @@ export const SearchFiltersMobile = ({
           showCloseButton={false}
           className="inset-x-0 gap-0 overflow-hidden rounded-none border-t border-brand-border p-0 opacity-100 data-starting-style:opacity-100 data-[side=bottom]:inset-x-0 data-[side=bottom]:h-[min(94dvh,920px)] data-[side=bottom]:max-h-[94dvh]"
         >
-          <div className="flex h-full min-h-0 flex-col bg-white">
+          <div className="flex h-full min-h-0 flex-col bg-background">
             <div className="flex shrink-0 items-center justify-between px-5 pt-5 pb-2">
-              <SheetTitle className="font-sans text-[2rem] font-semibold capitalize leading-[1.4] text-brand-navy">
+              <SheetTitle className="heading-section capitalize">
                 Filters
               </SheetTitle>
               <SheetClose
@@ -74,7 +74,7 @@ export const SearchFiltersMobile = ({
               {showActiveChips ? (
                 <SearchActiveChips
                   filters={filters}
-                  className="mb-5 flex-row flex-wrap items-center justify-start gap-2 [&_button]:h-8 [&_button]:min-w-0 [&_button]:bg-[#d6dcd4] [&_button]:px-3"
+                  className="mb-5 flex-row flex-wrap items-center justify-start gap-2 [&_button]:h-8 [&_button]:min-w-0 [&_button]:bg-muted [&_button]:px-3"
                 />
               ) : null}
 
@@ -91,7 +91,7 @@ export const SearchFiltersMobile = ({
                 render={
                   <button
                     type="button"
-                    className="justify-self-start text-base font-normal capitalize text-brand-navy transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                    className="justify-self-start text-base font-normal capitalize text-brand-navy underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   />
                 }
               >
@@ -99,7 +99,7 @@ export const SearchFiltersMobile = ({
               </SheetClose>
               <SheetClose
                 render={
-                  <Button className="h-12 w-full justify-self-end rounded-none bg-brand px-6 text-sm font-medium capitalize text-white hover:bg-brand/90" />
+                  <Button size="xl" className="w-full justify-self-end px-6" />
                 }
               >
                 Apply Filter

@@ -33,8 +33,7 @@ export const WriteUsDialog = ({
       <DialogContent
         showCloseButton={false}
         className={cn(
-          "max-h-[min(90vh,720px)] w-[calc(100%-2rem)] max-w-[380px] gap-0 overflow-y-auto rounded-none border-0 bg-white p-0 ring-0 sm:max-w-[400px]",
-          "shadow-[0_16px_48px_rgba(12,12,12,0.24)]",
+          "max-h-[min(90vh,720px)] w-[calc(100%-2rem)] max-w-[380px] gap-0 overflow-y-auto rounded-none border-0 bg-background p-0 ring-0 sm:max-w-[400px]",
           className
         )}
         overlayClassName="bg-ink/70 supports-backdrop-filter:backdrop-blur-[1px]"

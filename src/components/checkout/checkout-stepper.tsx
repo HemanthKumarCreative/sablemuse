@@ -41,7 +41,7 @@ export const CheckoutStepper = ({
                   href={step.href}
                   aria-current={isCurrent ? "step" : undefined}
                   className={cn(
-                    "capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+                    "capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     isCurrent
                       ? "font-semibold text-brand-navy"
                       : "text-brand-navy-muted hover:text-brand-navy"

@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Search } from "lucide-react"
+import { Container } from "@/components/shared/container"
 import { Input } from "@/components/ui/input"
 import { cn } from "cn"
 
@@ -66,16 +67,16 @@ export const SearchOverlay = ({
   return (
     <div
       className={cn(
-        "absolute inset-x-0 top-full z-50 border-t border-brand-border bg-white shadow-[0_16px_40px_rgba(12,12,12,0.08)]",
+        "absolute inset-x-0 top-full z-50 border-t border-brand-border bg-background",
         className
       )}
       role="search"
       aria-label="Site search"
     >
-      <div className="mx-auto flex h-[96px] w-full max-w-[1240px] items-start px-4 pt-6 sm:px-5 md:h-[152px] md:px-8 md:pt-8 lg:px-10">
+      <Container className="flex h-24 items-start pt-6 md:h-38 md:pt-8">
         <form
           onSubmit={handleSubmit}
-          className="relative flex w-full items-center border-b border-[#adadad] pb-3"
+          className="relative flex w-full items-center border-b border-brand-border pb-3"
         >
           <label htmlFor={inputId} className="sr-only">
             Search products
@@ -93,10 +94,10 @@ export const SearchOverlay = ({
             placeholder="Search"
             autoComplete="off"
             defaultValue=""
-            className="h-11 rounded-none border-0 bg-transparent py-0 pr-2 pl-9 text-lg capitalize leading-[1.8] text-brand-navy shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 md:h-14 md:pl-10 md:text-[20px]"
+            className="h-11 rounded-none border-0 bg-transparent py-0 pr-2 pl-9 text-lg capitalize leading-copy text-brand-navy shadow-none placeholder:text-brand-navy-muted focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ring md:h-14 md:pl-10 md:text-xl"
           />
         </form>
-      </div>
+      </Container>
     </div>
   )
 }

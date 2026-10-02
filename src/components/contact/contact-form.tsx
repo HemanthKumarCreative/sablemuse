@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { cn } from "cn"
 
 const fieldClassName =
-  "h-12 rounded-none border-0 border-b border-brand-border bg-transparent px-0 text-base text-brand-navy placeholder:text-brand-navy-muted focus-visible:border-brand focus-visible:ring-0"
+  "h-12 rounded-none border-0 border-b border-brand-border bg-transparent px-0 text-base text-brand-navy placeholder:text-brand-navy-muted focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ring"
 
 const SUBJECT_OPTIONS = [
   "Order Inquiry",
@@ -190,7 +190,7 @@ export const ContactForm = ({
           checked={acceptedPolicy}
           onCheckedChange={(checked) => setAcceptedPolicy(checked === true)}
           required
-          className="mt-0.5 size-4 rounded-none border-brand-border data-checked:border-brand data-checked:bg-brand"
+          className="mt-0.5 size-4 rounded-none border-brand-border data-checked:border-ink data-checked:bg-ink data-checked:text-background"
         />
         <Label
           htmlFor={policyId}
@@ -204,7 +204,7 @@ export const ContactForm = ({
               I Have Read And Understood The{" "}
               <Link
                 href="/privacy-policy"
-                className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Contact Us Privacy And Policy
               </Link>
@@ -215,7 +215,7 @@ export const ContactForm = ({
               I have read and understood the{" "}
               <Link
                 href="/privacy-policy"
-                className="text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 contact us privacy and policy
               </Link>
@@ -226,7 +226,7 @@ export const ContactForm = ({
       </div>
 
       {isSubmitted ? (
-        <p className="mt-4 text-sm text-brand" role="status">
+        <p className="mt-4 text-sm text-brand-navy" role="status">
           Thanks — your message is on its way. We&apos;ll reply within 1–2
           business days.
         </p>
@@ -235,10 +235,8 @@ export const ContactForm = ({
       <div className={cn("mt-8", isModal ? "flex" : "flex justify-end")}>
         <Button
           type="submit"
-          className={cn(
-            "h-12 rounded-none bg-brand text-base font-medium capitalize text-white hover:bg-brand/90",
-            isModal ? "w-full" : "px-16"
-          )}
+          size="xl"
+          className={cn(isModal ? "w-full" : "px-16")}
         >
           Send
         </Button>

@@ -47,7 +47,7 @@ const SustainabilityMissionPage = () => {
       />
 
       <section aria-labelledby="mission-heading" className="pb-16 md:pb-24">
-        <div className="border-b border-brand-border bg-[#f4f5f3] lg:bg-transparent lg:border-0">
+        <div className="border-b border-brand-border bg-muted lg:bg-transparent lg:border-0">
           <Container>
             <Breadcrumbs
               className="py-3 lg:mt-8 lg:py-0"
@@ -80,11 +80,11 @@ const SustainabilityMissionPage = () => {
         <Container>
           <h1
             id="mission-heading"
-            className="mt-8 text-[1.75rem] font-bold tracking-tight text-brand-navy md:mt-12 md:text-[2.25rem]"
+            className="heading-page mt-8 md:mt-12"
           >
             Sustainability At Modimal
           </h1>
-          <p className="mt-4 max-w-3xl text-sm leading-[1.8] capitalize text-brand-navy-muted md:text-base md:normal-case">
+          <p className="mt-4 max-w-3xl text-sm leading-copy capitalize text-brand-navy-muted md:text-base md:normal-case">
             {MISSION_INTRO}
           </p>
 
@@ -129,14 +129,14 @@ const SustainabilityMissionPage = () => {
             <div className="mt-8 flex justify-center">
               <Button
                 render={<Link href="/sustainability/suppliers" />}
-                className="h-12 rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90"
+                size="xl"
               >
                 Our Suppliers
               </Button>
             </div>
           </div>
 
-          <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-[1.8] capitalize text-brand-navy md:mt-16 md:text-base">
+          <p className="mx-auto mt-12 max-w-3xl text-center text-sm leading-copy capitalize text-brand-navy md:mt-16 md:text-base">
             {MISSION_STATEMENT}
           </p>
         </Container>

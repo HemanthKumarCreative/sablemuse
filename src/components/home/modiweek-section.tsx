@@ -22,7 +22,6 @@ export const ModiWeekSection = ({ days }: ModiWeekSectionProps) => {
         <SectionHeader
           title="ModiWeek"
           href="/modiweek"
-          titleClassName="font-sans"
           titleId="modiweek-heading"
         />
 
@@ -31,7 +30,7 @@ export const ModiWeekSection = ({ days }: ModiWeekSectionProps) => {
             <article key={item.day}>
               <Link
                 href={`/modiweek/${daySlug(item.day)}`}
-                className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label={`View ModiWeek ${item.day}`}
               >
                 <div className="relative aspect-[3/4] overflow-hidden bg-muted">
@@ -62,7 +61,7 @@ export const ModiWeekSection = ({ days }: ModiWeekSectionProps) => {
               >
                 <Link
                   href={`/modiweek/${daySlug(item.day)}`}
-                  className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                  className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   aria-label={`View ModiWeek ${item.day}`}
                 >
                   <div className="relative aspect-[3/4] overflow-hidden bg-muted">

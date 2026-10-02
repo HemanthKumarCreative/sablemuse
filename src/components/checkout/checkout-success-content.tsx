@@ -17,20 +17,20 @@ export const CheckoutSuccessContent = () => {
       <Container>
         <div className="mx-auto flex max-w-2xl flex-col items-center px-2 text-center">
           <div
-            className="flex size-[88px] items-center justify-center rounded-full bg-brand md:size-24"
+            className="flex size-[88px] items-center justify-center rounded-none bg-ink md:size-24"
             aria-hidden="true"
           >
             <Check
-              className="size-10 text-white md:size-12"
+              className="size-10 text-background md:size-12"
               strokeWidth={2.5}
             />
           </div>
 
-          <h1 className="mt-8 text-[2rem] font-semibold capitalize leading-tight text-brand md:text-[2.5rem]">
+          <h1 className="heading-page mt-8 capitalize leading-tight">
             Payment Successful
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-[1.8] capitalize text-brand-navy md:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-copy capitalize text-brand-navy md:text-lg">
             Thank You For Choosing Modimal, Your Order Will Be Generated Based
             On Your Delivery Request.
           </p>
@@ -46,7 +46,7 @@ export const CheckoutSuccessContent = () => {
             <p>
               <a
                 href="tel:+19294603208"
-                className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 +1(929)460-3208
               </a>
@@ -55,7 +55,7 @@ export const CheckoutSuccessContent = () => {
             <p>
               <a
                 href="mailto:hello@modimal.com"
-                className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Hello@Modimal.Com
               </a>

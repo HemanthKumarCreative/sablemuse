@@ -76,7 +76,11 @@ const ProductPage = async ({ params }: ProductPageProps) => {
       "@type": "Offer",
       priceCurrency: product.currencyCode ?? "USD",
       price: product.price,
-      availability: "https://schema.org/InStock",
+      availability: (product.variants ?? []).some(
+        (variant) => variant.availableForSale
+      )
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
       url: `/product/${product.id}`,
     },
   }
@@ -143,7 +147,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
             title="You May Also Like"
             titleId="related-products-heading"
             className="mt-0"
-            titleClassName="text-[1.75rem] font-bold md:text-[2.1rem]"
+            titleClassName="heading-section"
           />
           <ScrollCarousel
             itemCount={related.length}

@@ -12,7 +12,7 @@ type LoginFormProps = {
 export const LoginForm = ({ className, error }: LoginFormProps) => {
   return (
     <div className={cn("flex w-full flex-col justify-center", className)}>
-      <h1 className="text-center text-[2rem] font-semibold capitalize leading-[1.4] text-brand-navy md:text-[2.5rem]">
+      <h1 className="heading-page text-center capitalize">
         Log In
       </h1>
       <p className="mt-4 text-center text-sm text-brand-navy-muted md:text-base">
@@ -20,7 +20,7 @@ export const LoginForm = ({ className, error }: LoginFormProps) => {
       </p>
 
       {error ? (
-        <p className="mt-4 text-center text-sm text-red-600" role="alert">
+        <p className="mt-4 text-center text-sm text-destructive" role="alert">
           {error === "auth_not_configured"
             ? "Customer Account API is not configured yet."
             : "Unable to sign in. Please try again."}
@@ -29,16 +29,17 @@ export const LoginForm = ({ className, error }: LoginFormProps) => {
 
       <Button
         render={<Link href="/api/auth/login" />}
-        className="mt-8 h-12 w-full rounded-none bg-brand text-base font-medium capitalize text-white hover:bg-brand/90"
+        size="xl"
+        className="mt-8 w-full"
       >
         Continue With Shopify
       </Button>
 
-      <p className="mt-8 text-center text-sm capitalize leading-[1.8] text-brand-navy md:text-base">
+      <p className="mt-8 text-center text-sm capitalize leading-copy text-brand-navy md:text-base">
         New To Modimal?{" "}
         <Link
           href="/register"
-          className="font-medium text-brand-navy-muted transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="font-medium text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Create An Account
         </Link>

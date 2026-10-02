@@ -21,7 +21,7 @@ const COUNTRY_CODES: Array<{ label: string; code: string }> = [
 ]
 
 const fieldClassName =
-  "h-12 rounded-none border-brand-border bg-white px-4 text-base text-brand-navy placeholder:text-brand-navy-muted focus-visible:border-brand focus-visible:ring-brand/30 md:text-base"
+  "h-12 rounded-none border-brand-border bg-background px-4 text-base text-brand-navy placeholder:text-brand-navy-muted"
 
 type CheckoutInfoFormProps = {
   className?: string
@@ -96,7 +96,7 @@ export const CheckoutInfoForm = ({
           Have An Account?{" "}
           <Link
             href="/login"
-            className="text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Log In
           </Link>
@@ -128,7 +128,7 @@ export const CheckoutInfoForm = ({
           id={newsId}
           checked={emailNews}
           onCheckedChange={(checked) => setEmailNews(checked === true)}
-          className="size-4 rounded-none border-brand-border data-checked:border-brand data-checked:bg-brand"
+          className="size-4 rounded-none border-brand-border data-checked:border-ink data-checked:bg-ink data-checked:text-background"
         />
         <Label htmlFor={newsId} className="text-sm font-normal text-brand-navy">
           Email Me With News And Offers
@@ -304,26 +304,27 @@ export const CheckoutInfoForm = ({
           id={saveId}
           checked={saveInfo}
           onCheckedChange={(checked) => setSaveInfo(checked === true)}
-          className="size-4 rounded-none border-brand-border data-checked:border-brand data-checked:bg-brand"
+          className="size-4 rounded-none border-brand-border data-checked:border-ink data-checked:bg-ink data-checked:text-background"
         />
         <Label htmlFor={saveId} className="text-sm font-normal text-brand-navy">
           Save This Information For Next Time
         </Label>
       </div>
 
-      {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="mt-4 text-sm text-destructive">{error}</p> : null}
 
       <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row-reverse sm:items-center sm:justify-between">
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-12 w-full rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90 sm:w-auto sm:min-w-[220px]"
+          size="xl"
+          className="w-full sm:w-auto sm:min-w-[220px]"
         >
           {isSubmitting ? "Saving..." : "Continue To Shipping"}
         </Button>
         <Link
           href="/cart"
-          className="text-center text-sm text-brand-navy-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-left md:text-base"
+          className="text-center text-sm text-brand-navy-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-left md:text-base"
         >
           &lt; Return To Cart
         </Link>

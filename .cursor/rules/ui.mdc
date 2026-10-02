@@ -8,7 +8,7 @@ alwaysApply: false
 
 `"use client"` only when the file needs state, events, or context. Pages stay server components and pass fetched data into client children.
 
-`Container` is `max-w-[1240px]`. Tokens in `src/app/globals.css`: brand `#533afd` (`--brand`, also `brand-purple` on `Button`), ink/navy `#061b31`, footer `#1c1e54`. Fonts: Source Sans 3 (`--font-sans-var`), Source Code Pro. Button variants come from `src/components/ui/button.tsx` (`default`, `outline`, `secondary`, `ghost`, `destructive`, `link`). `cn` is the `cn` package, re-exported by `src/lib/utils.ts`.
+`Container` is `max-w-modimal` (`--container-modimal: 1240px`). Tokens in `src/app/globals.css`: paper `#FDFBF7`, sable ink `#1C1A17` (`--ink`, `--brand-navy`), muted ink `#7B736B` (`--ink-muted`, `--muted-foreground`, `--brand-slate`; 4.5:1 on paper), rosewood CTA `#A87C7C` (`--brand`, `--primary`; hover `#8F6565`), taupe border `#E1DCD6`, olive `#5F6E50` (sustainability chips only). Fonts: Source Sans 3 (`--font-sans-var`) for UI; Cormorant Garamond (`--font-serif-var`) for wordmark (`tracking-wordmark`) and `.heading-page` / `.heading-section`. Body copy leading is `leading-copy`. Eyebrow tracking is `tracking-eyebrow`. Radius is 0, except color swatches and carousel dots, which stay circles. Focus rings are `focus-visible:ring-2 focus-visible:ring-ring`. Rosewood is fills only — links stay sable (`hover:text-brand-navy`). Button variants come from `src/components/ui/button.tsx` (`default`, `outline`, `secondary`, `ghost`, `destructive`, `link`), with `size="xl"` (`h-12`) for storefront CTAs. `cn` is the `cn` package, re-exported by `src/lib/utils.ts`.
 
 ProductCard links to `/product/${product.id}`. The heart on the card is decorative. Wishlist toggles live on the purchase panel.
 

@@ -40,7 +40,7 @@ const FaqPage = () => {
       />
 
       <section aria-labelledby="faq-heading" className="pb-16 md:pb-24">
-        <div className="border-b border-brand-border bg-[#f4f5f3] lg:bg-transparent lg:border-0">
+        <div className="border-b border-brand-border bg-muted lg:bg-transparent lg:border-0">
           <Container>
             <Breadcrumbs
               className="py-3 lg:mt-8 lg:py-0"
@@ -52,7 +52,7 @@ const FaqPage = () => {
         <Container>
           <h1
             id="faq-heading"
-            className="mt-8 text-[1.75rem] font-bold tracking-tight text-brand-navy md:mt-10 md:text-[2.5rem] md:font-extrabold"
+            className="heading-page mt-8 md:mt-10"
           >
             FAQs
           </h1>

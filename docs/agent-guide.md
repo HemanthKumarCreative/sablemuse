@@ -67,7 +67,7 @@ There is no `src/hooks` folder. `components.json` still aliases `@/hooks`.
 
 ## Provider tree
 
-`src/app/layout.tsx` is an async Server Component. It loads Source Sans 3 (`--font-sans-var`) and Source Code Pro (`--font-geist-mono`), then:
+`src/app/layout.tsx` is an async Server Component. It loads Source Sans 3 (`--font-sans-var`) and Cormorant Garamond (`--font-serif-var`), then:
 
 ```
 html > body
@@ -234,7 +234,7 @@ Add `"use client"` only for state, effects, or context. Match the import style o
 
 - Tailwind classes on elements. Do not add a new CSS file for a component.
 - Page width: `Container` and the header use `max-w-[1240px]`. `--container-modimal: 1080px` exists in `globals.css` and is unused by those shells.
-- Brand purple for buttons is `bg-brand` / the `default` button variant (`bg-brand-purple` maps to `--brand`, `#533afd`). Ink text is `text-brand-navy` (`#061b31`).
+- Quiet-luxury tokens: alabaster paper `#FDFBF7`, sable ink `#1C1A17` (`text-brand-navy`), rosewood fills `#A87C7C` (`bg-brand`, hover `--brand-hover` `#8F6565`, sable type on the fill). Olive `#5F6E50` is for sustainability chips only. Square radius (`0`). Serif headlines use `.heading-page` / `.heading-section` (Cormorant Garamond).
 - No `.dark` token block. Do not add a theme toggle unless asked.
 - Accessible names already drive Playwright. Keep buttons and links named. Do not add `data-testid` unless a new test cannot see the control by role.
 

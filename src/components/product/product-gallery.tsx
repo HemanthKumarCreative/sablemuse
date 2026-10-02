@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import { CarouselDots } from "@/components/shared/carousel-dots"
 import { cn } from "cn"
 
 type ProductGalleryProps = {
@@ -95,29 +96,13 @@ export const ProductGallery = ({
           ))}
         </div>
 
-        {images.length > 1 ? (
-          <div
-            className="mt-3 flex justify-center gap-2"
-            role="tablist"
-            aria-label="Product image pagination"
-          >
-            {images.map((image, index) => (
-              <button
-                key={`${image}-dot-${index}`}
-                type="button"
-                role="tab"
-                aria-selected={activeIndex === index}
-                aria-label={`Go to image ${index + 1}`}
-                tabIndex={0}
-                className={cn(
-                  "size-2 rounded-full transition-colors",
-                  activeIndex === index ? "bg-ink" : "bg-[#adadad]"
-                )}
-                onClick={() => handleDotClick(index)}
-              />
-            ))}
-          </div>
-        ) : null}
+        <CarouselDots
+          count={images.length}
+          activeIndex={activeIndex}
+          onSelect={handleDotClick}
+          ariaLabel="Product image pagination"
+          getLabel={(index) => `Go to image ${index + 1}`}
+        />
       </div>
 
       <div className="hidden gap-4 md:grid md:grid-cols-[88px_minmax(0,1fr)] md:gap-5">
@@ -136,7 +121,7 @@ export const ProductGallery = ({
                   aria-label={`View image ${index + 1}`}
                   aria-pressed={isActive}
                   className={cn(
-                    "relative block h-[104px] w-[88px] overflow-hidden bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+                    "relative block h-[104px] w-[88px] overflow-hidden bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     isActive ? "ring-2 ring-brand" : "ring-1 ring-transparent"
                   )}
                 >

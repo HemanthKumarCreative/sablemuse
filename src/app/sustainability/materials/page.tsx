@@ -41,7 +41,7 @@ const SustainabilityMaterialsPage = () => {
         aria-labelledby="materials-heading"
         className="pb-16 md:pb-24"
       >
-        <div className="border-b border-brand-border bg-[#f4f5f3] lg:bg-transparent lg:border-0">
+        <div className="border-b border-brand-border bg-muted lg:bg-transparent lg:border-0">
           <Container>
             <Breadcrumbs
               className="py-3 lg:mt-8 lg:py-0"
@@ -57,27 +57,27 @@ const SustainabilityMaterialsPage = () => {
         <Container>
           <h1
             id="materials-heading"
-            className="mt-8 max-w-3xl text-[1.75rem] font-bold tracking-tight text-brand-navy md:mt-10 md:text-[2.5rem] md:font-extrabold"
+            className="heading-page mt-8 max-w-3xl md:mt-10"
           >
             Sustainably Sourced Materials
           </h1>
-          <p className="mt-4 max-w-3xl text-sm leading-[1.8] capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
+          <p className="mt-4 max-w-3xl text-sm leading-copy capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
             {MATERIALS_INTRO}
           </p>
 
           <MaterialsList />
 
           <div className="mt-12 space-y-6 md:mt-20">
-            <p className="max-w-3xl text-sm leading-[1.8] capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
+            <p className="max-w-3xl text-sm leading-copy capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
               {MATERIALS_CLOSING[0]}
             </p>
-            <p className="max-w-3xl text-sm leading-[1.8] capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
+            <p className="max-w-3xl text-sm leading-copy capitalize text-brand-navy md:text-base md:normal-case md:text-brand-navy-muted">
               {MATERIALS_REPORT_PREFIX}{" "}
               <Link
                 href="https://textileexchange.org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-brand-navy-muted underline underline-offset-2 transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="text-brand-navy-muted underline underline-offset-2 transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Here
               </Link>
@@ -88,7 +88,7 @@ const SustainabilityMaterialsPage = () => {
           <div className="mt-16 hidden border-t border-brand-border pt-8 md:mt-24 md:block">
             <Link
               href="/sustainability"
-              className="text-sm text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:text-base"
+              className="text-sm text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-base"
             >
               &lt; Back To Sustainability
             </Link>

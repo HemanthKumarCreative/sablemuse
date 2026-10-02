@@ -66,9 +66,13 @@ export const MaterialsList = ({ className }: MaterialsListProps) => {
         return (
           <article key={material.id} id={material.id} className="scroll-mt-24">
             <div className="md:hidden">
-              <h2 className="text-xl font-semibold text-brand-navy">{material.title}</h2>
+              <h2 className="text-xl font-medium text-brand-navy">
+                <span className="inline-block bg-olive/15 px-2 py-0.5 text-olive">
+                  {material.title}
+                </span>
+              </h2>
               <MaterialCompositeImage material={material} className="mt-4" />
-              <p className="mt-4 text-sm leading-[1.8] capitalize text-brand-navy">
+              <p className="mt-4 text-sm leading-copy capitalize text-brand-navy">
                 {isExpanded ? material.body : material.preview}
               </p>
               <button
@@ -76,7 +80,7 @@ export const MaterialsList = ({ className }: MaterialsListProps) => {
                 onClick={() => handleToggle(material.id)}
                 aria-expanded={isExpanded}
                 aria-controls={`${material.id}-body`}
-                className="mt-3 inline-flex items-center gap-1 text-sm text-brand-navy-muted transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="mt-3 inline-flex items-center gap-1 text-sm text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {isExpanded ? (
                   <>
@@ -109,10 +113,12 @@ export const MaterialsList = ({ className }: MaterialsListProps) => {
                   imageFirst ? "md:order-2" : "md:order-1 md:justify-self-end"
                 )}
               >
-                <h2 className="text-[1.75rem] font-semibold text-brand-navy md:text-[2rem]">
-                  {material.title}
+                <h2 className="heading-section">
+                  <span className="inline-block bg-olive/15 px-2 py-0.5 text-olive">
+                    {material.title}
+                  </span>
                 </h2>
-                <p className="mt-4 text-sm leading-[1.8] capitalize text-brand-navy-muted md:text-base md:normal-case">
+                <p className="mt-4 text-sm leading-copy capitalize text-brand-navy-muted md:text-base md:normal-case">
                   {material.body}
                 </p>
               </div>

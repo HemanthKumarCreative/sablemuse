@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { CategoryCard } from "@/components/collection/category-card"
+import { MerchandisingHero } from "@/components/collection/merchandising-hero"
 import { ProductCard } from "@/components/product/product-card"
 import { Container } from "@/components/shared/container"
 import { SectionHeader } from "@/components/shared/section-header"
@@ -84,31 +85,13 @@ const NewInPage = async () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section aria-labelledby="new-in-heading" className="pb-10">
-        <Container>
-          <div className="mt-10 mb-8 md:mt-16 md:mb-10">
-            <p className="mb-2 text-sm font-medium tracking-[0.08em] text-brand uppercase">
-              New Arrivals
-            </p>
-            <h1
-              id="new-in-heading"
-              className="text-[2rem] font-extrabold tracking-tight text-brand-navy md:text-[2.5rem]"
-            >
-              New In
-            </h1>
-            <p className="mt-3 max-w-xl text-sm text-brand-navy-muted md:text-base">
-              Fresh essentials across categories and trending edits — fall
-              collection, blouses, dresses, and more.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-            {categories.map((category) => (
-              <CategoryCard key={category.href} item={category} />
-            ))}
-          </div>
-        </Container>
-      </section>
+      <MerchandisingHero
+        eyebrow="New Arrivals"
+        title="New In"
+        titleId="new-in-heading"
+        description="Fresh essentials across categories and trending edits — fall collection, blouses, dresses, and more."
+        categories={categories}
+      />
 
       <section aria-labelledby="trending-heading" className="pb-6">
         <Container>
@@ -122,7 +105,7 @@ const NewInPage = async () => {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="inline-flex border border-brand-border px-4 py-2 text-sm text-brand-navy-muted transition-colors hover:border-brand hover:text-brand"
+                  className="inline-flex border border-brand-border px-4 py-2 text-sm text-brand-navy-muted transition-colors hover:border-ink hover:text-brand-navy"
                 >
                   {item.label}
                 </Link>

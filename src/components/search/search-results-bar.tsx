@@ -47,7 +47,7 @@ export const SearchResultsBar = ({
       role="search"
       aria-label="Search results"
       className={cn(
-        "flex h-12 w-full items-center gap-2 border-b border-[#adadad] px-1 sm:h-14 sm:border-brand-light sm:px-4",
+        "flex h-12 w-full items-center gap-2 border-b border-brand-border px-1 sm:h-14 sm:border-brand-border sm:px-4",
         className
       )}
     >
@@ -67,14 +67,14 @@ export const SearchResultsBar = ({
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search"
         autoComplete="off"
-        className="h-full flex-1 rounded-none border-0 bg-transparent px-0 text-lg capitalize leading-[1.8] text-brand-navy shadow-none placeholder:text-[#adadad] focus-visible:border-0 focus-visible:ring-0 sm:text-xl md:text-[20px]"
+        className="h-full flex-1 rounded-none border-0 bg-transparent px-0 text-lg capitalize leading-copy text-brand-navy shadow-none placeholder:text-brand-navy-muted focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ring sm:text-xl"
       />
       {query ? (
         <button
           type="button"
           onClick={handleClear}
           aria-label="Clear search"
-          className="hidden size-6 shrink-0 items-center justify-center text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:inline-flex"
+          className="hidden size-6 shrink-0 items-center justify-center text-brand-navy-muted transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:inline-flex"
         >
           <X className="size-5 sm:size-6" strokeWidth={1.5} />
         </button>

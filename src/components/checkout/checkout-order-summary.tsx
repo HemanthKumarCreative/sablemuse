@@ -1,15 +1,13 @@
 "use client"
 
 import Image from "next/image"
-import { Minus, Plus, X } from "lucide-react"
+import { X } from "lucide-react"
+import { QuantityStepper } from "@/components/cart/quantity-stepper"
 import { useCart } from "@/components/cart/cart-provider"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { formatMoney } from "@/lib/format-money"
 import { cn } from "cn"
-
-const formatMoney = (value: number) =>
-  value.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
 
 type CheckoutOrderSummaryProps = {
   className?: string
@@ -33,16 +31,13 @@ export const CheckoutOrderSummary = ({
   const orderTotal = subtotal + tax + shippingCost
   const shippingLabel =
     shippingCost > 0
-      ? `$${shippingCost.toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        })}`
+      ? `$${formatMoney(shippingCost)}`
       : "Free"
 
   return (
     <aside
       className={cn(
-        "bg-transparent p-0 lg:bg-[#F0F2EF] lg:p-6 xl:p-8",
+        "bg-transparent p-0 lg:bg-muted lg:p-6 xl:p-8",
         className
       )}
       aria-labelledby="checkout-cart-heading"
@@ -68,9 +63,9 @@ export const CheckoutOrderSummary = ({
                   sizes="96px"
                   className="object-cover"
                 />
-                <span className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center bg-white text-xs font-medium text-brand-navy">
+                <Badge className="absolute top-1.5 right-1.5 size-6 p-0 text-xs">
                   {item.quantity}
-                </span>
+                </Badge>
               </div>
 
               <div className="flex min-w-0 flex-1 flex-col gap-1.5 pr-7">
@@ -80,44 +75,27 @@ export const CheckoutOrderSummary = ({
 
                 <div className="mt-auto flex items-end justify-between gap-2 pt-2">
                   <p className="text-base font-semibold text-brand-navy">
-                    $ {item.price}
+                    ${formatMoney(item.price)}
                   </p>
-                  <div
-                    className="inline-flex h-9 items-center gap-3 bg-[#D1D9CF] px-2.5"
-                    role="group"
-                    aria-label={`${item.name} quantity`}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => decrementItem(item.id)}
-                      aria-label={`Decrease quantity of ${item.name}`}
-                      className="inline-flex size-5 items-center justify-center text-[#404E3E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                    >
-                      <Minus className="size-3" strokeWidth={2} aria-hidden="true" />
-                    </button>
-                    <span className="min-w-3 text-center text-sm text-brand-navy">
-                      {item.quantity}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => incrementItem(item.id)}
-                      aria-label={`Increase quantity of ${item.name}`}
-                      className="inline-flex size-5 items-center justify-center text-[#404E3E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                    >
-                      <Plus className="size-3" strokeWidth={2} aria-hidden="true" />
-                    </button>
-                  </div>
+                  <QuantityStepper
+                    quantity={item.quantity}
+                    label={item.name}
+                    onIncrement={() => incrementItem(item.id)}
+                    onDecrement={() => decrementItem(item.id)}
+                  />
                 </div>
               </div>
 
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon-sm"
                 onClick={() => removeItem(item.id)}
                 aria-label={`Remove ${item.name} from cart`}
-                className="absolute top-0 right-0 inline-flex size-7 items-center justify-center text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="absolute top-0 right-0 text-brand-navy"
               >
                 <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
-              </button>
+              </Button>
             </li>
           ))}
         </ul>

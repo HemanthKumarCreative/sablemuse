@@ -17,7 +17,7 @@ export const CategoryCard = ({ item, className }: CategoryCardProps) => {
     <Link
       href={item.href}
       className={cn(
-        "group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+        "group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className
       )}
       aria-label={`Shop ${item.label}`}
@@ -37,7 +37,7 @@ export const CategoryCard = ({ item, className }: CategoryCardProps) => {
           <span className="text-lg font-semibold text-brand-navy">{item.label}</span>
         </div>
       )}
-      <span className="mt-3 block text-sm font-medium text-brand-navy-muted transition-colors group-hover:text-brand md:text-base">
+      <span className="mt-3 block text-sm font-medium text-brand-navy-muted transition-colors group-hover:text-brand-navy md:text-base">
         {item.label}
       </span>
     </Link>

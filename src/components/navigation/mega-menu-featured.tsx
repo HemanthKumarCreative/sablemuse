@@ -26,10 +26,10 @@ export const MegaMenuFeaturedCards = ({
           key={`${item.href}-${item.label}`}
           href={item.href}
           onClick={onNavigate}
-          className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={item.label}
         >
-          <AspectRatio ratio={ratio} className="overflow-hidden bg-[#d9d9d9]">
+          <AspectRatio ratio={ratio} className="overflow-hidden bg-muted">
             <Image
               src={item.image}
               alt={item.alt}
@@ -39,7 +39,7 @@ export const MegaMenuFeaturedCards = ({
             />
           </AspectRatio>
           {showLabels ? (
-            <span className="mt-3 block text-left text-base capitalize leading-[1.8] text-brand-navy transition-colors group-hover:text-brand">
+            <span className="mt-3 block text-left text-base capitalize leading-copy text-brand-navy underline-offset-2 group-hover:underline">
               {item.label}
             </span>
           ) : null}

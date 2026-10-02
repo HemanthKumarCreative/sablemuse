@@ -1,12 +1,12 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { ChevronDown, Heart, Search, ShoppingBag, User, X } from "lucide-react"
 import { AnnouncementBar } from "@/components/layout/announcement-bar"
 import { useCart } from "@/components/cart/cart-provider"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -87,7 +87,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
 
         <AnnouncementBar />
 
-        <div className="relative flex h-[56px] items-center justify-between px-4 sm:h-[64px] sm:px-5">
+        <div className="relative flex h-14 items-center justify-between px-4 sm:h-16 sm:px-5">
           <div className="flex items-center gap-1">
             <SheetClose
               render={
@@ -114,11 +114,11 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
 
           <Link
             href="/"
-            className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Sable Muse home"
             onClick={handleNavigate}
           >
-            <span className="font-serif text-xl font-semibold tracking-tight text-brand-navy uppercase">
+            <span className="font-serif text-xl font-medium tracking-wordmark text-brand-navy uppercase">
               Sable Muse
             </span>
           </Link>
@@ -131,7 +131,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
               aria-current={isWishlistActive ? "page" : undefined}
               className={cn(
                 "rounded-none",
-                isWishlistActive ? "text-[#CA2929]" : "text-brand-navy"
+                isWishlistActive ? "text-ink" : "text-brand-navy"
               )}
               render={<Link href="/wishlist" onClick={handleNavigate} />}
               nativeButton={false}
@@ -156,9 +156,12 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
             >
               <ShoppingBag className="size-5" strokeWidth={1.5} />
               {itemCount > 0 ? (
-                <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-brand text-[10px] font-semibold text-white">
+                <Badge
+                  variant="inverse"
+                  className="absolute top-1.5 right-1.5 size-4 p-0 text-xs font-semibold leading-none"
+                >
                   {itemCount > 9 ? "9+" : itemCount}
-                </span>
+                </Badge>
               ) : null}
             </Button>
           </div>
@@ -179,7 +182,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      className="block py-4 text-base font-medium text-brand-navy transition-colors hover:text-brand"
+                      className="block py-4 text-base font-medium text-brand-navy underline-offset-2 hover:underline"
                       onClick={handleNavigate}
                     >
                       {item.label}
@@ -193,14 +196,16 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                   <div className="flex items-center justify-between gap-3">
                     <Link
                       href={item.href}
-                      className="flex-1 py-4 text-base font-medium text-brand-navy transition-colors hover:text-brand"
+                      className="flex-1 py-4 text-base font-medium text-brand-navy underline-offset-2 hover:underline"
                       onClick={handleNavigate}
                     >
                       {item.label}
                     </Link>
-                    <button
+                    <Button
                       type="button"
-                      className="inline-flex size-10 items-center justify-center text-brand-navy"
+                      variant="ghost"
+                      size="icon"
+                      className="text-brand-navy"
                       aria-expanded={isExpanded}
                       aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.label}`}
                       onClick={() => handleToggleSection(item.label)}
@@ -212,7 +217,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                         )}
                         strokeWidth={1.5}
                       />
-                    </button>
+                    </Button>
                   </div>
 
                   {isExpanded ? (
@@ -221,7 +226,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                         <li key={`${item.label}-${link.label}`}>
                           <Link
                             href={link.href}
-                            className="block py-2.5 text-sm text-brand-navy-muted transition-colors hover:text-brand"
+                            className="block py-2.5 text-sm text-brand-navy-muted transition-colors hover:text-brand-navy"
                             onClick={handleNavigate}
                           >
                             {link.label}
@@ -238,7 +243,8 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
           <div className="mt-auto grid grid-cols-2 gap-3 pt-8">
             <Button
               variant="outline"
-              className="h-12 gap-2 rounded-none border-brand text-sm font-medium text-brand-navy hover:bg-brand/5"
+              size="xl"
+              className="w-full gap-2 border-brand-border px-4 font-medium normal-case tracking-normal hover:bg-muted"
               render={<Link href="/login" onClick={handleNavigate} />}
               nativeButton={false}
             >
@@ -246,7 +252,8 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
               Log In
             </Button>
             <Button
-              className="h-12 rounded-none bg-brand text-sm font-medium text-white hover:bg-brand/90"
+              size="xl"
+              className="w-full px-4"
               render={<Link href="/register" onClick={handleNavigate} />}
               nativeButton={false}
             >

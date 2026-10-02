@@ -17,11 +17,11 @@ export const HeroSection = () => {
           sizes="100vw"
           className="object-cover object-[28%_30%] sm:object-[30%_40%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/50 via-ink/10 to-transparent" />
         <div className="absolute bottom-10 left-5 z-10 max-w-[240px] sm:bottom-14 sm:left-6 sm:max-w-[280px] md:top-1/2 md:bottom-auto md:left-[10%] md:max-w-md md:-translate-y-1/2">
           <h1
             id="hero-heading"
-            className="font-heading text-[1.75rem] leading-[1.35] text-brand-navy sm:text-[1.9rem] md:text-[2.4rem] md:leading-[1.75]"
+            className="heading-page"
           >
             Elegance in simplicity,
             <br />
@@ -30,7 +30,8 @@ export const HeroSection = () => {
           <Button
             render={<Link href="/new-in" />}
             nativeButton={false}
-            className="mt-4 h-auto rounded-none bg-white px-8 py-2.5 text-sm font-medium text-brand-navy hover:bg-white/90 sm:text-base md:mt-4 md:px-14"
+            size="xl"
+            className="mt-4 h-auto bg-background px-8 py-2.5 font-medium normal-case tracking-normal text-ink hover:bg-muted sm:text-base md:mt-4 md:px-14"
           >
             New In
           </Button>

@@ -34,12 +34,12 @@ export const WishlistPageContent = ({
         <div className="mt-10 mb-10 text-center sm:mt-12 sm:mb-12 md:mt-16 md:mb-14">
           <h1
             id="wishlist-heading"
-            className="text-[2rem] font-semibold capitalize leading-[1.4] text-brand-navy md:text-[2.5rem]"
+            className="heading-page capitalize"
           >
             My Wish List
           </h1>
           <p
-            className="mt-2 text-base capitalize leading-[1.8] text-brand-navy-muted md:text-xl"
+            className="mt-2 text-base capitalize leading-copy text-brand-navy-muted md:text-xl"
             aria-live="polite"
           >
             {!isHydrated

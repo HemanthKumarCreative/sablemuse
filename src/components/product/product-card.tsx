@@ -1,6 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Heart } from "lucide-react"
+import { ColorSwatch } from "@/components/product/color-swatch"
+import { Badge } from "@/components/ui/badge"
 import type { Product } from "@/types/commerce"
 import { cn } from "cn"
 
@@ -23,7 +25,7 @@ export const ProductCard = ({
     <article className={cn("group relative flex flex-col", className)}>
       <Link
         href={href ?? `/product/${product.id}`}
-        className="relative block overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="relative block overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         aria-label={`View ${product.name} ${product.subtitle}`}
       >
         <div className={cn("relative w-full bg-muted", imageAspectClassName)}>
@@ -36,18 +38,18 @@ export const ProductCard = ({
           />
         </div>
         {product.isRestock ? (
-          <span className="absolute top-2.5 left-2.5 bg-white px-3 py-1 text-xs capitalize text-brand-navy sm:top-4 sm:left-4 sm:px-6 sm:py-2 sm:text-sm">
+          <Badge className="absolute top-2.5 left-2.5 px-3 py-1 text-xs capitalize sm:top-4 sm:left-4 sm:px-6 sm:py-2 sm:text-sm">
             Restock
-          </span>
+          </Badge>
         ) : product.isNew ? (
-          <span className="absolute top-2.5 left-2.5 bg-white px-3 py-1 text-xs capitalize text-brand-navy sm:top-4 sm:left-4 sm:px-6 sm:py-2 sm:text-sm">
+          <Badge className="absolute top-2.5 left-2.5 px-3 py-1 text-xs capitalize sm:top-4 sm:left-4 sm:px-6 sm:py-2 sm:text-sm">
             New
-          </span>
+          </Badge>
         ) : null}
         <span
           className={cn(
             "absolute top-2.5 right-2.5 inline-flex size-7 items-center justify-center sm:top-4 sm:right-4 sm:size-9",
-            favorited ? "text-[#CA2929]" : "text-brand-navy sm:bg-white/90"
+            favorited ? "text-ink" : "text-brand-navy sm:bg-background/90"
           )}
           aria-hidden="true"
         >
@@ -61,7 +63,7 @@ export const ProductCard = ({
 
       <div className="mt-2 flex items-start justify-between gap-2 p-1 sm:gap-3 sm:p-1.5">
         <div className="flex min-w-0 flex-col gap-0.5">
-          <h3 className="truncate text-sm font-semibold capitalize text-brand-navy sm:text-base">
+          <h3 className="truncate text-base font-medium capitalize text-brand-navy">
             {product.name}
           </h3>
           <p className="truncate text-xs capitalize text-brand-navy-muted sm:text-sm">
@@ -70,22 +72,12 @@ export const ProductCard = ({
           <ul className="mt-1.5 flex gap-1 sm:mt-2 sm:gap-1.5" aria-label="Available colors">
             {product.colors.map((color) => (
               <li key={color.name}>
-                <span
-                  className={cn(
-                    "inline-block size-4 rounded-full border sm:size-6",
-                    color.hex === "#FFFFFF"
-                      ? "border-brand-border"
-                      : "border-transparent"
-                  )}
-                  style={{ backgroundColor: color.hex }}
-                  title={color.name}
-                  aria-label={color.name}
-                />
+                <ColorSwatch hex={color.hex} name={color.name} />
               </li>
             ))}
           </ul>
         </div>
-        <p className="shrink-0 pr-1 text-sm font-semibold text-brand-navy sm:pr-2 sm:text-base">
+        <p className="shrink-0 pr-1 text-base font-medium text-brand-navy sm:pr-2">
           ${product.price}
         </p>
       </div>

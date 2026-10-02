@@ -29,7 +29,7 @@ export const MissionPillarsAccordion = ({
           value={pillar.id}
           className="border-b border-brand-border"
         >
-          <AccordionTrigger className="rounded-none px-0 py-5 text-left text-base font-medium capitalize text-brand-navy hover:no-underline focus-visible:ring-2 focus-visible:ring-brand **:data-[slot=accordion-trigger-icon]:hidden md:text-lg">
+          <AccordionTrigger className="rounded-none px-0 py-5 text-left text-base font-medium capitalize text-brand-navy hover:no-underline focus-visible:ring-2 focus-visible:ring-ring **:data-[slot=accordion-trigger-icon]:hidden md:text-lg">
             <span className="flex-1 pr-4 text-left">{pillar.title}</span>
             <Plus
               className="size-4 shrink-0 text-brand-navy group-aria-expanded/accordion-trigger:hidden"
@@ -42,7 +42,7 @@ export const MissionPillarsAccordion = ({
               aria-hidden="true"
             />
           </AccordionTrigger>
-          <AccordionContent className="px-0 pb-5 text-sm leading-[1.8] capitalize text-brand-navy-muted md:text-base md:normal-case">
+          <AccordionContent className="px-0 pb-5 text-sm leading-copy capitalize text-brand-navy-muted md:text-base md:normal-case">
             {pillar.body}
           </AccordionContent>
         </AccordionItem>

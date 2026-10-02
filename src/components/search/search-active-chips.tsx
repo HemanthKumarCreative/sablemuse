@@ -64,7 +64,7 @@ export const SearchActiveChips = ({
         <li key={`${chip.groupId}-${chip.optionId}`}>
           <button
             type="button"
-            className="inline-flex h-10 min-w-[10.5rem] items-center justify-between gap-3 bg-surface-soft px-4 text-sm capitalize text-brand-navy transition-colors hover:bg-brand-light/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:h-8 sm:min-w-0 sm:justify-center sm:gap-2 sm:px-3"
+            className="inline-flex h-10 min-w-[10.5rem] items-center justify-between gap-3 bg-surface-soft px-4 text-sm capitalize text-brand-navy transition-colors hover:bg-brand-light/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:h-8 sm:min-w-0 sm:justify-center sm:gap-2 sm:px-3"
             aria-label={`Remove ${chip.label} filter`}
             onClick={() => handleRemove(chip.optionId)}
           >

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { CarouselDots } from "@/components/shared/carousel-dots"
 import { cn } from "cn"
 
 type ScrollCarouselProps = {
@@ -91,29 +92,13 @@ export const ScrollCarousel = ({
         {children}
       </div>
 
-      {dotCount > 1 ? (
-        <div
-          className={cn("mt-4 flex justify-center gap-2", dotsClassName)}
-          role="tablist"
-          aria-label={`${ariaLabel} pagination`}
-        >
-          {Array.from({ length: dotCount }).map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              role="tab"
-              aria-selected={activeIndex === index}
-              aria-label={`Go to slide ${index + 1}`}
-              tabIndex={0}
-              className={cn(
-                "size-2 rounded-full transition-colors",
-                activeIndex === index ? "bg-brand" : "bg-[#adadad]"
-              )}
-              onClick={() => handleDotClick(index)}
-            />
-          ))}
-        </div>
-      ) : null}
+      <CarouselDots
+        count={dotCount}
+        activeIndex={activeIndex}
+        onSelect={handleDotClick}
+        ariaLabel={`${ariaLabel} pagination`}
+        className={cn("mt-4", dotsClassName)}
+      />
     </div>
   )
 }

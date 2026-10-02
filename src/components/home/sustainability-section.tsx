@@ -19,7 +19,7 @@ export const SustainabilitySection = () => {
         <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-end gap-3 p-5 text-right sm:gap-4 sm:p-6 md:right-8 md:bottom-16 md:left-auto md:max-w-md md:p-8">
           <p
             id="sustainability-heading"
-            className="max-w-[280px] text-sm leading-relaxed text-brand-navy sm:max-w-sm sm:text-[15px] md:max-w-none md:text-base"
+            className="max-w-[280px] text-sm leading-copy text-brand-navy sm:max-w-sm md:max-w-none md:text-base"
           >
             Stylish sustainability in clothing promotes eco-friendly choices for
             a greater future
@@ -27,7 +27,8 @@ export const SustainabilitySection = () => {
           <Button
             render={<Link href="/sustainability" />}
             nativeButton={false}
-            className="h-auto rounded-none bg-white px-6 py-2.5 text-sm font-medium text-brand-navy hover:bg-white/90 sm:px-8 sm:text-base"
+            size="xl"
+            className="h-auto bg-background px-6 py-2.5 font-medium normal-case tracking-normal text-ink hover:bg-muted sm:px-8 sm:text-base"
           >
             Sustainability
           </Button>

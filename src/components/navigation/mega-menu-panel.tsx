@@ -1,4 +1,5 @@
 import { MegaMenuColumns } from "@/components/navigation/mega-menu-columns"
+import { Container } from "@/components/shared/container"
 import { MegaMenuFeaturedCards } from "@/components/navigation/mega-menu-featured"
 import type {
   MegaMenuColumn,
@@ -30,9 +31,9 @@ export const MegaMenuPanel = ({
   const isFeaturedHeavy = isNewIn || isPlusSize || isSustainability
 
   return (
-    <div
+    <Container
       className={cn(
-        "mx-auto w-full max-w-[1240px] px-5 py-10 md:px-8 lg:px-10 lg:py-12",
+        "py-10 lg:py-12",
         isFeaturedHeavy
           ? "flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-16"
           : "grid gap-10 md:grid-cols-[1.15fr_0.85fr] md:gap-12 lg:gap-16",
@@ -67,6 +68,6 @@ export const MegaMenuPanel = ({
           isSustainability && "grid-cols-2 gap-6 lg:max-w-[808px] lg:flex-1"
         )}
       />
-    </div>
+    </Container>
   )
 }

@@ -67,7 +67,7 @@ const PlusSizeShopAllPage = async () => {
           Plus Size Shop All
         </h1>
 
-        <div className="border-b border-brand-border bg-[#f4f5f3] lg:hidden">
+        <div className="border-b border-brand-border bg-muted lg:hidden">
           <Container>
             <Breadcrumbs
               className="py-3"
@@ -131,7 +131,8 @@ const PlusSizeShopAllPage = async () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-12 rounded-none border-ink bg-transparent px-10 text-base font-medium capitalize text-brand-navy hover:bg-muted"
+                  size="xl"
+                  className="border-ink bg-transparent px-10 font-medium normal-case tracking-normal text-brand-navy capitalize hover:bg-muted"
                   aria-label="Load more plus size products"
                 >
                   Load More

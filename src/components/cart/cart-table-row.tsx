@@ -1,7 +1,10 @@
 "use client"
 
 import Image from "next/image"
-import { Minus, Plus, X } from "lucide-react"
+import { X } from "lucide-react"
+import { QuantityStepper } from "@/components/cart/quantity-stepper"
+import { Button } from "@/components/ui/button"
+import { formatMoney } from "@/lib/format-money"
 import type { CartItem } from "@/types/commerce"
 import { cn } from "cn"
 
@@ -12,12 +15,6 @@ type CartTableRowProps = {
   onRemove: (id: string) => void
   className?: string
 }
-
-const formatMoney = (value: number) =>
-  value.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
 
 export const CartTableRow = ({
   item,
@@ -43,7 +40,7 @@ export const CartTableRow = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 gap-4 border-b border-[#DFDFDF] py-6 md:grid-cols-[minmax(0,1.4fr)_0.7fr_0.7fr_0.7fr] md:items-start md:gap-6",
+        "grid grid-cols-1 gap-4 border-b border-brand-border py-6 md:grid-cols-[minmax(0,1.4fr)_0.7fr_0.7fr_0.7fr] md:items-start md:gap-6",
         className
       )}
     >
@@ -61,27 +58,31 @@ export const CartTableRow = ({
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div className="flex items-start justify-between gap-3">
             <h3 className="text-base font-semibold text-brand-navy">{item.name}</h3>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon"
               onClick={handleRemove}
               aria-label={`Remove ${item.name} from cart`}
-              className="inline-flex size-8 shrink-0 items-center justify-center text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:hidden"
+              className="shrink-0 text-brand-navy md:hidden"
             >
               <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
-            </button>
+            </Button>
           </div>
           <p className="text-sm text-brand-navy-muted">Size: {item.size}</p>
           <p className="text-sm text-brand-navy-muted">Color: {item.color}</p>
         </div>
 
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon"
           onClick={handleRemove}
           aria-label={`Remove ${item.name} from cart`}
-          className="hidden size-8 shrink-0 items-center justify-center text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline-flex"
+          className="hidden shrink-0 text-brand-navy md:inline-flex"
         >
           <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
-        </button>
+        </Button>
       </div>
 
       <div className="flex items-center justify-between md:block md:pt-2">
@@ -91,31 +92,12 @@ export const CartTableRow = ({
 
       <div className="flex items-center justify-between md:block md:pt-2">
         <span className="text-sm text-brand-navy-muted md:hidden">Quantity</span>
-        <div
-          className="inline-flex h-10 items-center gap-4 bg-[#D1D9CF] px-3"
-          role="group"
-          aria-label={`${item.name} quantity`}
-        >
-          <button
-            type="button"
-            onClick={handleDecrement}
-            aria-label={`Decrease quantity of ${item.name}`}
-            className="inline-flex size-6 items-center justify-center text-[#404E3E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-          >
-            <Minus className="size-3.5" strokeWidth={2} aria-hidden="true" />
-          </button>
-          <span className="min-w-4 text-center text-sm font-medium text-brand-navy">
-            {item.quantity}
-          </span>
-          <button
-            type="button"
-            onClick={handleIncrement}
-            aria-label={`Increase quantity of ${item.name}`}
-            className="inline-flex size-6 items-center justify-center text-[#404E3E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-          >
-            <Plus className="size-3.5" strokeWidth={2} aria-hidden="true" />
-          </button>
-        </div>
+        <QuantityStepper
+          quantity={item.quantity}
+          label={item.name}
+          onIncrement={handleIncrement}
+          onDecrement={handleDecrement}
+        />
       </div>
 
       <div className="flex items-center justify-between md:block md:pt-2 md:text-right">

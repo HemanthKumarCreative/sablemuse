@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import { CarouselDots } from "@/components/shared/carousel-dots"
 import { cn } from "cn"
 
 export type ShopAllHeroSlide = {
@@ -136,29 +137,12 @@ export const ShopAllHero = ({
           ))}
         </div>
 
-        {slides.length > 1 ? (
-          <div
-            className="mt-3 flex justify-center gap-2"
-            role="tablist"
-            aria-label={`${ariaLabel} pagination`}
-          >
-            {slides.map((slide, index) => (
-              <button
-                key={`${slide.src}-dot-${index}`}
-                type="button"
-                role="tab"
-                aria-selected={activeIndex === index}
-                aria-label={`Go to slide ${index + 1}`}
-                tabIndex={0}
-                className={cn(
-                  "size-2 rounded-full transition-colors",
-                  activeIndex === index ? "bg-ink" : "bg-[#adadad]"
-                )}
-                onClick={() => handleDotClick(index)}
-              />
-            ))}
-          </div>
-        ) : null}
+        <CarouselDots
+          count={slides.length}
+          activeIndex={activeIndex}
+          onSelect={handleDotClick}
+          ariaLabel={`${ariaLabel} pagination`}
+        />
       </div>
     </div>
   )

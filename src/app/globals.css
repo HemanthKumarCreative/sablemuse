@@ -8,11 +8,11 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans-var);
-  --font-mono: var(--font-geist-mono);
-  /* Stripe-tier Font mappings */
-  --font-heading: var(--font-sans-var);
-  --font-display: var(--font-sans-var);
-  
+  --font-serif: var(--font-serif-var);
+  --font-heading: var(--font-serif-var);
+  --font-display: var(--font-serif-var);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -21,11 +21,6 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -42,90 +37,86 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  
-  /* Brand replacements for Stripe-tier Luxury Architecture */
+
   --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
   --color-brand-light: var(--brand-light);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-surface-soft: var(--surface-soft);
   --color-footer: var(--brand-dark);
-  
+  --color-olive: var(--olive);
+
   --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-muted: var(--ink-muted);
   --color-brand-slate: var(--brand-slate);
   --color-brand-dark-slate: var(--brand-dark-slate);
   --color-brand-purple: var(--brand-purple);
   --color-brand-dark: var(--brand-dark);
   --color-brand-border: var(--brand-border);
 
-  /* Precise rounding */
-  --radius-sm: 4px;
-  --radius-md: 5px;
-  --radius-lg: 6px;
-  --radius-xl: 8px;
-  
-  --container-modimal: 1080px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
 
-  /* Double-layer Stripe Shadows */
-  --shadow-stripe-sm: rgba(23, 23, 23, 0.08) 0px 15px 35px 0px;
-  --shadow-stripe-md: rgba(50, 50, 93, 0.25) 0px 30px 45px -30px, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px;
-  --shadow-stripe-lg: rgba(3, 3, 39, 0.25) 0px 14px 21px -14px, rgba(0, 0, 0, 0.1) 0px 8px 17px -8px;
+  --container-modimal: 1240px;
+  --leading-copy: 1.8;
+  --tracking-eyebrow: 0.08em;
+  --tracking-wordmark: 0.14em;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #061b31;
-  --card: #ffffff;
-  --card-foreground: #061b31;
-  --popover: #ffffff;
-  --popover-foreground: #061b31;
-  
-  /* Primary Action */
-  --primary: #533afd;
-  --primary-foreground: #ffffff;
-  
-  /* Secondary Surfaces */
-  --secondary: #f6f9fc;
-  --secondary-foreground: #273951;
-  
-  /* Subdued Text */
-  --muted: #e5edf5;
-  --muted-foreground: #64748d;
-  
-  /* Highlighting / Hovers */
-  --accent: #f6f9fc;
-  --accent-foreground: #533afd;
-  
-  --destructive: #ea2261;
-  --border: #e5edf5;
-  --input: #e5edf5;
-  --ring: #b9b9f9;
-  
-  /* Stripe Custom Tokens */
-  --brand: #533afd;
-  --brand-light: #b9b9f9;
-  --ink: #061b31;
-  --ink-muted: #64748d;
-  --surface-soft: #f6f9fc;
-  --footer: #1c1e54;
+  --background: #fdfbf7;
+  --foreground: #1c1a17;
+  --card: #fdfbf7;
+  --card-foreground: #1c1a17;
+  --popover: #fdfbf7;
+  --popover-foreground: #1c1a17;
 
-  --brand-navy: #061b31;
-  --brand-slate: #64748d;
-  --brand-dark-slate: #273951;
-  --brand-purple: #533afd;
-  --brand-dark: #1c1e54;
-  --brand-border: #e5edf5;
+  --primary: #a87c7c;
+  --primary-foreground: #1c1a17;
 
-  --radius: 6px;
-  
-  --sidebar: #ffffff;
-  --sidebar-foreground: #061b31;
-  --sidebar-primary: #533afd;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f6f9fc;
-  --sidebar-accent-foreground: #061b31;
-  --sidebar-border: #e5edf5;
-  --sidebar-ring: #533afd;
+  --secondary: #f5f0ea;
+  --secondary-foreground: #1c1a17;
+
+  --muted: #f5f0ea;
+  --muted-foreground: #7b736b;
+
+  --accent: #f5f0ea;
+  --accent-foreground: #1c1a17;
+
+  --destructive: #9b3a3a;
+  --border: #e1dcd6;
+  --input: #e1dcd6;
+  --ring: #c4a8a8;
+
+  --brand: #a87c7c;
+  --brand-hover: #8f6565;
+  --brand-light: #c4a8a8;
+  --ink: #1c1a17;
+  --ink-muted: #7b736b;
+  --surface-soft: #f5f0ea;
+  --footer: #1c1a17;
+  --olive: #5f6e50;
+
+  --brand-navy: #1c1a17;
+  --brand-slate: #7b736b;
+  --brand-dark-slate: #1c1a17;
+  --brand-purple: #a87c7c;
+  --brand-dark: #1c1a17;
+  --brand-border: #e1dcd6;
+
+  --radius: 0px;
+
+  --sidebar: #fdfbf7;
+  --sidebar-foreground: #1c1a17;
+  --sidebar-primary: #a87c7c;
+  --sidebar-primary-foreground: #1c1a17;
+  --sidebar-accent: #f5f0ea;
+  --sidebar-accent-foreground: #1c1a17;
+  --sidebar-border: #e1dcd6;
+  --sidebar-ring: #c4a8a8;
 }
 
 @layer base {
@@ -158,5 +149,13 @@
 
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  .heading-page {
+    @apply font-serif text-[2rem] font-medium tracking-[0.01em] text-brand-navy md:text-[2.5rem] lg:text-[3rem];
+  }
+
+  .heading-section {
+    @apply font-serif text-[1.25rem] font-medium tracking-[0.01em] text-brand-navy sm:text-[1.4rem] md:text-[2rem];
   }
 }

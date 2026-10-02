@@ -1,7 +1,10 @@
 "use client"
 
 import Image from "next/image"
-import { Minus, Plus, X } from "lucide-react"
+import { X } from "lucide-react"
+import { QuantityStepper } from "@/components/cart/quantity-stepper"
+import { Button } from "@/components/ui/button"
+import { formatMoney } from "@/lib/format-money"
 import type { CartItem } from "@/types/commerce"
 import { cn } from "cn"
 
@@ -45,7 +48,7 @@ export const CartLineItem = ({
           className="object-cover"
         />
         {showImageBadge ? (
-          <span className="absolute top-2 right-2 flex size-7 items-center justify-center bg-white text-sm font-medium text-brand-navy">
+          <span className="absolute top-2 right-2 flex size-7 items-center justify-center bg-background text-sm font-medium text-brand-navy">
             {item.quantity}
           </span>
         ) : null}
@@ -57,44 +60,29 @@ export const CartLineItem = ({
         <p className="text-sm text-brand-navy-muted">Color: {item.color}</p>
 
         <div className="mt-auto flex items-end justify-between gap-3 pt-2">
-          <p className="text-base font-semibold text-brand-navy">$ {item.price}</p>
+          <p className="text-base font-semibold text-brand-navy">
+            ${formatMoney(item.price)}
+          </p>
 
-          <div
-            className="inline-flex h-10 items-center gap-4 bg-[#D1D9CF] px-3"
-            role="group"
-            aria-label={`${item.name} quantity`}
-          >
-            <button
-              type="button"
-              onClick={handleDecrement}
-              aria-label={`Decrease quantity of ${item.name}`}
-              className="inline-flex size-6 items-center justify-center text-[#404E3E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            >
-              <Minus className="size-3.5" strokeWidth={2} aria-hidden="true" />
-            </button>
-            <span className="min-w-4 text-center text-sm font-medium text-brand-navy">
-              {item.quantity}
-            </span>
-            <button
-              type="button"
-              onClick={handleIncrement}
-              aria-label={`Increase quantity of ${item.name}`}
-              className="inline-flex size-6 items-center justify-center text-[#404E3E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            >
-              <Plus className="size-3.5" strokeWidth={2} aria-hidden="true" />
-            </button>
-          </div>
+          <QuantityStepper
+            quantity={item.quantity}
+            label={item.name}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+          />
         </div>
       </div>
 
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="icon"
         onClick={handleRemove}
         aria-label={`Remove ${item.name} from cart`}
-        className="absolute top-0 right-0 inline-flex size-8 items-center justify-center text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="absolute top-0 right-0 text-brand-navy"
       >
         <X className="size-4" strokeWidth={1.5} aria-hidden="true" />
-      </button>
+      </Button>
     </article>
   )
 }

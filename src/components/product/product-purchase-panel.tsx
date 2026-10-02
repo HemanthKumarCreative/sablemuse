@@ -9,7 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { ColorSwatch } from "@/components/product/color-swatch"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { inputVariants } from "@/components/ui/input"
 import { ProductAccordions } from "@/components/product/product-accordions"
 import { useCart } from "@/components/cart/cart-provider"
 import { useWishlist } from "@/components/wishlist/wishlist-provider"
@@ -71,8 +74,32 @@ export const ProductPurchasePanel = ({
   const [added, setAdded] = useState(false)
 
   const usesSelect = product.sizeSelector === "select"
-  const ctaBrand = product.ctaStyle === "brand"
   const wishlisted = isWishlisted(product.id)
+
+  const inStock = useMemo(() => {
+    const variants = product.variants ?? []
+    if (variants.length === 0) {
+      return null
+    }
+
+    const relevant = variants.filter((variant) => {
+      const sizeValue = variant.selectedOptions.find((option) =>
+        isSizeOption(option.name)
+      )?.value
+      const colorValue = variant.selectedOptions.find((option) =>
+        isColorOption(option.name)
+      )?.value
+      const sizeOk = selectedSize ? sizeValue === selectedSize : true
+      const colorOk = selectedColor ? colorValue === selectedColor : true
+      return sizeOk && colorOk
+    })
+
+    if (relevant.length === 0) {
+      return false
+    }
+
+    return relevant.some((variant) => variant.availableForSale)
+  }, [product.variants, selectedColor, selectedSize])
 
   const selectedVariantId = useMemo(
     () => findVariantId(product, selectedSize, selectedColor),
@@ -118,16 +145,25 @@ export const ProductPurchasePanel = ({
 
   return (
     <div className={cn("flex w-full flex-col", className)}>
-      <h1 className="text-[1.75rem] font-semibold capitalize leading-[1.3] text-brand-navy md:text-[2.25rem]">
+      <h1 id="product-heading" className="heading-page capitalize">
         {product.name}
       </h1>
-      
+
       <div className="mt-3 flex items-baseline gap-3">
         <p className="text-2xl font-semibold text-brand-navy">${product.price}</p>
         {product.compareAtPrice ? (
           <p className="text-lg text-brand-navy-muted line-through">${product.compareAtPrice}</p>
         ) : null}
       </div>
+
+      {inStock !== null ? (
+        <Badge
+          variant={inStock ? "outline" : "inverse"}
+          className="mt-4 w-fit px-3 py-1 text-xs tracking-eyebrow uppercase"
+        >
+          {inStock ? "In Stock" : "Sold Out"}
+        </Badge>
+      ) : null}
 
       {product.colors.length > 0 ? (
         <div className="mt-6">
@@ -145,11 +181,17 @@ export const ProductPurchasePanel = ({
                     aria-label={color.name}
                     aria-pressed={isSelected}
                     className={cn(
-                      "size-8 rounded-full border border-brand-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-                      isSelected && "ring-2 ring-brand ring-offset-2"
+                      "size-8 overflow-hidden rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                      isSelected && "ring-2 ring-ink ring-offset-2"
                     )}
-                    style={{ backgroundColor: color.hex }}
-                  />
+                  >
+                    <ColorSwatch
+                      hex={color.hex}
+                      name={color.name}
+                      decorative
+                      className="size-full"
+                    />
+                  </button>
                 </li>
               )
             })}
@@ -165,9 +207,10 @@ export const ProductPurchasePanel = ({
           <Dialog>
             <DialogTrigger
               render={
-                <button
+                <Button
                   type="button"
-                  className="inline-flex items-center gap-1 text-sm text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                  variant="link"
+                  className="h-auto gap-1 px-0 text-sm"
                 />
               }
             >
@@ -207,7 +250,7 @@ export const ProductPurchasePanel = ({
             value={selectedSize}
             onChange={handleSizeChange}
             aria-label="Select size"
-            className="h-12 w-full rounded-none border border-brand-border bg-white px-4 text-base text-brand-navy"
+            className={inputVariants({ size: "xl", className: "appearance-none" })}
           >
             <option value="">Select size</option>
             {product.sizes.map((size) => (
@@ -222,17 +265,15 @@ export const ProductPurchasePanel = ({
               const isSelected = selectedSize === size
               return (
                 <li key={size}>
-                  <button
+                  <Button
                     type="button"
+                    variant="outline"
                     onClick={() => handleSelectSize(size)}
                     aria-pressed={isSelected}
-                    className={cn(
-                      "inline-flex h-10 min-w-12 items-center justify-center border border-brand-border px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-                      isSelected && "border-brand bg-brand text-white"
-                    )}
+                    className="h-10 min-w-12 px-3 font-medium normal-case tracking-normal"
                   >
                     {size}
-                  </button>
+                  </Button>
                 </li>
               )
             })}
@@ -240,20 +281,18 @@ export const ProductPurchasePanel = ({
         )}
       </div>
 
-      {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="mt-3 text-sm text-destructive">{error}</p> : null}
       {added ? (
-        <p className="mt-3 text-sm text-brand font-medium">✓ Added to bag successfully!</p>
+        <p className="mt-3 text-sm font-medium text-brand-navy">Added to bag successfully.</p>
       ) : null}
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <Button
           type="button"
+          size="xl"
           onClick={() => void handleAddToBag()}
           disabled={isPending}
-          className={cn(
-            "h-12 flex-1 rounded-none text-base font-semibold uppercase tracking-wide text-white hover:opacity-90",
-            ctaBrand ? "bg-brand" : "bg-ink"
-          )}
+          className="flex-1"
         >
           {isPending ? "Adding..." : `Add To Bag — $${product.price}`}
         </Button>
@@ -263,10 +302,11 @@ export const ProductPurchasePanel = ({
           onClick={handleToggleWishlist}
           aria-pressed={wishlisted}
           aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          className="h-12 rounded-none border-brand-border px-4"
+          size="xl"
+          className="px-4"
         >
           <Heart
-            className={cn("size-5", wishlisted && "fill-brand text-brand")}
+            className={cn("size-5", wishlisted && "fill-ink text-ink")}
             aria-hidden="true"
           />
         </Button>
@@ -281,7 +321,7 @@ export const ProductPurchasePanel = ({
 
       {product.description ? (
         <div className="mt-6 border-t border-brand-border pt-6">
-          <p className="text-sm leading-[1.8] text-brand-navy">
+          <p className="text-sm leading-copy text-brand-navy">
             {product.description}
           </p>
         </div>

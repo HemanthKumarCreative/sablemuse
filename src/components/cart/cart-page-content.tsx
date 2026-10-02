@@ -6,12 +6,7 @@ import { CartTableRow } from "@/components/cart/cart-table-row"
 import { useCart } from "@/components/cart/cart-provider"
 import { Container } from "@/components/shared/container"
 import { Button } from "@/components/ui/button"
-
-const formatMoney = (value: number) =>
-  value.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
+import { formatMoney } from "@/lib/format-money"
 
 export const CartPageContent = () => {
   const {
@@ -33,11 +28,11 @@ export const CartPageContent = () => {
           <div className="mt-6 grid grid-cols-[auto_1fr_auto] items-center gap-3 md:mt-8 md:gap-4">
             <Link
               href="/collection"
-              className="text-base text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="text-base text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Back
             </Link>
-            <h1 className="text-center text-[1.75rem] font-semibold text-brand-navy md:text-[2.5rem]">
+            <h1 className="heading-page text-center">
               Your Cart
             </h1>
             <span className="w-12" aria-hidden="true" />
@@ -48,7 +43,8 @@ export const CartPageContent = () => {
           <div className="mt-8 flex justify-center">
             <Button
               render={<Link href="/collection" />}
-              className="h-12 rounded-none bg-brand px-10 text-base font-medium capitalize text-white hover:bg-brand/90"
+              size="xl"
+              className="px-10"
             >
               Continue Shopping
             </Button>
@@ -64,16 +60,16 @@ export const CartPageContent = () => {
         <div className="mt-6 grid grid-cols-[auto_1fr_auto] items-center gap-3 md:mt-8 md:gap-4">
           <Link
             href="/collection"
-            className="text-base text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="text-base text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Back
           </Link>
-          <h1 className="text-center text-[1.75rem] font-semibold text-brand-navy md:text-[2.5rem]">
+          <h1 className="heading-page text-center">
             Your Cart
           </h1>
           <Link
             href="/shop-all"
-            className="hidden text-base text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline"
+            className="hidden text-base text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:inline"
           >
             Continue Shopping
           </Link>
@@ -81,7 +77,7 @@ export const CartPageContent = () => {
         </div>
 
         <div
-          className="mt-10 hidden border-b-2 border-[#DFDFDF] pb-4 md:grid md:grid-cols-[minmax(0,1.4fr)_0.7fr_0.7fr_0.7fr] md:gap-6"
+          className="mt-10 hidden border-b-2 border-brand-border pb-4 md:grid md:grid-cols-[minmax(0,1.4fr)_0.7fr_0.7fr_0.7fr] md:gap-6"
           aria-hidden="true"
         >
           <p className="text-base text-brand-navy">Order Summary</p>
@@ -148,7 +144,8 @@ export const CartPageContent = () => {
             <div className="mt-8 flex justify-end">
               <Button
                 render={<Link href="/checkout" />}
-                className="h-12 rounded-none bg-brand px-12 text-base font-medium capitalize text-white hover:bg-brand/90"
+                size="xl"
+                className="px-12"
               >
                 Next
               </Button>

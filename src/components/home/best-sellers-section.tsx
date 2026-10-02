@@ -17,7 +17,6 @@ export const BestSellersSection = ({ products }: BestSellersSectionProps) => {
         <SectionHeader
           title="New Arrivals"
           href="/collection/new-arrivals"
-          titleClassName="font-sans"
           titleId="best-sellers-heading"
         />
 

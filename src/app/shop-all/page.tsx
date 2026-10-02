@@ -63,7 +63,7 @@ const ShopAllPage = async () => {
           Shop All
         </h1>
 
-        <div className="border-b border-brand-border bg-[#f4f5f3] lg:hidden">
+        <div className="border-b border-brand-border bg-muted lg:hidden">
           <Container>
             <Breadcrumbs
               className="py-3"

@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { CategoryCard } from "@/components/collection/category-card"
+import { MerchandisingHero } from "@/components/collection/merchandising-hero"
 import { ProductCard } from "@/components/product/product-card"
 import { Container } from "@/components/shared/container"
 import { SectionHeader } from "@/components/shared/section-header"
@@ -81,31 +82,13 @@ const PlusSizePage = async () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section aria-labelledby="plus-size-heading" className="pb-10">
-        <Container>
-          <div className="mt-10 mb-8 md:mt-16 md:mb-10">
-            <p className="mb-2 text-sm font-medium tracking-[0.08em] text-brand uppercase">
-              Inclusive Fit
-            </p>
-            <h1
-              id="plus-size-heading"
-              className="text-[2rem] font-extrabold tracking-tight text-brand-navy md:text-[2.5rem]"
-            >
-              Plus Size
-            </h1>
-            <p className="mt-3 max-w-xl text-sm text-brand-navy-muted md:text-base">
-              Thoughtful silhouettes across categories — pants, dresses, blouses,
-              and everyday essentials designed for comfort and ease.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-            {categories.map((category) => (
-              <CategoryCard key={category.href} item={category} />
-            ))}
-          </div>
-        </Container>
-      </section>
+      <MerchandisingHero
+        eyebrow="Inclusive Fit"
+        title="Plus Size"
+        titleId="plus-size-heading"
+        description="Thoughtful silhouettes across categories — pants, dresses, blouses, and everyday essentials designed for comfort and ease."
+        categories={categories}
+      />
 
       <section aria-labelledby="plus-size-featured-heading" className="pb-6">
         <Container>

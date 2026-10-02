@@ -45,7 +45,7 @@ const parseContentToItems = (text: string) => {
   // Fallback to regular bullet points or paragraph
   if (text.includes("\n")) {
     return (
-      <ul className="list-disc space-y-1 pl-4 text-sm leading-[1.8] text-brand-navy-muted">
+      <ul className="list-disc space-y-1 pl-4 text-sm leading-copy text-brand-navy-muted">
         {text.split("\n").filter(Boolean).map((line, idx) => (
           <li key={idx}>{line.replace(/^[-•*]\s*/, "")}</li>
         ))}
@@ -53,7 +53,7 @@ const parseContentToItems = (text: string) => {
     )
   }
 
-  return <p className="text-sm leading-[1.8] text-brand-navy-muted">{text}</p>
+  return <p className="text-sm leading-copy text-brand-navy-muted">{text}</p>
 }
 
 export const ProductAccordions = ({
@@ -76,7 +76,7 @@ export const ProductAccordions = ({
     <Accordion
       multiple
       defaultValue={defaultOpen}
-      className={cn("gap-0 border border-brand-border bg-[#F0F2EF]", className)}
+      className={cn("gap-0 border border-brand-border bg-muted", className)}
     >
       {items.map((item) => (
         <AccordionItem

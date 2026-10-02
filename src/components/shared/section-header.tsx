@@ -28,7 +28,7 @@ export const SectionHeader = ({
       <h2
         id={titleId}
         className={cn(
-          "text-[1.25rem] font-extrabold tracking-tight text-brand-navy sm:text-[1.4rem] md:text-[2.1rem]",
+          "heading-section",
           titleClassName
         )}
       >
@@ -37,7 +37,7 @@ export const SectionHeader = ({
       {href ? (
         <Link
           href={href}
-          className="text-sm font-medium text-brand transition-colors hover:text-brand-light md:text-base"
+          className="text-sm font-medium text-brand-navy underline-offset-2 hover:underline md:text-base"
           aria-label={`${linkLabel} ${title}`}
         >
           {linkLabel}

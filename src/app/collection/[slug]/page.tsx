@@ -58,7 +58,7 @@ const CollectionSlugPage = async ({
 
       <section aria-labelledby="collection-slug-heading" className="pb-12 md:pb-24 pt-8 md:pt-12">
         <Container>
-          <div className="border-b border-brand-border bg-[#f4f5f3] lg:hidden mb-4">
+          <div className="border-b border-brand-border bg-muted lg:hidden mb-4">
             <Breadcrumbs
               className="py-3"
               items={[
@@ -71,7 +71,7 @@ const CollectionSlugPage = async ({
 
           <h1
             id="collection-slug-heading"
-            className="text-[2rem] font-extrabold tracking-tight text-brand-navy md:text-[2.5rem] mb-6 lg:hidden"
+            className="heading-page mb-6 lg:hidden"
           >
             {categoryName}
           </h1>
@@ -86,7 +86,7 @@ const CollectionSlugPage = async ({
           />
 
           <h1
-            className="hidden lg:block text-[2.5rem] font-extrabold tracking-tight text-brand-navy mb-10"
+            className="heading-page mb-10 hidden lg:block"
           >
             {categoryName}
           </h1>

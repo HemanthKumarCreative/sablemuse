@@ -27,12 +27,12 @@ export const ModiweekDayNav = ({
               <Link
                 href={`/modiweek/${day.slug}`}
                 aria-current={isActive ? "page" : undefined}
-                className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <div
                   className={cn(
                     "relative aspect-[3/4] overflow-hidden bg-muted",
-                    isActive && "ring-2 ring-brand"
+                    isActive && "ring-2 ring-ink"
                   )}
                 >
                   <Image
@@ -46,7 +46,7 @@ export const ModiweekDayNav = ({
                 <p
                   className={cn(
                     "pt-3 text-sm font-semibold capitalize text-brand-navy md:text-base",
-                    isActive && "text-brand"
+                    isActive && "underline decoration-1 underline-offset-4"
                   )}
                 >
                   {day.day}
@@ -92,12 +92,12 @@ export const ModiweekLookSection = ({
       <div className="flex flex-col">
         <div className="mb-3 md:mb-6">
           <div className="flex items-end justify-between gap-4">
-            <h2 className="text-xl font-semibold capitalize text-brand-navy md:text-2xl">
+            <h2 className="heading-section capitalize">
               Shop The Look
             </h2>
             <Link
               href="/shop-all"
-              className="hidden text-sm font-medium text-brand transition-colors hover:text-brand-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:inline"
+              className="hidden text-sm font-medium text-brand-navy underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:inline"
             >
               Shop All
             </Link>

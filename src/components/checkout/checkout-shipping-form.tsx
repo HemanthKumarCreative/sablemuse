@@ -82,7 +82,7 @@ export const CheckoutShippingForm = ({
           </div>
           <Link
             href="/checkout"
-            className="shrink-0 text-sm text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="shrink-0 text-sm text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Change
           </Link>
@@ -96,7 +96,7 @@ export const CheckoutShippingForm = ({
           </div>
           <Link
             href="/checkout"
-            className="shrink-0 text-sm text-brand underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="shrink-0 text-sm text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Change
           </Link>
@@ -120,7 +120,7 @@ export const CheckoutShippingForm = ({
                   key={option.handle}
                   className={cn(
                     "px-4 py-4 md:px-5",
-                    isSelected ? "bg-[#F0F2EF]" : "bg-white"
+                    isSelected ? "bg-muted" : "bg-background"
                   )}
                 >
                   <label
@@ -167,19 +167,20 @@ export const CheckoutShippingForm = ({
         </p>
       )}
 
-      {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="mt-4 text-sm text-destructive">{error}</p> : null}
 
       <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row-reverse sm:items-center sm:justify-between">
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-12 w-full rounded-none bg-brand px-8 text-base font-medium capitalize text-white hover:bg-brand/90 sm:w-auto sm:min-w-[220px]"
+          size="xl"
+          className="w-full sm:w-auto sm:min-w-[220px]"
         >
           {isSubmitting ? "Saving..." : "Continue To Payment"}
         </Button>
         <Link
           href="/checkout"
-          className="text-center text-sm text-brand-navy-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:text-left md:text-base"
+          className="text-center text-sm text-brand-navy-muted underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-left md:text-base"
         >
           &lt; Return To Information
         </Link>

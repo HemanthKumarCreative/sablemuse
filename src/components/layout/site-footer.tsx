@@ -20,7 +20,7 @@ export const SiteFooter = () => {
   };
 
   return (
-    <footer className="bg-footer text-white">
+    <footer className="bg-footer text-background">
       <Container className="py-10 md:py-16">
         <div className="grid gap-10 md:grid-cols-12 md:gap-8">
           <div className="flex flex-col justify-between gap-8 md:col-span-6 md:gap-10">
@@ -39,21 +39,22 @@ export const SiteFooter = () => {
                     name="email"
                     required
                     placeholder="Enter your email"
-                    className="h-12 rounded-none border-white bg-transparent pr-12 text-white placeholder:text-white/60 focus-visible:border-white focus-visible:ring-white/30" />
+                    size="xl"
+                    className="border-background bg-transparent pr-12 text-background placeholder:text-background/60 focus-visible:border-background focus-visible:ring-background/30" />
                   
                   <Button
                     type="submit"
                     variant="ghost"
                     size="icon"
                     aria-label="Subscribe to newsletter"
-                    className="absolute top-1/2 right-1 size-10 -translate-y-1/2 rounded-none text-white hover:bg-white/10 hover:text-white">
+                    className="absolute top-1/2 right-1 size-10 -translate-y-1/2 rounded-none text-background hover:bg-background/10 hover:text-background">
                     
                     <ArrowRight className="size-5" strokeWidth={1.5} />
                   </Button>
                 </div>
-                <label className="flex items-start gap-3 text-sm font-semibold leading-relaxed text-white/90">
+                <label className="flex items-start gap-3 text-sm font-semibold leading-relaxed text-background/90">
                   <Checkbox
-                    className="mt-0.5 rounded-none border-white data-checked:border-white data-checked:bg-white data-checked:text-footer"
+                    className="mt-0.5 rounded-none border-background data-checked:border-background data-checked:bg-background data-checked:text-footer"
                     aria-label="Agree to receive advertising emails" />
                   
                   <span>
@@ -111,7 +112,7 @@ export const SiteFooter = () => {
                   </Link>
                 </li>
               </ul>
-              <p className="text-sm text-white/90">
+              <p className="text-sm text-background/90">
                 © {new Date().getFullYear()} Sable Muse. All Rights Reserved.
               </p>
             </div>
@@ -126,7 +127,7 @@ export const SiteFooter = () => {
               <li key={link.label}>
                   <Link
                   href={link.href}
-                  className="text-sm text-white/90 transition-colors hover:text-white">
+                  className="text-sm text-background/90 transition-colors hover:text-background">
                   
                     {link.label}
                   </Link>
@@ -144,7 +145,7 @@ export const SiteFooter = () => {
               <li key={link.label}>
                   <Link
                   href={link.href}
-                  className="text-sm text-white/90 transition-colors hover:text-white">
+                  className="text-sm text-background/90 transition-colors hover:text-background">
                   
                     {link.label}
                   </Link>
@@ -162,7 +163,7 @@ export const SiteFooter = () => {
               <li key={link.label}>
                   <Link
                   href={link.href}
-                  className="text-sm text-white/90 transition-colors hover:text-white">
+                  className="text-sm text-background/90 transition-colors hover:text-background">
                   
                     {link.label}
                   </Link>
@@ -171,7 +172,7 @@ export const SiteFooter = () => {
             </ul>
           </div>
 
-          <div className="space-y-6 border-t border-white/20 pt-8 md:hidden">
+          <div className="space-y-6 border-t border-background/20 pt-8 md:hidden">
             <ul className="flex items-center gap-4" aria-label="Social media">
               <li>
                 <Link
@@ -218,12 +219,13 @@ export const SiteFooter = () => {
                 </Link>
               </li>
             </ul>
-            <p className="text-sm text-white/90">
+            <p className="text-sm text-background/90">
               © {new Date().getFullYear()} Sable Muse. All Rights Reserved.
             </p>
           </div>
         </div>
       </Container>
-    <form className="flex flex-col gap-2 mt-4 max-w-sm"><p className="text-sm font-medium">Join our newsletter for 15% off</p><div className="flex gap-2"><input type="email" placeholder="Enter your email" className="flex h-10 w-full rounded-brand border border-brand-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" required aria-label="Email address" /><button type="submit" className="inline-flex items-center justify-center rounded-brand text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Subscribe</button></div></form></footer>);
+    </footer>
+  )
 
 };

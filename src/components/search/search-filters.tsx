@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { ColorSwatch } from "@/components/product/color-swatch"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { SearchFilterGroup } from "@/data/search"
 import {
@@ -39,7 +40,7 @@ export const SearchFilters = ({
     <aside className={cn("w-full", className)} aria-labelledby={headingId}>
       <h2
         id={headingId}
-        className="mb-4 text-[2rem] font-semibold capitalize leading-[1.4] text-brand-navy"
+        className="mb-4 heading-section capitalize"
       >
         Filters
       </h2>
@@ -49,7 +50,7 @@ export const SearchFilters = ({
           {filters.map((group) => (
             <div
               key={group.id}
-              className="flex h-12 items-center bg-brand-light px-4 text-base font-semibold capitalize text-white"
+              className="flex h-12 items-center bg-ink px-4 text-base font-semibold capitalize text-background"
             >
               {group.label}
             </div>
@@ -65,7 +66,7 @@ export const SearchFilters = ({
             >
               <AccordionTrigger
                 className={cn(
-                  "h-12 rounded-none border-0 bg-brand-light px-4 py-0 text-base font-semibold capitalize text-white hover:no-underline focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 aria-expanded:bg-white aria-expanded:text-brand-navy **:data-[slot=accordion-trigger-icon]:hidden"
+                  "h-12 rounded-none border-0 bg-ink px-4 py-0 text-base font-semibold capitalize text-background hover:no-underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 aria-expanded:bg-background aria-expanded:text-brand-navy **:data-[slot=accordion-trigger-icon]:hidden"
                 )}
                 aria-label={`${group.label} filter`}
               >
@@ -81,7 +82,7 @@ export const SearchFilters = ({
                   aria-hidden="true"
                 />
               </AccordionTrigger>
-              <AccordionContent className="bg-white px-4 pt-2 pb-4">
+              <AccordionContent className="bg-background px-4 pt-2 pb-4">
                 <ul className="space-y-4" role="list">
                   {group.options.map((option) => {
                     const optionId = `${headingId}-${group.id}-${option.id}`
@@ -91,23 +92,19 @@ export const SearchFilters = ({
                         <Checkbox
                           id={optionId}
                           defaultChecked={option.defaultChecked}
-                          className="size-4 rounded-none border-ink data-checked:border-brand data-checked:bg-brand data-checked:text-white"
+                          className="size-4 rounded-none border-ink data-checked:border-ink data-checked:bg-ink data-checked:text-background"
                         />
                         {option.swatch ? (
-                          <span
-                            className={cn(
-                              "inline-block size-5 shrink-0 rounded-full border",
-                              option.swatch === "#FFFFFF"
-                                ? "border-brand-border"
-                                : "border-transparent"
-                            )}
-                            style={{ backgroundColor: option.swatch }}
-                            aria-hidden="true"
+                          <ColorSwatch
+                            hex={option.swatch}
+                            name={option.label}
+                            decorative
+                            className="size-5 shrink-0"
                           />
                         ) : null}
                         <label
                           htmlFor={optionId}
-                          className="cursor-pointer text-sm capitalize leading-[1.8] text-brand-navy"
+                          className="cursor-pointer text-sm capitalize leading-copy text-brand-navy"
                         >
                           {option.label}
                         </label>

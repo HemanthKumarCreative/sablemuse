@@ -10,7 +10,6 @@ export const FollowUsSection = () => {
       <Container>
         <SectionHeader
           title="Follow us @modimal"
-          titleClassName="font-sans"
           titleId="follow-us-heading"
         />
         <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:auto-rows-[315px] md:gap-0">
