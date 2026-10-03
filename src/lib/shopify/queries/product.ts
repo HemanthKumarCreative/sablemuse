@@ -57,30 +57,80 @@ export const getProducts = async (limit = 12): Promise<Product[]> => {
   }
 }
 
+const PRODUCT_QUERY = `
+  ${MONEY_FRAGMENT}
+  ${IMAGE_FRAGMENT}
+  ${PRODUCT_DETAIL_FRAGMENT}
+  query getProduct($handle: String!, $mediaAfter: String, $variantAfter: String) {
+    product(handle: $handle) {
+      ...ProductDetailFields
+    }
+  }
+`
+
+type DetailNode = NonNullable<ProductResponse["product"]>
+type MediaEdge = NonNullable<DetailNode["media"]>["edges"][number]
+type VariantEdge = DetailNode["variants"]["edges"][number]
+
+type Connection<T> = {
+  pageInfo?: { hasNextPage: boolean; endCursor?: string | null }
+  edges: T[]
+}
+
 export const getProduct = async (
   handle: string
 ): Promise<ProductLoadResult> => {
   try {
-    const data = await shopifyFetch<ProductResponse>({
-      query: `
-        ${MONEY_FRAGMENT}
-        ${IMAGE_FRAGMENT}
-        ${PRODUCT_DETAIL_FRAGMENT}
-        query getProduct($handle: String!) {
-          product(handle: $handle) {
-            ...ProductDetailFields
-          }
-        }
-      `,
-      variables: { handle },
-      revalidate: 60,
-    })
+    let mediaAfter: string | null = null
+    let variantAfter: string | null = null
+    let product: ProductResponse["product"] = null
+    let mediaEdges: MediaEdge[] = []
+    let variantEdges: VariantEdge[] = []
+    let readMedia = true
+    let readVariants = true
 
-    if (!data.product) {
+    for (let page = 0; page < 20 && (readMedia || readVariants); page += 1) {
+      const data = await shopifyFetch<ProductResponse>({
+        query: PRODUCT_QUERY,
+        variables: { handle, mediaAfter, variantAfter },
+        revalidate: 60,
+      })
+
+      if (!data.product) {
+        return { status: "missing" }
+      }
+
+      product = data.product
+      const media = data.product.media as Connection<(typeof mediaEdges)[number]> | undefined
+      const variants = data.product.variants as Connection<(typeof variantEdges)[number]>
+
+      if (readMedia) {
+        mediaEdges = mediaEdges.concat(media?.edges ?? [])
+      }
+      if (readVariants) {
+        variantEdges = variantEdges.concat(variants.edges ?? [])
+      }
+
+      readMedia = Boolean(media?.pageInfo?.hasNextPage && media.pageInfo.endCursor)
+      readVariants = Boolean(
+        variants.pageInfo?.hasNextPage && variants.pageInfo.endCursor
+      )
+      mediaAfter = readMedia ? media?.pageInfo?.endCursor ?? null : mediaAfter
+      variantAfter = readVariants ? variants.pageInfo?.endCursor ?? null : variantAfter
+    }
+
+    if (!product) {
       return { status: "missing" }
     }
 
-    return { status: "ready", product: mapProductDetail(data.product) }
+    return {
+      status: "ready",
+      product: mapProductDetail({
+        ...product,
+        media: { edges: mediaEdges },
+        variants: { edges: variantEdges },
+      }),
+    }
   } catch (error) {
     console.error("Failed to fetch product from Shopify", error)
     return { status: "error" }

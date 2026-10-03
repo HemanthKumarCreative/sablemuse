@@ -21,7 +21,8 @@ const decode = (value: string) => {
     .replace(/&#(\d+);/g, (_, code: string) => String.fromCharCode(Number(code)))
 
   return text
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/(?<![A-Z])([a-z])(This|The|These|Those|It|They)\b/g, "$1. $2")
+    .replace(/(?<![A-Z])([a-z])([A-Z])/g, "$1 $2")
     .replace(/:([^\s])/g, ": $1")
     .replace(/\s+/g, " ")
     .trim()
@@ -69,6 +70,26 @@ const isModelParagraph = (paragraph: string) =>
   /\bmodel\b/i.test(paragraph) ||
   (/\bheight\b/i.test(paragraph) && /\b(bust|waist|hip)\b/i.test(paragraph))
 
+const isCompanyBio = (paragraph: string) =>
+  /\b(established|founded)\b/i.test(paragraph) &&
+  /\b(supplies|accessory|accessories|jewelry|jewellery|brand)\b/i.test(paragraph)
+
+const sizeMeasurement = (text: string) => {
+  const match = text.match(
+    /^(XXS|XS|S|M|L|XL|XXL|\dXL|ONE SIZE|OS)\s*:\s*(.+)$/i
+  )
+  if (!match?.[1] || !match[2]) {
+    return null
+  }
+
+  return {
+    size: match[1].toUpperCase() === "ONE SIZE" ? "One Size" : match[1],
+    detail: match[2].trim(),
+  }
+}
+
+const isFabricLine = (label: string) => /^(outside|inside)$/i.test(label)
+
 export const parseDescription = (html: string): ParsedDescription => {
   const clean = stripUnsafe(html)
   const tableMatch = clean.match(/<table\b[\s\S]*?<\/table>/i)
@@ -76,6 +97,7 @@ export const parseDescription = (html: string): ParsedDescription => {
   const prose: string[] = []
   const specs: ProductSpec[] = []
   const modelLines: string[] = []
+  const sizeRows: string[][] = []
   let fabricCare = ""
 
   const listItems = [...clean.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/gi)].map(
@@ -85,13 +107,27 @@ export const parseDescription = (html: string): ParsedDescription => {
     .map((match) => decode(match[1]))
     .filter(Boolean)
 
+  const keepSize = (text: string) => {
+    const sized = sizeMeasurement(text)
+    if (!sized) {
+      return false
+    }
+
+    sizeRows.push([sized.size, sized.detail])
+    return true
+  }
+
   for (const item of listItems) {
-    if (!item) {
+    if (!item || isCompanyBio(item)) {
       continue
     }
 
     if (/^imported$/i.test(item)) {
       specs.push({ label: "Origin", value: "Imported" })
+      continue
+    }
+
+    if (keepSize(item)) {
       continue
     }
 
@@ -112,7 +148,19 @@ export const parseDescription = (html: string): ParsedDescription => {
       continue
     }
 
-    if (!pair.value || /^product measurements/i.test(pair.label)) {
+    if (/^product measurements/i.test(pair.label)) {
+      if (pair.value) {
+        keepSize(pair.value)
+      }
+      continue
+    }
+
+    if (!pair.value) {
+      continue
+    }
+
+    if (isFabricLine(pair.label)) {
+      specs.push({ label: pair.label, value: pair.value })
       continue
     }
 
@@ -120,7 +168,17 @@ export const parseDescription = (html: string): ParsedDescription => {
   }
 
   for (const paragraph of paragraphs) {
-    if (/^product measurements/i.test(paragraph)) {
+    if (isCompanyBio(paragraph) || /^product measurements/i.test(paragraph)) {
+      continue
+    }
+
+    if (keepSize(paragraph)) {
+      continue
+    }
+
+    const pair = splitLabel(paragraph)
+    if (pair?.value && isFabricLine(pair.label)) {
+      specs.push({ label: pair.label, value: pair.value })
       continue
     }
 
@@ -132,12 +190,17 @@ export const parseDescription = (html: string): ParsedDescription => {
     prose.push(paragraph)
   }
 
+  const lineChart =
+    sizeRows.length > 0
+      ? { headers: ["Size", "Measurements"], rows: sizeRows }
+      : undefined
+
   return {
     prose,
     specs,
     fabricCare,
     modelInfo: modelLines.join("\n"),
-    sizeChart,
+    sizeChart: sizeChart ?? lineChart,
   }
 }
 

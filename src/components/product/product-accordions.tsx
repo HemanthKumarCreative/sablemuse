@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Plus, Minus } from "lucide-react"
 import {
   Accordion,
@@ -7,7 +8,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { shippingCopy } from "@/data/shipping-policy"
 import type { ProductDetail } from "@/types/commerce"
 import { cn } from "cn"
 
@@ -57,7 +57,7 @@ export const ProductAccordions = ({
     {
       id: "shipping",
       label: "Shipping and returns",
-      content: shippingCopy(product.shipsFromUs).detail,
+      content: "",
     },
   ].filter((item): item is { id: string; label: string; content: string } =>
     Boolean(item)
@@ -94,7 +94,20 @@ export const ProductAccordions = ({
             />
           </AccordionTrigger>
           <AccordionContent className="px-4 pb-4">
-            {renderCopy(item.content)}
+            {item.id === "shipping" ? (
+              <p className="text-sm leading-copy text-brand-navy-muted">
+                <Link href="/shipping" className="underline underline-offset-2">
+                  Shipping
+                </Link>
+                {" and "}
+                <Link href="/returns" className="underline underline-offset-2">
+                  returns
+                </Link>
+                {" for United States orders."}
+              </p>
+            ) : (
+              renderCopy(item.content)
+            )}
           </AccordionContent>
         </AccordionItem>
       ))}

@@ -17,6 +17,8 @@ type ProductGalleryProps = {
   productName: string
   selectedImageUrl?: string
   selectedColor?: string
+  imageColor?: (url: string) => string
+  onActiveSlide?: (item: ProductMedia) => void
   className?: string
 }
 
@@ -42,20 +44,35 @@ const slideLabel = (
   item: ProductMedia,
   index: number,
   productName: string,
-  selectedColor: string | undefined,
-  selectedImageUrl: string | undefined
+  selectedColor: string | undefined
 ) => {
   if (item.alt) {
     return item.alt
   }
 
-  const matchesColor =
-    Boolean(selectedColor) &&
-    Boolean(selectedImageUrl) &&
-    item.type === "image" &&
-    fileKey(item.url) === fileKey(selectedImageUrl ?? "")
-  const color = matchesColor ? `, ${selectedColor}` : ""
+  const color = selectedColor ? `, ${selectedColor}` : ""
+  if (item.type === "video" || item.type === "external-video") {
+    return `${productName}${color}, video ${index + 1}`
+  }
+  if (item.type === "model") {
+    return `${productName}${color}, 3D view ${index + 1}`
+  }
   return `${productName}${color}, image ${index + 1}`
+}
+
+const thumbLabel = (
+  item: ProductMedia,
+  index: number,
+  knownColor: string
+) => {
+  const color = knownColor ? `, ${knownColor}` : ""
+  if (item.type === "video" || item.type === "external-video") {
+    return `Video ${index + 1}${color}`
+  }
+  if (item.type === "model") {
+    return `3D view ${index + 1}`
+  }
+  return `View image ${index + 1}${color}`
 }
 
 export const ProductGallery = ({
@@ -63,6 +80,8 @@ export const ProductGallery = ({
   productName,
   selectedImageUrl,
   selectedColor,
+  imageColor,
+  onActiveSlide,
   className,
 }: ProductGalleryProps) => {
   const slides = useMemo(() => {
@@ -139,7 +158,7 @@ export const ProductGallery = ({
 
   const activeItem = slides[activeIndex] ?? slides[0]
   const labelFor = (item: ProductMedia, index: number) =>
-    slideLabel(item, index, productName, selectedColor, selectedImageUrl)
+    slideLabel(item, index, productName, selectedColor)
 
   if (!activeItem) {
     return null
@@ -147,16 +166,23 @@ export const ProductGallery = ({
 
   const handleSelect = (index: number) => {
     setActiveIndex(index)
+    const item = slides[index]
+    if (item) {
+      onActiveSlide?.(item)
+    }
   }
 
   const handleStep = (direction: -1 | 1) => {
-    setActiveIndex((current) => {
-      const next = current + direction
-      if (next < 0 || next >= slides.length) {
-        return current
-      }
-      return next
-    })
+    const next = activeIndex + direction
+    if (next < 0 || next >= slides.length) {
+      return
+    }
+
+    setActiveIndex(next)
+    const item = slides[next]
+    if (item) {
+      onActiveSlide?.(item)
+    }
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -226,13 +252,15 @@ export const ProductGallery = ({
               {slides.map((item, index) => {
                 const thumb = item.type === "image" ? item.url : item.poster
                 const isActive = index === activeIndex
+                const knownColor =
+                  item.type === "image" ? imageColor?.(item.url) ?? "" : ""
 
                 return (
                   <li key={`${item.type}-${item.url}-${index}`} className="shrink-0">
                     <button
                       type="button"
                       onClick={() => handleSelect(index)}
-                      aria-label={`View image ${index + 1}`}
+                      aria-label={thumbLabel(item, index, knownColor)}
                       aria-pressed={isActive}
                       className={cn(
                         "relative block size-16 overflow-hidden bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:h-[104px] md:w-[88px]",
@@ -287,12 +315,14 @@ export const ProductGallery = ({
                 </Button>
               ) : null}
             </div>
-            {slides.length > 1 ? (
+            {selectedColor || slides.length > 1 ? (
               <p
                 className="mt-3 text-center text-sm text-brand-navy-muted"
                 aria-live="polite"
               >
-                {activeIndex + 1} / {slides.length}
+                {selectedColor ? `${selectedColor}` : ""}
+                {selectedColor && slides.length > 1 ? " · " : ""}
+                {slides.length > 1 ? `${activeIndex + 1} / ${slides.length}` : ""}
               </p>
             ) : null}
           </div>
@@ -369,7 +399,7 @@ const MediaSlide = ({
         className="h-full w-full object-contain"
         aria-label={label}
       >
-        <source src={item.url} type="video/mp4" />
+        <source src={item.url} type={item.mimeType || "video/mp4"} />
       </video>
     )
   }

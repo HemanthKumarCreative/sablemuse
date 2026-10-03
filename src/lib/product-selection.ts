@@ -15,6 +15,12 @@ export const isDefaultTitleOption = (option: ProductOption) => {
 export const selectableOptions = (product: ProductDetail) =>
   (product.options ?? []).filter((option) => !isDefaultTitleOption(option))
 
+const fileKey = (url: string) => {
+  const path = url.split("?")[0] ?? url
+  const parts = path.split("/")
+  return parts[parts.length - 1] ?? path
+}
+
 export const initialSelection = (product: ProductDetail) => {
   const selected: Record<string, string> = {}
 
@@ -25,6 +31,57 @@ export const initialSelection = (product: ProductDetail) => {
   }
 
   return selected
+}
+
+export const selectionFromQuery = (
+  product: ProductDetail,
+  query: { color?: string; size?: string }
+) => {
+  const selected = initialSelection(product)
+
+  for (const option of selectableOptions(product)) {
+    const raw = isColorOption(option.name)
+      ? query.color
+      : isSizeOption(option.name)
+        ? query.size
+        : undefined
+    if (!raw) {
+      continue
+    }
+
+    const match = option.values.find(
+      (value) => value.toLowerCase() === raw.trim().toLowerCase()
+    )
+    if (match) {
+      selected[option.name] = match
+    }
+  }
+
+  return selected
+}
+
+export const colorForImage = (product: ProductDetail, url: string) => {
+  const key = fileKey(url)
+  const colors = new Set<string>()
+
+  for (const variant of product.variants ?? []) {
+    if (!variant.image || fileKey(variant.image) !== key) {
+      continue
+    }
+
+    const color = variant.selectedOptions.find((option) =>
+      isColorOption(option.name)
+    )?.value
+    if (color) {
+      colors.add(color)
+    }
+  }
+
+  if (colors.size !== 1) {
+    return ""
+  }
+
+  return [...colors][0] ?? ""
 }
 
 export const variantMatchesSelection = (

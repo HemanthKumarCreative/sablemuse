@@ -6,6 +6,7 @@ import type {
   ProductDetail,
   ProductMedia,
   ProductOption,
+  ProductSpec,
   ProductVariant,
 } from "@/types/commerce"
 import { shippingCopy } from "@/data/shipping-policy"
@@ -69,6 +70,20 @@ type ShopifyMediaNode = {
   previewImage?: ImageNode | null
 }
 
+type ShopifyMetafield = {
+  key: string
+  value?: string | null
+} | null
+
+const METAFIELD_LABELS: Record<string, string> = {
+  stretch: "Stretch",
+  sheer: "Sheer",
+  opacity: "Sheer",
+  lining: "Lining",
+  fit: "Fit",
+  material: "Material composition",
+}
+
 type ShopifyVariant = {
   id: string
   title: string
@@ -97,6 +112,7 @@ type ShopifyProductDetail = ShopifyProductCard & {
   collections?: {
     edges: Array<{ node: { handle: string; title: string } }>
   }
+  metafields?: ShopifyMetafield[]
   variants: {
     edges: Array<{ node: ShopifyVariant }>
   }
@@ -187,6 +203,7 @@ const mapMediaNode = (node: ShopifyMediaNode): ProductMedia | null => {
     return {
       type: "video",
       url: source.url,
+      mimeType: source.mimeType || "video/mp4",
       alt: mediaAlt(node),
       poster: node.previewImage?.url,
     }
@@ -213,22 +230,46 @@ const mapMediaNode = (node: ShopifyMediaNode): ProductMedia | null => {
   return null
 }
 
+const CATEGORY_HINTS: Array<{ handle: string; pattern: RegExp }> = [
+  { handle: "matching-sets-lounge", pattern: /\b(sets?|loungewear|lounge)\b/i },
+  { handle: "jeans-pants", pattern: /\b(jeans?|pants?|leggings?|trousers?|joggers?)\b/i },
+  { handle: "dresses-jumpsuits", pattern: /\b(dresses?|jumpsuits?|rompers?)\b/i },
+  {
+    handle: "tops-blouses",
+    pattern: /\b(tops?|tees?|t-shirts?|blouses?|shirts?|sweaters?|tanks?)\b/i,
+  },
+]
+
 const chooseCategory = (product: ShopifyProductDetail) => {
   const matches =
     product.collections?.edges
       .map((edge) => edge.node)
       .filter((node) => CATEGORY_HANDLES.has(node.handle)) ?? []
+  const apparel = matches.filter((node) => node.handle !== "plus-size")
+  const chosen =
+    apparel.length === 1
+      ? apparel[0]
+      : apparel.length > 1
+        ? CATEGORY_HINTS.map((hint) =>
+            apparel.find(
+              (node) =>
+                node.handle === hint.handle && hint.pattern.test(product.title)
+            )
+          ).find((node) => Boolean(node)) ?? apparel[0]
+        : matches.length === 1
+          ? matches[0]
+          : undefined
 
-  if (matches.length === 1) {
+  if (!chosen) {
     return {
-      category: matches[0].title,
-      categoryHref: `/collection/${matches[0].handle}`,
+      category: "Shop",
+      categoryHref: "/shop-all",
     }
   }
 
   return {
-    category: "Shop",
-    categoryHref: "/shop-all",
+    category: chosen.title,
+    categoryHref: `/collection/${chosen.handle}`,
   }
 }
 
@@ -346,6 +387,32 @@ export const mapProductCard = (
   }
 }
 
+const mergeSpecs = (
+  specs: ProductSpec[],
+  metafields: ShopifyMetafield[] | undefined
+) => {
+  const next = [...specs]
+
+  for (const field of metafields ?? []) {
+    const value = field?.value?.trim()
+    const label = field ? METAFIELD_LABELS[field.key] : undefined
+    if (!value || !label) {
+      continue
+    }
+
+    const exists = next.some(
+      (spec) => spec.label.toLowerCase() === label.toLowerCase()
+    )
+    if (exists) {
+      continue
+    }
+
+    next.push({ label, value })
+  }
+
+  return next
+}
+
 export const mapProductDetail = (
   product: ShopifyProductDetail
 ): ProductDetail => {
@@ -425,12 +492,11 @@ export const mapProductDetail = (
     options,
     variants,
     prose: parsed.prose,
-    specs: parsed.specs,
+    specs: mergeSpecs(parsed.specs, product.metafields),
     sizeChart: parsed.sizeChart,
     modelInfo: parsed.modelInfo,
     fitting,
     fabricCare: parsed.fabricCare,
-    productDetail: "",
     shippingReturns: shippingCopy(card.shipsFromUs).detail,
     sizeSelector: "buttons",
     ctaStyle: "brand",

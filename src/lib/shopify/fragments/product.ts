@@ -99,7 +99,11 @@ export const PRODUCT_DETAIL_FRAGMENT = `
         }
       }
     }
-    media(first: 50) {
+    media(first: 50, after: $mediaAfter) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           mediaContentType
@@ -144,6 +148,17 @@ export const PRODUCT_DETAIL_FRAGMENT = `
         }
       }
     }
+    metafields(identifiers: [
+      {namespace: "custom", key: "stretch"},
+      {namespace: "custom", key: "sheer"},
+      {namespace: "custom", key: "opacity"},
+      {namespace: "custom", key: "lining"},
+      {namespace: "custom", key: "fit"},
+      {namespace: "custom", key: "material"}
+    ]) {
+      key
+      value
+    }
     priceRange {
       minVariantPrice {
         ...MoneyFields
@@ -157,7 +172,11 @@ export const PRODUCT_DETAIL_FRAGMENT = `
         ...MoneyFields
       }
     }
-    variants(first: 100) {
+    variants(first: 100, after: $variantAfter) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           id

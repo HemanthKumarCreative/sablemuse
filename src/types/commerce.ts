@@ -14,6 +14,7 @@ export type ProductMedia =
       type: "video"
       url: string
       alt: string
+      mimeType?: string
       poster?: string
     }
   | {
@@ -76,12 +77,6 @@ export type ProductVariant = {
   sku?: string
 }
 
-export type ProductMaterial = {
-  title: string
-  description: string
-  tags: string[]
-}
-
 export type ProductDetail = Product & {
   gid?: string
   category: string
@@ -97,15 +92,11 @@ export type ProductDetail = Product & {
   modelInfo: string
   fitting: string
   fabricCare: string
-  productDetail: string
   shippingReturns: string
   sizeSelector?: "buttons" | "select"
   ctaStyle?: "ink" | "brand"
   showCtaPrice?: boolean
-  showEasyReturn?: boolean
   accordionDefaultOpen?: string[]
-  material?: ProductMaterial
-  accordionPlacement?: "panel" | "gallery"
 }
 
 export type CartItem = {

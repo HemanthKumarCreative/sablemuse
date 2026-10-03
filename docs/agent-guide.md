@@ -84,10 +84,10 @@ Defined in `src/types/commerce.ts`. Mapped in `src/lib/shopify/mappers/product.t
 
 - `Product.id` is the **handle**, not the Shopify GID.
 - `ProductDetail.gid` is the Shopify product id. Pass that to `getProductRecommendations`.
-- `Product.price` is a number (parsed from the money string). Optional `compareAtPrice` is never set by the mapper.
+- `Product.price` is a number (parsed from the money string). `compareAtPrice` is set when Shopify's compare-at amount is higher than the price.
 - `CartItem.productId` is the handle. `CartItem.merchandiseId` is the variant id. `CartItem.id` is the cart line id.
 - `CartSummary.checkoutUrl` is Shopify's URL. `subtotal` is `cost.subtotalAmount`. `cost.totalAmount` is fetched and not mapped.
-- These `ProductDetail` fields are never set by the mapper: `showEasyReturn`, `accordionDefaultOpen`, `material`, `accordionPlacement`. Fit, fabric care, and returns copy are hardcoded in `mapProductDetail`. `sizeSelector` is always `"select"`, `ctaStyle` always `"brand"`, `categoryHref` always `"/shop-all"`.
+- Fit, fabric care, and the size chart come from `descriptionHtml`. Shipping copy comes from `src/data/shipping-policy.ts`. Size options render as buttons. The breadcrumb is one apparel collection when the product belongs to one, or the collection the title points at when it belongs to several. Otherwise it is Shop (`/shop-all`). Plus-size alone still crumbs to that collection.
 
 Colors: `isColorOption` matches `color` or `colour`. `isSizeOption` matches `size` or `sizes`. `colorNameToHex` returns `#0C0C0C` for unknown names.
 
@@ -98,7 +98,7 @@ Import catalog helpers from `@/lib/shopify`.
 | Function | Notes |
 | --- | --- |
 | `getProducts(limit = 12)` | First products. Failure → `[]` |
-| `getProduct(handle)` | Failure or missing → `null`. Callers use `notFound()` |
+| `getProduct(handle)` | `ready`, `missing` (`notFound()`), or `error` (retry panel). Revalidates every 60 seconds. Media and variants are paged past the first request |
 | `getCollectionProducts(handle, limit = 24)` | Missing collection or error → `getProducts(limit)` |
 | `getProductRecommendations(productId, limit = 4)` | `productId` must be a GID. Failure → `[]` |
 | `searchProducts(query, limit = 24)` | `cache: "no-store"`. Blank query → `[]` |

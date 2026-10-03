@@ -15,7 +15,7 @@ import { ProductAccordions } from "@/components/product/product-accordions"
 import { useCart } from "@/components/cart/cart-provider"
 import { useWishlist } from "@/components/wishlist/wishlist-provider"
 import { shippingCopy } from "@/data/shipping-policy"
-import { formatMoney, salePercent } from "@/lib/format-money"
+import { formatMoney, formatPriceLabel, salePercent } from "@/lib/format-money"
 import { buyNowAction } from "@/lib/shopify/cart/actions"
 import { isColorOption, isSizeOption } from "@/lib/shopify/mappers/color"
 import {
@@ -79,7 +79,6 @@ export const ProductPurchasePanel = ({
   const minPrice = prices.length > 0 ? Math.min(...prices) : product.price
   const maxPrice = prices.length > 0 ? Math.max(...prices) : product.price
   const displayPrice = complete && exact ? exact.price : minPrice
-  const showFrom = !complete && maxPrice > minPrice
   const compareAt = (() => {
     if (complete && exact) {
       return compareAtFor(exact)
@@ -96,8 +95,16 @@ export const ProductPurchasePanel = ({
     return undefined
   })()
   const discount = salePercent(displayPrice, compareAt)
-  const priceAmount = `$${formatMoney(displayPrice)}`
-  const priceLabel = showFrom ? `From ${priceAmount}` : priceAmount
+  const priceLabel =
+    complete && exact
+      ? `$${formatMoney(exact.price)}`
+      : formatPriceLabel(minPrice, maxPrice > minPrice ? maxPrice : undefined)
+  const stockLabel =
+    soldOut || availableScoped.length === 0
+      ? "Sold Out"
+      : availableScoped.length < scoped.length
+        ? "Some sizes available"
+        : "In Stock"
   const sizeOption = options.find((option) => isSizeOption(option.name))
   const sizeValues = sizeOption?.values ?? []
   const sizeRun =
@@ -231,7 +238,7 @@ export const ProductPurchasePanel = ({
           variant={soldOut ? "inverse" : "outline"}
           className="mt-4 w-fit px-3 py-1 text-xs tracking-eyebrow uppercase"
         >
-          {soldOut ? "Sold Out" : "In Stock"}
+          {stockLabel}
         </Badge>
       ) : null}
 
@@ -268,16 +275,23 @@ export const ProductPurchasePanel = ({
                 {option.values.map((value) => {
                   const swatch = product.colors.find((color) => color.name === value)
                   const isSelected = selectedValue === value
+                  const available = isValuePurchasable(
+                    product,
+                    selected,
+                    option.name,
+                    value
+                  )
                   return (
                     <li key={value}>
                       <button
                         type="button"
                         onClick={() => handleSelectOption(option.name, value)}
-                        aria-label={value}
+                        aria-label={available ? value : `${value}, sold out`}
                         aria-pressed={isSelected}
                         className={cn(
                           "relative size-11 overflow-hidden rounded-full bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                          isSelected && "ring-2 ring-ink ring-offset-2"
+                          isSelected && "ring-2 ring-ink ring-offset-2",
+                          !available && "opacity-60"
                         )}
                       >
                         {swatch?.image ? (
@@ -291,6 +305,11 @@ export const ProductPurchasePanel = ({
                         ) : (
                           <span className="flex h-full items-center justify-center px-1 text-center text-[10px] leading-tight text-brand-navy">
                             {value}
+                          </span>
+                        )}
+                        {available ? null : (
+                          <span className="absolute inset-x-0 bottom-0 bg-background/95 py-0.5 text-center text-[8px] font-medium tracking-wide text-brand-navy uppercase">
+                            Sold out
                           </span>
                         )}
                       </button>

@@ -2083,3 +2083,951 @@ Use this after the tasks above, on at least one multi-color top with a measureme
 - [ ] Unknown handle 404s
 - [ ] Storefront failure does not look like a missing product
 - [ ] Wishlist, cart quantity edit, and hosted checkout still behave as they do today
+
+## Residual tasks
+
+Second audit, after PDP-001 through PDP-034. These are still open. Do not invent product information. `quantityAvailable` stays unread. Do not add reviews, a PDP quantity stepper, or a 3D viewer until the store has that data.
+
+### P0 — Critical
+
+### Task ID
+
+PDP-035
+
+### Priority
+
+P0
+
+### Category
+
+Variant
+
+### Problem
+
+The hero can show one color while Add to Bag buys another.
+
+### Current Behavior
+
+Choosing a color sets the hero to that variant’s image. Thumbnail clicks, swipe, and arrow keys only change `activeIndex`. The color label and the variant id stay on the previous color. The color is included in the slide label only when the slide URL is the selected variant image.
+
+### Expected Behavior
+
+The photo on screen and the color that will be purchased stay aligned. If a slide is the variant image for exactly one color, that color becomes selected. If a slide is not tied to a color, the purchase color stays selected and the hero says which color is selected so the photo cannot be mistaken for it.
+
+### Customer Impact
+
+A shopper can study a Cream photo, choose a size, and receive Orange.
+
+### Business Impact
+
+Wrong-color orders, returns, and lost trust on the products with the most photos.
+
+### Recommended Solution
+
+Map each variant image URL to its color. When the active slide matches exactly one color, select that color. Do not guess for lifestyle frames that match no variant image. Keep the purchase summary and the sticky bar on the selected color.
+
+### Acceptance Criteria
+
+- On the ribbed tee, moving from the Orange photo to the Cream variant photo selects Cream.
+- Add to Bag for a chosen size uses the Cream variant.
+- A frame that is not any variant image does not change the color, and the hero still names the selected color.
+- Selecting a swatch still jumps to that color’s photo.
+
+### Dependencies
+
+None
+
+### Effort
+
+Medium
+
+### Status
+
+Done
+
+
+---
+
+### P1 — High Priority
+
+### Task ID
+
+PDP-036
+
+### Priority
+
+P1
+
+### Category
+
+Content
+
+### Problem
+
+Size measurements that are not an HTML table never reach the size guide.
+
+### Current Behavior
+
+Only the first `<table>` becomes `sizeChart`. Paragraphs such as “S: Waist 27-28 in, HIP 35-37 in” stay in the description. List items labeled “Product measurements” are dropped. If there is no table, Size Guide says to compare a garment the customer already owns and to email the shop.
+
+### Expected Behavior
+
+Labeled per-size measurements become the size guide and leave the marketing description. Fabric lines such as “Outside:” and “Inside:” become specs. A product with a real HTML table keeps that table. A product with neither gets the email fallback.
+
+### Customer Impact
+
+On the fleece leggings, the numbers needed to pick a size are buried in prose, and the control named Size Guide does not show them.
+
+### Business Impact
+
+Size hesitation and returns on products whose only chart is written as lines.
+
+### Recommended Solution
+
+Extend `parseDescription` so size-and-measurement lines build `sizeChart`, and material lines build specs. Do not invent measurements that are not in the HTML.
+
+### Acceptance Criteria
+
+- The leggings size guide shows S, M, and L with waist and hip.
+- Those lines are no longer in the description body.
+- The ribbed tee still opens its HTML table.
+- A product with no measurements still shows the email fallback.
+
+### Dependencies
+
+None
+
+### Effort
+
+Medium
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-037
+
+### Priority
+
+P1
+
+### Category
+
+Variant
+
+### Problem
+
+A color with no purchasable size looks the same as an available color.
+
+### Current Behavior
+
+Sold-out logic disables size buttons, not color swatches. After a dead color is selected, every size shows Sold out and the badge switches to Sold Out.
+
+### Expected Behavior
+
+A color with no purchasable variant is visibly unavailable before it is chosen. It can still be selected so the customer can see that color’s photo and the sold-out sizes.
+
+### Customer Impact
+
+The shopper taps a color that looks available, then finds every size dead.
+
+### Business Impact
+
+Extra taps and the impression that the page is broken.
+
+### Recommended Solution
+
+Use `isValuePurchasable` for color values. Mark a fully unavailable swatch, keep its name, and do not hide it.
+
+### Acceptance Criteria
+
+- On a product whose Black variants are all unavailable, the Black swatch is marked sold out before selection.
+- Choosing it still shows the Black photo and disabled sizes.
+- A color with at least one purchasable size is not marked sold out.
+
+### Dependencies
+
+None
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-038
+
+### Priority
+
+P1
+
+### Category
+
+UX
+
+### Problem
+
+A product in more than one category breadcrumbs to Shop.
+
+### Current Behavior
+
+`chooseCategory` returns a collection only when exactly one of dresses-jumpsuits, tops-blouses, jeans-pants, matching-sets-lounge, or plus-size matches. The ribbed tee is in more than one, so the crumb and the breadcrumb schema say Shop. `productType` is fetched and unused. It is empty on all 185 products, so it cannot break a tie today.
+
+### Expected Behavior
+
+The crumb is the best single apparel category. Plus-size can be a second signal, not a reason to discard Tops. New Arrivals alone still stays Shop. When collections still tie, `productType` may break the tie only if it maps to one of those categories.
+
+### Customer Impact
+
+A t-shirt looks uncategorized. Back navigation goes to the whole shop.
+
+### Business Impact
+
+Weaker internal linking and a generic breadcrumb in search results.
+
+### Recommended Solution
+
+Prefer one apparel category when several collections match. Keep Shop when nothing matches.
+
+### Acceptance Criteria
+
+- The ribbed tee crumbs to Tops & Blouses, or to the single best apparel collection, not Shop.
+- A product only in New Arrivals still crumbs to Shop.
+- A product in only Jeans & Pants still crumbs there.
+- The visible crumb and `BreadcrumbList` match.
+
+### Dependencies
+
+None
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-039
+
+### Priority
+
+P1
+
+### Category
+
+Content
+
+### Problem
+
+Wholesale brand biographies are rendered as the product description.
+
+### Current Behavior
+
+The title stripper removes the vendor prefix. Paragraphs are kept. The fedora description ends with the Fame Accessories company story: “Established in 2010 in LA, Fame Accessories supplies women…”.
+
+### Expected Behavior
+
+Garment description, measurements, and specs remain. A paragraph that is about the supplier company, not the garment, is not shown. No Sable Muse story is invented in its place.
+
+### Customer Impact
+
+The shop appears to be Fame Accessories, or another wholesale brand, on the product page.
+
+### Business Impact
+
+Brand trust drops on accessory products that ship with supplier boilerplate.
+
+### Recommended Solution
+
+Drop paragraphs that are company bios (founded or established, plus the vendor or another brand acting as the subject). Keep paragraphs that describe the garment, the fabric, or the fit. Apply the same rule to every product, not a fedora-only exception.
+
+### Acceptance Criteria
+
+- The fedora no longer shows the Fame Accessories biography.
+- The beige-hat description, brim, width, height, material, and pattern remain.
+- A product whose only paragraph describes the garment still shows that paragraph.
+
+### Dependencies
+
+None
+
+### Effort
+
+Medium
+
+### Status
+
+Done
+
+
+---
+
+### P2 — Medium Priority
+
+### Task ID
+
+PDP-040
+
+### Priority
+
+P2
+
+### Category
+
+UX
+
+### Problem
+
+The shipping and returns paragraph is shown twice, back to back.
+
+### Current Behavior
+
+The same `shippingCopy` string sits under the buttons and inside the shipping accordion. The accordion defaults open.
+
+### Expected Behavior
+
+The short policy stays next to the buttons. The accordion is the place for anything beyond that sentence, or it stays closed when it would only repeat the sentence. It links to the shipping and returns pages.
+
+### Customer Impact
+
+The customer reads the same promise twice and learns nothing new the second time.
+
+### Business Impact
+
+A longer page with no extra confidence.
+
+### Recommended Solution
+
+Keep the summary by the buttons. In the accordion, link to Shipping and Returns instead of repeating the summary.
+
+### Acceptance Criteria
+
+- The policy sentence appears once near the buttons.
+- The accordion does not repeat it.
+- The shipping and returns pages are linked from the product column.
+
+### Dependencies
+
+None
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-041
+
+### Priority
+
+P2
+
+### Category
+
+UX
+
+### Problem
+
+The stock badge says In Stock while several sizes of the current color are sold out.
+
+### Current Behavior
+
+Before a size is chosen, In Stock means any matching variant can be sold. On the leggings, M, L, and XL are sold out and the badge still says In Stock.
+
+### Expected Behavior
+
+The badge matches the sizes on screen. If some sizes of the selected color are gone and some remain, it says that some sizes are available. Sold Out remains for a color or a completed size that cannot be bought.
+
+### Customer Impact
+
+The badge overrules the size buttons until the customer reads each label.
+
+### Business Impact
+
+Mild distrust when the customer wanted a size that is already gone.
+
+### Recommended Solution
+
+Derive the badge from the selected color’s variants: all available, some available, or none.
+
+### Acceptance Criteria
+
+- Leggings in a color where M, L, and XL are sold out does not say a blanket In Stock.
+- A color whose every size can be bought says In Stock.
+- A color or selected size with nothing left says Sold Out.
+
+### Dependencies
+
+PDP-037
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-042
+
+### Priority
+
+P2
+
+### Category
+
+Pricing
+
+### Problem
+
+A small size-price difference is presented as an open-ended “From” price.
+
+### Current Behavior
+
+If any matching variant costs more, the PDP shows `From $39.36` until a size is chosen. `formatPriceLabel` already shows a range when the spread is within $20 or 25 percent, and the cards use that idea. The purchase panel does not.
+
+### Expected Behavior
+
+A tight spread shows the range. A wide spread shows From. A chosen size shows that size’s price. Compare-at and the percent stay as they are.
+
+### Customer Impact
+
+The leggings look like they might cost much more than $39.36. The top size is $42.82.
+
+### Business Impact
+
+Price uncertainty on the 13 products whose sizes are not one price.
+
+### Recommended Solution
+
+Use `formatPriceLabel` for the incomplete selection. Keep the exact variant price once the selection is complete.
+
+### Acceptance Criteria
+
+- The leggings show a range before a size is chosen, not only From.
+- Choosing 2XL shows $42.82.
+- A product with one price never shows From or a range.
+- A compare-at above the current price still shows the struck price and percent.
+
+### Dependencies
+
+None
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-043
+
+### Priority
+
+P2
+
+### Category
+
+Content
+
+### Problem
+
+Two sentences glued in the supplier HTML are split with a space and no punctuation.
+
+### Current Behavior
+
+`decode` turns a lowercase-to-uppercase join into a space. The set still reads “Highly stretchy This half-sleeve top and shorts set…”.
+
+### Expected Behavior
+
+That join becomes a sentence boundary when the second half starts a new sentence. Real names and size tokens such as 2XL stay intact.
+
+### Customer Impact
+
+The first paragraph looks unedited.
+
+### Business Impact
+
+The description feels like raw supplier text.
+
+### Recommended Solution
+
+When a lowercase word is immediately followed by a capitalized word, insert sentence punctuation if the first word completes a thought. Do not split size tokens or known material names.
+
+### Acceptance Criteria
+
+- The set’s opening reads as two sentences.
+- “2XL”, material percentages, and “McQueen”-style names are not damaged.
+- The tee’s spec labels stay “Material composition” and “Moderate stretch”.
+
+### Dependencies
+
+None
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-044
+
+### Priority
+
+P2
+
+### Category
+
+Variant
+
+### Problem
+
+Color and size live only in component state.
+
+### Current Behavior
+
+A refresh or a shared link opens the first color and no size. The gallery then shows that color’s photo.
+
+### Expected Behavior
+
+The URL records the selected color and size. Loading that URL restores them. An unknown value is ignored. The first color remains the default when the URL has no color.
+
+### Customer Impact
+
+A customer cannot send a link to the color they were looking at.
+
+### Business Impact
+
+Shared links and back navigation always restart selection.
+
+### Recommended Solution
+
+Write the selection to search params on the product route. Read them as the initial selection. Do not add a route per variant.
+
+### Acceptance Criteria
+
+- Selecting Cream and L updates the query string.
+- Reloading that URL shows Cream, L, the Cream photo, and L’s price.
+- A bogus size param does not select a size.
+- Add to Bag still refuses a URL that has a color and no size.
+
+### Dependencies
+
+PDP-035
+
+### Effort
+
+Medium
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-045
+
+### Priority
+
+P2
+
+### Category
+
+Shopify Data
+
+### Problem
+
+Media past 50 and variants past 100 are discarded.
+
+### Current Behavior
+
+The detail query asks for `media(first: 50)` and `variants(first: 100)` and does not follow `pageInfo`. Current products are under both caps: none exceed 50 media items.
+
+### Expected Behavior
+
+Every media item and every variant is mapped, or the page states that more photos exist and loads them. A size that exists in Shopify is not missing from the buttons.
+
+### Customer Impact
+
+A larger product would hide photos or sizes with no explanation.
+
+### Business Impact
+
+Latent wrong assortment on the next large style.
+
+### Recommended Solution
+
+Page the two connections until `hasNextPage` is false. Keep the 60-second revalidate.
+
+### Acceptance Criteria
+
+- A product with more than 50 media items renders every item, in Shopify order.
+- A product with more than 100 variants renders every size and color.
+- A 36-image product is unchanged.
+
+### Dependencies
+
+None
+
+### Effort
+
+Medium
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-046
+
+### Priority
+
+P2
+
+### Category
+
+SEO
+
+### Problem
+
+Structured data describes the product as a single offer and repeats the vague Shop crumb.
+
+### Current Behavior
+
+JSON-LD is one Offer or one AggregateOffer for the whole product. Availability is true if any variant can be sold. The breadcrumb uses `product.category`.
+
+### Expected Behavior
+
+The breadcrumb matches PDP-038. When the URL identifies a color and size, the offer price and availability match that variant. Without a full selection, AggregateOffer remains for a price spread.
+
+### Customer Impact
+
+Search results can show Shop for a t-shirt, and a shared size link would not match the price in the markup.
+
+### Business Impact
+
+Weaker product rich results.
+
+### Recommended Solution
+
+After PDP-038 and PDP-044, point `BreadcrumbList` at the resolved category and, for a complete selection, emit that variant’s price and availability.
+
+### Acceptance Criteria
+
+- The tee’s breadcrumb schema is the apparel category, not Shop.
+- The leggings page, with no size selected, still uses AggregateOffer.
+- A URL with a complete in-stock variant uses that price and InStock.
+- No review or fake SKU field is added.
+
+### Dependencies
+
+PDP-038, PDP-044
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-047
+
+### Priority
+
+P2
+
+### Category
+
+Accessibility
+
+### Problem
+
+Thumbnail controls are announced only as an image number.
+
+### Current Behavior
+
+Each thumb button is `View image N`. The hero label is better, and it includes the color only for the selected variant image.
+
+### Expected Behavior
+
+The thumb name includes the position, the media type when it is video or 3D, and the color when that slide is a known variant image.
+
+### Customer Impact
+
+A screen-reader user cannot tell image 34 from image 16, or a video from a photo, without opening it.
+
+### Business Impact
+
+The gallery is weaker for keyboard and screen-reader shoppers on image-heavy products.
+
+### Recommended Solution
+
+Build the thumb label from the same slide label used by the hero, and say Video or 3D when that is the type.
+
+### Acceptance Criteria
+
+- The Cream variant thumb includes Cream.
+- A video thumb says Video.
+- The selected thumb still exposes pressed state.
+- Clicking it still changes the hero.
+
+### Dependencies
+
+PDP-035
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### P3 — Nice to Have
+
+### Task ID
+
+PDP-048
+
+### Priority
+
+P3
+
+### Category
+
+Media
+
+### Problem
+
+A hosted video file is always declared as mp4.
+
+### Current Behavior
+
+The player picks an mp4 source when one exists, otherwise the first source, and the `<source>` type is hardcoded to `video/mp4`. The catalog has 0 videos.
+
+### Expected Behavior
+
+The source type is the file’s mime type. The mp4 source is still preferred.
+
+### Customer Impact
+
+None today. A webm-only file would not play.
+
+### Business Impact
+
+The first video added later can fail silently.
+
+### Recommended Solution
+
+Pass `mimeType` through `ProductMedia` and set it on `<source>`.
+
+### Acceptance Criteria
+
+- An mp4 video still plays with controls and no autoplay.
+- A non-mp4 source advertises its own mime type.
+
+### Dependencies
+
+None
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-049
+
+### Priority
+
+P3
+
+### Category
+
+Shopify Data
+
+### Problem
+
+Apparel facts exist only when a supplier happened to write a labeled description line. No metafield is read.
+
+### Current Behavior
+
+Sheer, stretch, material, and origin render when they are `Label: value` list items. There is no metafield query.
+
+### Expected Behavior
+
+Nothing new is shown until the merchant defines metafields. When a value exists, it renders in the spec list and does not duplicate the same fact from the description.
+
+### Customer Impact
+
+None until the merchant enters data. Empty rows would look like missing product information, so they must not render.
+
+### Business Impact
+
+**DATA GAP.** A stable place for stretch, opacity, lining, and fit once the catalog outgrows description scraping.
+
+### Recommended Solution
+
+Add the metafields to the detail query after they exist in Shopify. Map present values into specs. Skip empty ones. Do not query `quantityAvailable`.
+
+### Acceptance Criteria
+
+- A product with no metafields looks the same as today.
+- A product with a stretch metafield shows that value once.
+- No placeholder “Not set” rows appear.
+
+### Dependencies
+
+Merchant metafield definitions
+
+### Effort
+
+Medium
+
+### Status
+
+Done
+
+
+---
+
+### Task ID
+
+PDP-050
+
+### Priority
+
+P3
+
+### Category
+
+Architecture
+
+### Problem
+
+The PDP type and the agent guide still describe an older page.
+
+### Current Behavior
+
+`productDetail` is always empty. `showEasyReturn`, `material`, and `accordionPlacement` are never set. `docs/agent-guide.md` still says compare-at is never mapped, the size control is a select, and every product crumbs to `/shop-all`.
+
+### Expected Behavior
+
+The type matches the fields the page reads. The guide matches the mapper.
+
+### Customer Impact
+
+None in the browser.
+
+### Business Impact
+
+The next PDP change is likely to follow the stale guide and undo working behavior.
+
+### Recommended Solution
+
+Remove the unused fields or stop spreading them into `ProductDetail`. Update the agent-guide product section to the current mapper.
+
+### Acceptance Criteria
+
+- No component reads `productDetail`, `showEasyReturn`, `material`, or `accordionPlacement`.
+- The guide describes handle-based ids, compare-at mapping, size buttons, and the category rule.
+
+### Dependencies
+
+None
+
+### Effort
+
+Low
+
+### Status
+
+Done
+
+
+---
+
+## Residual implementation sequence
+
+1. PDP-035 — pair the photo with the purchased color
+2. PDP-037 — mark sold-out colors
+3. PDP-036 — put real measurements in the size guide
+4. PDP-039 — remove supplier biographies
+5. PDP-038 — fix the breadcrumb
+6. PDP-042 — show a price range when the spread is small
+7. PDP-041 — make the stock badge match the sizes
+8. PDP-040 — stop repeating shipping
+9. PDP-043 — repair glued sentences
+10. PDP-044 — keep color and size in the URL
+11. PDP-046 — align structured data with the crumb and the URL
+12. PDP-045 — page media and variants past the current caps
+13. PDP-047 — name the thumbnails
+14. PDP-048 — video mime type, when a video exists
+15. PDP-049 — metafields only after the merchant defines them
+16. PDP-050 — drop unused PDP fields and update the agent guide

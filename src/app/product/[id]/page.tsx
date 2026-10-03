@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/shared/breadcrumbs"
 import { Container } from "@/components/shared/container"
 import { SectionHeader } from "@/components/shared/section-header"
 import { productMetaDescription } from "@/lib/shopify/description"
+import { exactVariant, selectionFromQuery } from "@/lib/product-selection"
 import { getProduct, getProductRecommendations } from "@/lib/shopify"
 import type { ProductDetail } from "@/types/commerce"
 
@@ -13,7 +14,14 @@ type ProductPageProps = {
   params: Promise<{
     id: string
   }>
+  searchParams: Promise<{
+    color?: string | string[]
+    size?: string | string[]
+  }>
 }
+
+const firstParam = (value: string | string[] | undefined) =>
+  Array.isArray(value) ? value[0] : value
 
 const siteOrigin = () =>
   (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "")
@@ -57,19 +65,34 @@ export const generateMetadata = async ({
   }
 }
 
-const productJsonLd = (product: ProductDetail) => {
+const productJsonLd = (
+  product: ProductDetail,
+  query: { color?: string; size?: string }
+) => {
   const origin = siteOrigin()
   const productUrl = `${origin}/product/${product.id}`
   const images = product.gallery
     .map((item) => (item.type === "image" ? item.url : item.poster))
     .filter((url): url is string => Boolean(url))
-  const inStock = (product.variants ?? []).some((variant) => variant.availableForSale)
+  const selected = selectionFromQuery(product, query)
+  const exact = exactVariant(product, selected)
+  const inStock = exact
+    ? exact.availableForSale
+    : (product.variants ?? []).some((variant) => variant.availableForSale)
   const availability = inStock
     ? "https://schema.org/InStock"
     : "https://schema.org/OutOfStock"
-  const currency = product.currencyCode ?? "USD"
+  const currency = exact?.currencyCode ?? product.currencyCode ?? "USD"
   const ranged = Boolean(product.priceMax && product.priceMax > product.price)
-  const offers = ranged
+  const offers = exact
+    ? {
+        "@type": "Offer",
+        price: exact.price.toFixed(2),
+        priceCurrency: currency,
+        availability,
+        url: productUrl,
+      }
+    : ranged
     ? {
         "@type": "AggregateOffer",
         lowPrice: product.price.toFixed(2),
@@ -149,8 +172,13 @@ const ProductUnavailable = ({ handle }: { handle: string }) => (
   </section>
 )
 
-const ProductPage = async ({ params }: ProductPageProps) => {
+const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
   const { id } = await params
+  const query = await searchParams
+  const initialQuery = {
+    color: firstParam(query.color),
+    size: firstParam(query.size),
+  }
   const result = await getProduct(id)
 
   if (result.status === "missing") {
@@ -165,7 +193,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   const related = product.gid
     ? await getProductRecommendations(product.gid, 4)
     : []
-  const jsonLd = productJsonLd(product)
+  const jsonLd = productJsonLd(product, initialQuery)
 
   return (
     <>
@@ -184,7 +212,11 @@ const ProductPage = async ({ params }: ProductPageProps) => {
               { label: product.name },
             ]}
           />
-          <ProductExperience key={product.id} product={product} />
+          <ProductExperience
+            key={product.id}
+            product={product}
+            initialQuery={initialQuery}
+          />
         </Container>
       </section>
 

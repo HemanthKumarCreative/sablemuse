@@ -164,7 +164,7 @@ No metadata, no sections, no data fetches.
 3. **Main PDP grid**
    - **ProductGallery** — Image/video media from Shopify.
    - **ProductPurchasePanel** — Name, price, color swatches, size select/buttons, add to cart (Shopify cart actions), wishlist toggle (localStorage), fit/size dialog; optionally embeds accordions.
-   - **ProductAccordions** — Details/care/etc. from product fields; placement under gallery or in panel depending on `accordionPlacement`.
+   - **ProductAccordions** — Fitting, care, and links to shipping and returns, under the purchase column.
 4. **You May Also Like** — SectionHeader + related products: Shopify recommendations by GID, else `getProducts(4)`. Mobile carousel, desktop grid of `ProductCard`s.
 
 ### Key components / data
