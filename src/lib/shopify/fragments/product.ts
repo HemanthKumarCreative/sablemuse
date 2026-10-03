@@ -81,6 +81,7 @@ export const PRODUCT_DETAIL_FRAGMENT = `
     handle
     vendor
     description
+    descriptionHtml
     tags
     availableForSale
     productType
@@ -123,6 +124,23 @@ export const PRODUCT_DETAIL_FRAGMENT = `
               ...ImageFields
             }
           }
+          ... on Model3d {
+            sources {
+              url
+              mimeType
+            }
+            previewImage {
+              ...ImageFields
+            }
+          }
+        }
+      }
+    }
+    collections(first: 20) {
+      edges {
+        node {
+          handle
+          title
         }
       }
     }

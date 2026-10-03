@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { shippingCopy } from "@/data/shipping-policy"
 import type { ProductDetail } from "@/types/commerce"
 import { cn } from "cn"
 
@@ -16,68 +17,61 @@ type ProductAccordionsProps = {
   defaultOpen?: string[]
 }
 
-const parseContentToItems = (text: string) => {
-  if (!text) return null
-  
-  // Check if text has key-value spec patterns like "Pattern type: Floral Style: Casual"
-  const colonCount = (text.match(/:/g) || []).length
-  if (colonCount >= 2 && !text.includes("\n")) {
-    const regex = /([A-Z][a-zA-Z\s/&-]+?):\s*([^:]+?)(?=(?:[A-Z][a-zA-Z\s/&-]+?:)|$)/g
-    const matches: { label: string; val: string }[] = []
-    let m
-    while ((m = regex.exec(text)) !== null) {
-      matches.push({ label: m[1].trim(), val: m[2].trim() })
-    }
-    if (matches.length > 0) {
-      return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 pt-1 text-sm">
-          {matches.map((item, idx) => (
-            <div key={idx} className="flex flex-col border-b border-brand-border/40 pb-1.5">
-              <span className="font-semibold text-brand-navy text-xs uppercase tracking-wide">{item.label}</span>
-              <span className="text-brand-navy-muted">{item.val}</span>
-            </div>
-          ))}
-        </div>
-      )
-    }
+const renderCopy = (text: string) => {
+  const lines = text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+
+  if (lines.length <= 1) {
+    return <p className="text-sm leading-copy text-brand-navy-muted">{text}</p>
   }
 
-  // Fallback to regular bullet points or paragraph
-  if (text.includes("\n")) {
-    return (
-      <ul className="list-disc space-y-1 pl-4 text-sm leading-copy text-brand-navy-muted">
-        {text.split("\n").filter(Boolean).map((line, idx) => (
-          <li key={idx}>{line.replace(/^[-•*]\s*/, "")}</li>
-        ))}
-      </ul>
-    )
-  }
-
-  return <p className="text-sm leading-copy text-brand-navy-muted">{text}</p>
+  return (
+    <div className="space-y-2">
+      {lines.map((line, index) => (
+        <p key={`${line}-${index}`} className="text-sm leading-copy text-brand-navy-muted">
+          {line}
+        </p>
+      ))}
+    </div>
+  )
 }
 
 export const ProductAccordions = ({
   product,
   className,
-  defaultOpen = ["detail", "fabric", "shipping"],
+  defaultOpen,
 }: ProductAccordionsProps) => {
   const items = [
-    { id: "fitting", label: "Fitting & Sizing", content: product.fitting },
-    { id: "fabric", label: "Fabric & Material Care", content: product.fabricCare },
-    { id: "detail", label: "Product Specifications", content: product.productDetail },
+    product.fitting
+      ? { id: "fitting", label: "Fitting & Sizing", content: product.fitting }
+      : null,
+    product.fabricCare
+      ? {
+          id: "fabric",
+          label: "Fabric & Material Care",
+          content: product.fabricCare,
+        }
+      : null,
     {
       id: "shipping",
       label: "Shipping and returns",
-      content:
-        product.shippingReturns ||
-        "Free shipping in the United States. Most orders ship in 1–2 business days. Returns are accepted within 30 days of delivery for unworn items.",
+      content: shippingCopy(product.shipsFromUs).detail,
     },
-  ].filter(item => Boolean(item.content))
+  ].filter((item): item is { id: string; label: string; content: string } =>
+    Boolean(item)
+  )
+  const openItems = defaultOpen ?? items.map((item) => item.id)
+
+  if (items.length === 0) {
+    return null
+  }
 
   return (
     <Accordion
       multiple
-      defaultValue={defaultOpen}
+      defaultValue={openItems}
       className={cn("gap-0 border border-brand-border bg-muted", className)}
     >
       {items.map((item) => (
@@ -86,9 +80,7 @@ export const ProductAccordions = ({
           value={item.id}
           className="border-b border-brand-border last:border-b-0"
         >
-          <AccordionTrigger
-            className="rounded-none px-4 py-4 text-base font-medium capitalize text-brand-navy hover:no-underline **:data-[slot=accordion-trigger-icon]:hidden"
-          >
+          <AccordionTrigger className="rounded-none px-4 py-4 text-base font-medium text-brand-navy hover:no-underline **:data-[slot=accordion-trigger-icon]:hidden">
             <span className="flex-1 text-left">{item.label}</span>
             <Plus
               className="size-4 shrink-0 text-current group-aria-expanded/accordion-trigger:hidden"
@@ -102,7 +94,7 @@ export const ProductAccordions = ({
             />
           </AccordionTrigger>
           <AccordionContent className="px-4 pb-4">
-            {parseContentToItems(item.content)}
+            {renderCopy(item.content)}
           </AccordionContent>
         </AccordionItem>
       ))}

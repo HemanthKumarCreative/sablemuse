@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useLayoutEffect, useRef, useState } from "react"
 import { ShoppingBag, X } from "lucide-react"
 import { CartLineItem } from "@/components/cart/cart-line-item"
 import { useCart } from "@/components/cart/cart-provider"
@@ -28,12 +29,40 @@ type BagSheetProps = {
 }
 
 export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
-  const { items, itemCount, decrementItem, incrementItem, removeItem } =
-    useCart()
+  const {
+    items,
+    itemCount,
+    decrementItem,
+    incrementItem,
+    removeItem,
+    bagOpen,
+    setBagOpen,
+  } = useCart()
+  const rootRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
   const isEmpty = items.length === 0
 
+  useLayoutEffect(() => {
+    const update = () => {
+      setVisible((rootRef.current?.getClientRects().length ?? 0) > 0)
+    }
+
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
+
+  const handleOpenChange = (open: boolean) => {
+    if (!visible) {
+      return
+    }
+
+    setBagOpen(open)
+  }
+
   return (
-    <Sheet>
+    <div ref={rootRef}>
+    <Sheet open={bagOpen && visible} onOpenChange={handleOpenChange}>
       <SheetTrigger
         render={
           <Button
@@ -159,5 +188,6 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
         )}
       </SheetContent>
     </Sheet>
+    </div>
   )
 }

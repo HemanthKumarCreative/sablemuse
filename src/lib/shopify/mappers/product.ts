@@ -8,7 +8,10 @@ import type {
   ProductOption,
   ProductVariant,
 } from "@/types/commerce"
+import { shippingCopy } from "@/data/shipping-policy"
 import { formatDisplayTitle } from "@/lib/format-display-title"
+import { parseDescription } from "../description"
+import { readableAlt } from "../media-alt"
 import { colorNameToHex, isColorOption, isSizeOption } from "./color"
 
 type MoneyNode = {
@@ -77,10 +80,22 @@ type ShopifyVariant = {
   image?: ImageNode | null
 }
 
+const CATEGORY_HANDLES = new Set([
+  "dresses-jumpsuits",
+  "tops-blouses",
+  "jeans-pants",
+  "matching-sets-lounge",
+  "plus-size",
+])
+
 type ShopifyProductDetail = ShopifyProductCard & {
   productType?: string | null
+  descriptionHtml?: string | null
   media?: {
     edges: Array<{ node: ShopifyMediaNode }>
+  }
+  collections?: {
+    edges: Array<{ node: { handle: string; title: string } }>
   }
   variants: {
     edges: Array<{ node: ShopifyVariant }>
@@ -146,12 +161,17 @@ const compareAtAbove = (price: number, compareAt?: MoneyNode | null) => {
   return amount > price ? amount : undefined
 }
 
+const mediaAlt = (node: ShopifyMediaNode) =>
+  readableAlt(node.previewImage?.altText) ||
+  readableAlt(node.image?.altText) ||
+  readableAlt(node.alt)
+
 const mapMediaNode = (node: ShopifyMediaNode): ProductMedia | null => {
   if (node.mediaContentType === "IMAGE" && node.image?.url) {
     return {
       type: "image",
       url: node.image.url,
-      alt: node.image.altText || node.alt || "",
+      alt: mediaAlt(node),
     }
   }
 
@@ -167,7 +187,7 @@ const mapMediaNode = (node: ShopifyMediaNode): ProductMedia | null => {
     return {
       type: "video",
       url: source.url,
-      alt: node.previewImage?.altText || node.alt || "",
+      alt: mediaAlt(node),
       poster: node.previewImage?.url,
     }
   }
@@ -176,12 +196,40 @@ const mapMediaNode = (node: ShopifyMediaNode): ProductMedia | null => {
     return {
       type: "external-video",
       url: node.embedUrl,
-      alt: node.previewImage?.altText || node.alt || "",
+      alt: mediaAlt(node),
+      poster: node.previewImage?.url,
+    }
+  }
+
+  if (node.mediaContentType === "MODEL_3D") {
+    return {
+      type: "model",
+      url: node.sources?.[0]?.url ?? "",
+      alt: mediaAlt(node),
       poster: node.previewImage?.url,
     }
   }
 
   return null
+}
+
+const chooseCategory = (product: ShopifyProductDetail) => {
+  const matches =
+    product.collections?.edges
+      .map((edge) => edge.node)
+      .filter((node) => CATEGORY_HANDLES.has(node.handle)) ?? []
+
+  if (matches.length === 1) {
+    return {
+      category: matches[0].title,
+      categoryHref: `/collection/${matches[0].handle}`,
+    }
+  }
+
+  return {
+    category: "Shop",
+    categoryHref: "/shop-all",
+  }
 }
 
 const PLUS_SIZE_PATTERN = /\b(full[\s-]?size|plus[\s-]?size|plus)\b/i
@@ -337,34 +385,54 @@ export const mapProductDetail = (
       .map(({ node }) => mapMediaNode(node))
       .filter((item): item is ProductMedia => Boolean(item)) ?? []
   const imageGallery: ProductMedia[] = (
-    product.images?.edges.map(({ node }) => node.url).filter(Boolean) ?? []
-  ).map((url) => ({
-    type: "image" as const,
-    url,
-    alt: card.name,
-  }))
+    product.images?.edges ?? []
+  )
+    .filter((edge) => edge.node.url)
+    .map(({ node }) => ({
+      type: "image" as const,
+      url: node.url,
+      alt: readableAlt(node.altText),
+    }))
+  const parsed = parseDescription(product.descriptionHtml || "")
+  if (
+    parsed.prose.length === 0 &&
+    parsed.specs.length === 0 &&
+    product.description
+  ) {
+    parsed.prose.push(product.description)
+  }
+  const category = chooseCategory(product)
+  const fitting = [
+    parsed.modelInfo,
+    parsed.sizeChart ? "Measurements for each size are in the size guide." : "",
+  ]
+    .filter(Boolean)
+    .join("\n")
 
   return {
     ...card,
     gid: product.id,
-    category: product.productType || "Shop",
-    categoryHref: "/shop-all",
-    description: product.description || "No description available.",
+    category: category.category,
+    categoryHref: category.categoryHref,
+    description: parsed.prose[0] || product.description || "",
     gallery:
       gallery.length > 0
         ? gallery
         : imageGallery.length > 0
           ? imageGallery
-          : [{ type: "image", url: card.image, alt: card.name }],
+          : [{ type: "image", url: card.image, alt: "" }],
     sizes,
     options,
     variants,
-    fitting: "We recommend taking your usual size.",
-    fabricCare: "Machine wash cold. Do not tumble dry.",
-    productDetail: product.description || "Detailed product information.",
-    shippingReturns:
-      "Prices are in US dollars. Free shipping on orders within the United States. Returns accepted within 30 days.",
-    sizeSelector: "select",
+    prose: parsed.prose,
+    specs: parsed.specs,
+    sizeChart: parsed.sizeChart,
+    modelInfo: parsed.modelInfo,
+    fitting,
+    fabricCare: parsed.fabricCare,
+    productDetail: "",
+    shippingReturns: shippingCopy(card.shipsFromUs).detail,
+    sizeSelector: "buttons",
     ctaStyle: "brand",
     showCtaPrice: true,
   }

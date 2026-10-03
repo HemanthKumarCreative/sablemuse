@@ -26,6 +26,9 @@ type CartContextValue = {
   checkoutUrl: string
   isHydrated: boolean
   isPending: boolean
+  bagOpen: boolean
+  setBagOpen: (open: boolean) => void
+  openBag: () => void
   addItem: (input: {
     merchandiseId: string
     quantity?: number
@@ -57,6 +60,7 @@ export const CartProvider = ({ children, initialCart }: CartProviderProps) => {
   )
   const [isHydrated, setIsHydrated] = useState(Boolean(initialCart))
   const [isAdding, setIsAdding] = useState(false)
+  const [bagOpen, setBagOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
 
   const refreshCart = useCallback(async () => {
@@ -160,6 +164,9 @@ export const CartProvider = ({ children, initialCart }: CartProviderProps) => {
       checkoutUrl: cart.checkoutUrl,
       isHydrated,
       isPending: isPending || isAdding,
+      bagOpen,
+      setBagOpen,
+      openBag: () => setBagOpen(true),
       addItem,
       removeItem,
       incrementItem,
@@ -172,6 +179,7 @@ export const CartProvider = ({ children, initialCart }: CartProviderProps) => {
       isHydrated,
       isPending,
       isAdding,
+      bagOpen,
       addItem,
       removeItem,
       incrementItem,

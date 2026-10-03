@@ -22,6 +22,22 @@ export type ProductMedia =
       alt: string
       poster?: string
     }
+  | {
+      type: "model"
+      url: string
+      alt: string
+      poster?: string
+    }
+
+export type ProductSpec = {
+  label: string
+  value: string
+}
+
+export type ProductSizeChart = {
+  headers: string[]
+  rows: string[][]
+}
 
 export type Product = {
   id: string
@@ -75,6 +91,10 @@ export type ProductDetail = Product & {
   sizes: string[]
   options?: ProductOption[]
   variants?: ProductVariant[]
+  prose: string[]
+  specs: ProductSpec[]
+  sizeChart?: ProductSizeChart
+  modelInfo: string
   fitting: string
   fabricCare: string
   productDetail: string

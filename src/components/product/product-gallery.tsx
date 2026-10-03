@@ -1,213 +1,472 @@
 "use client"
 
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
-import { CarouselDots } from "@/components/shared/carousel-dots"
+import { useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from "react"
+import { ChevronLeft, ChevronRight, Play, ZoomIn } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 import type { ProductMedia } from "@/types/commerce"
 import { cn } from "cn"
 
 type ProductGalleryProps = {
   media: ProductMedia[]
-  alt: string
+  productName: string
+  selectedImageUrl?: string
+  selectedColor?: string
   className?: string
 }
 
-const posterFor = (item: ProductMedia) =>
-  item.type === "image" ? item.url : item.poster
+const fileKey = (url: string) => {
+  const path = url.split("?")[0] ?? url
+  const parts = path.split("/")
+  return parts[parts.length - 1] ?? path
+}
+
+const indexForImage = (items: ProductMedia[], url: string | undefined) => {
+  if (!url) {
+    return 0
+  }
+
+  const key = fileKey(url)
+  const index = items.findIndex(
+    (item) => item.type === "image" && fileKey(item.url) === key
+  )
+  return index >= 0 ? index : 0
+}
+
+const slideLabel = (
+  item: ProductMedia,
+  index: number,
+  productName: string,
+  selectedColor: string | undefined,
+  selectedImageUrl: string | undefined
+) => {
+  if (item.alt) {
+    return item.alt
+  }
+
+  const matchesColor =
+    Boolean(selectedColor) &&
+    Boolean(selectedImageUrl) &&
+    item.type === "image" &&
+    fileKey(item.url) === fileKey(selectedImageUrl ?? "")
+  const color = matchesColor ? `, ${selectedColor}` : ""
+  return `${productName}${color}, image ${index + 1}`
+}
 
 export const ProductGallery = ({
   media,
-  alt,
+  productName,
+  selectedImageUrl,
+  selectedColor,
   className,
 }: ProductGalleryProps) => {
-  const trackRef = useRef<HTMLDivElement>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activeItem = media[activeIndex] ?? media[0]
+  const slides = useMemo(() => {
+    if (!selectedImageUrl) {
+      return media
+    }
 
-  useEffect(() => {
-    const track = trackRef.current
+    const key = fileKey(selectedImageUrl)
+    const exists = media.some(
+      (item) => item.type === "image" && fileKey(item.url) === key
+    )
+    if (exists) {
+      return media
+    }
 
-    if (!track || media.length <= 1) {
+    return [
+      { type: "image" as const, url: selectedImageUrl, alt: "" },
+      ...media,
+    ]
+  }, [media, selectedImageUrl])
+  const [activeIndex, setActiveIndex] = useState(() =>
+    indexForImage(slides, selectedImageUrl)
+  )
+  const [trackedImageUrl, setTrackedImageUrl] = useState(selectedImageUrl)
+  const [zoomed, setZoomed] = useState(false)
+  const touchStart = useRef<number | null>(null)
+  const swiped = useRef(false)
+  const thumbsRef = useRef<HTMLUListElement>(null)
+
+  useLayoutEffect(() => {
+    const list = thumbsRef.current
+    if (!list) {
       return
     }
 
-    const handleScroll = () => {
-      const width = track.clientWidth
-      if (width <= 0) {
+    const reveal = () => {
+      const thumb = list.children.item(activeIndex)
+      if (!(thumb instanceof HTMLElement)) {
         return
       }
 
-      const nextIndex = Math.min(
-        media.length - 1,
-        Math.max(0, Math.round(track.scrollLeft / width))
-      )
-      setActiveIndex(nextIndex)
+      const listRect = list.getBoundingClientRect()
+      const thumbRect = thumb.getBoundingClientRect()
+      const horizontal = list.scrollWidth > list.clientWidth + 1
+      const vertical = list.scrollHeight > list.clientHeight + 1
+
+      if (
+        horizontal &&
+        (thumbRect.left < listRect.left - 1 || thumbRect.right > listRect.right + 1)
+      ) {
+        list.scrollLeft +=
+          thumbRect.left - listRect.left - (list.clientWidth - thumbRect.width) / 2
+      }
+
+      if (
+        vertical &&
+        (thumbRect.top < listRect.top - 1 || thumbRect.bottom > listRect.bottom + 1)
+      ) {
+        list.scrollTop +=
+          thumbRect.top - listRect.top - (list.clientHeight - thumbRect.height) / 2
+      }
     }
 
-    handleScroll()
-    track.addEventListener("scroll", handleScroll, { passive: true })
-    window.addEventListener("resize", handleScroll)
+    reveal()
+    const observer = new ResizeObserver(reveal)
+    observer.observe(list)
+    return () => observer.disconnect()
+  }, [activeIndex, slides])
 
-    return () => {
-      track.removeEventListener("scroll", handleScroll)
-      window.removeEventListener("resize", handleScroll)
-    }
-  }, [media.length])
+  if (trackedImageUrl !== selectedImageUrl) {
+    setTrackedImageUrl(selectedImageUrl)
+    setActiveIndex(indexForImage(slides, selectedImageUrl))
+  }
+
+  const activeItem = slides[activeIndex] ?? slides[0]
+  const labelFor = (item: ProductMedia, index: number) =>
+    slideLabel(item, index, productName, selectedColor, selectedImageUrl)
 
   if (!activeItem) {
     return null
   }
 
-  const handleSelectImage = (index: number) => {
+  const handleSelect = (index: number) => {
     setActiveIndex(index)
   }
 
-  const handleDotClick = (index: number) => {
-    const track = trackRef.current
+  const handleStep = (direction: -1 | 1) => {
+    setActiveIndex((current) => {
+      const next = current + direction
+      if (next < 0 || next >= slides.length) {
+        return current
+      }
+      return next
+    })
+  }
 
-    setActiveIndex(index)
-
-    if (!track) {
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (slides.length < 2) {
       return
     }
 
-    track.scrollTo({ left: track.clientWidth * index, behavior: "smooth" })
+    if (event.key === "ArrowRight") {
+      event.preventDefault()
+      handleStep(1)
+    }
+
+    if (event.key === "ArrowLeft") {
+      event.preventDefault()
+      handleStep(-1)
+    }
   }
+
+  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    touchStart.current = event.changedTouches[0]?.clientX ?? null
+  }
+
+  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    if (touchStart.current == null) {
+      return
+    }
+
+    const end = event.changedTouches[0]?.clientX ?? touchStart.current
+    const delta = end - touchStart.current
+    touchStart.current = null
+
+    if (Math.abs(delta) < 40) {
+      return
+    }
+
+    swiped.current = true
+    handleStep(delta < 0 ? 1 : -1)
+  }
+
+  const handleZoom = () => {
+    if (swiped.current) {
+      swiped.current = false
+      return
+    }
+
+    setZoomed(true)
+  }
+
+  const activeLabel = labelFor(activeItem, activeIndex)
 
   return (
     <div className={cn("w-full", className)}>
-      <div className="md:hidden">
-        <div
-          ref={trackRef}
-          role="region"
-          aria-label={`${alt} gallery`}
-          className="-mx-4 flex snap-x snap-mandatory overflow-x-auto scrollbar-none sm:-mx-5"
-        >
-          {media.map((item, index) => (
-            <div
-              key={`${item.url}-mobile-${index}`}
-              className="relative aspect-[3/4] w-full shrink-0 snap-center overflow-hidden bg-muted"
+      <div
+        role="region"
+        aria-label={`${productName} gallery`}
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+        className="outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <div className="flex flex-col gap-3 md:grid md:grid-cols-[88px_minmax(0,1fr)] md:items-start md:gap-5">
+          {slides.length > 1 ? (
+            <ul
+              ref={thumbsRef}
+              className="order-2 flex gap-2 overflow-x-auto md:order-1 md:max-h-[720px] md:flex-col md:overflow-y-auto"
+              aria-label="Product image thumbnails"
             >
-              <MediaFrame
-                item={item}
-                alt={alt}
-                index={index}
-                priority={index === 0}
-                sizes="100vw"
+              {slides.map((item, index) => {
+                const thumb = item.type === "image" ? item.url : item.poster
+                const isActive = index === activeIndex
+
+                return (
+                  <li key={`${item.type}-${item.url}-${index}`} className="shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => handleSelect(index)}
+                      aria-label={`View image ${index + 1}`}
+                      aria-pressed={isActive}
+                      className={cn(
+                        "relative block size-16 overflow-hidden bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:h-[104px] md:w-[88px]",
+                        isActive ? "ring-2 ring-brand" : "ring-1 ring-transparent"
+                      )}
+                    >
+                      {thumb ? (
+                        <Image
+                          src={thumb}
+                          alt=""
+                          fill
+                          sizes="88px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <span className="flex h-full items-center justify-center px-1 text-center text-[10px] text-brand-navy">
+                          {item.type === "video" || item.type === "external-video"
+                            ? "Video"
+                            : "3D"}
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : null}
+
+          <div className="order-1 min-w-0 md:order-2">
+            <div
+              className="relative aspect-[2/3] w-full overflow-hidden bg-muted"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
+              <MediaSlide
+                item={activeItem}
+                label={activeLabel}
+                priority
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                onZoom={activeItem.type === "image" ? handleZoom : undefined}
               />
-            </div>
-          ))}
-        </div>
-
-        <CarouselDots
-          count={media.length}
-          activeIndex={activeIndex}
-          onSelect={handleDotClick}
-          ariaLabel="Product image pagination"
-          getLabel={(index) => `Go to image ${index + 1}`}
-        />
-      </div>
-
-      <div className="hidden gap-4 md:grid md:grid-cols-[88px_minmax(0,1fr)] md:gap-5">
-        <ul
-          className="flex max-h-[640px] flex-col gap-3 overflow-y-auto"
-          aria-label="Product image thumbnails"
-        >
-          {media.map((item, index) => {
-            const isActive = index === activeIndex
-            const thumb = posterFor(item)
-
-            return (
-              <li key={`${item.url}-thumb-${index}`} className="shrink-0">
-                <button
+              {activeItem.type === "image" ? (
+                <Button
                   type="button"
-                  onClick={() => handleSelectImage(index)}
-                  aria-label={`View image ${index + 1}`}
-                  aria-pressed={isActive}
-                  className={cn(
-                    "relative block h-[104px] w-[88px] overflow-hidden bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                    isActive ? "ring-2 ring-brand" : "ring-1 ring-transparent"
-                  )}
+                  variant="outline"
+                  size="icon"
+                  onClick={handleZoom}
+                  aria-label="Zoom image"
+                  className="absolute top-3 right-3 bg-background"
                 >
-                  {thumb ? (
-                    <Image
-                      src={thumb}
-                      alt=""
-                      fill
-                      sizes="88px"
-                      className="object-cover"
-                    />
-                  ) : null}
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-
-        <div className="relative aspect-[3/4] min-h-[640px] w-full overflow-hidden bg-muted">
-          <MediaFrame
-            item={activeItem}
-            alt={alt}
-            index={activeIndex}
-            priority
-            sizes="50vw"
-          />
+                  <ZoomIn className="size-4" aria-hidden="true" />
+                </Button>
+              ) : null}
+            </div>
+            {slides.length > 1 ? (
+              <p
+                className="mt-3 text-center text-sm text-brand-navy-muted"
+                aria-live="polite"
+              >
+                {activeIndex + 1} / {slides.length}
+              </p>
+            ) : null}
+          </div>
         </div>
       </div>
+
+      <Dialog open={zoomed} onOpenChange={setZoomed}>
+        <DialogContent className="inset-0 top-0 left-0 flex h-[100dvh] w-screen max-w-none translate-x-0 translate-y-0 flex-col gap-3 rounded-none bg-background p-4 sm:max-w-none">
+          <DialogTitle className="sr-only">{activeLabel}</DialogTitle>
+          <div className="relative min-h-0 flex-1">
+            <MediaSlide
+              item={activeItem}
+              label={activeLabel}
+              sizes="100vw"
+              framed
+            />
+          </div>
+          {slides.length > 1 ? (
+            <div className="flex items-center justify-center gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => handleStep(-1)}
+                disabled={activeIndex === 0}
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="size-4" aria-hidden="true" />
+              </Button>
+              <p className="text-sm text-brand-navy">
+                {activeIndex + 1} / {slides.length}
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => handleStep(1)}
+                disabled={activeIndex === slides.length - 1}
+                aria-label="Next image"
+              >
+                <ChevronRight className="size-4" aria-hidden="true" />
+              </Button>
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
 
-const MediaFrame = ({
+const MediaSlide = ({
   item,
-  alt,
-  index,
+  label,
   priority,
   sizes,
+  onZoom,
+  framed = false,
 }: {
   item: ProductMedia
-  alt: string
-  index: number
+  label: string
   priority?: boolean
   sizes: string
+  onZoom?: () => void
+  framed?: boolean
 }) => {
-  const label = item.alt || `${alt} — image ${index + 1}`
-
   if (item.type === "video") {
     return (
       <video
         key={item.url}
         controls
+        playsInline
         poster={item.poster}
         preload="none"
-        className="h-full w-full object-cover"
+        className="h-full w-full object-contain"
         aria-label={label}
       >
-        <source src={item.url} />
+        <source src={item.url} type="video/mp4" />
       </video>
     )
   }
 
   if (item.type === "external-video") {
+    return <ExternalVideo item={item} label={label} />
+  }
+
+  if (item.type === "model") {
     return (
-      <iframe
-        src={item.url}
-        title={label}
-        className="absolute inset-0 h-full w-full"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
+      <div className="relative h-full w-full">
+        {item.poster ? (
+          <Image
+            src={item.poster}
+            alt={label}
+            fill
+            sizes={sizes}
+            className="object-contain"
+          />
+        ) : null}
+        <p className="absolute inset-x-0 bottom-0 bg-background/95 px-4 py-3 text-center text-sm text-brand-navy">
+          A 3D view of this product is not available here.
+        </p>
+      </div>
     )
   }
 
-  return (
+  const image = (
     <Image
       src={item.url}
       alt={label}
       fill
       priority={priority}
       sizes={sizes}
-      className="object-cover"
+      className="object-contain"
+    />
+  )
+
+  if (!onZoom || framed) {
+    return <div className="relative h-full w-full">{image}</div>
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={onZoom}
+      aria-label={`Zoom ${label}`}
+      className="relative block h-full w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      {image}
+    </button>
+  )
+}
+
+const ExternalVideo = ({
+  item,
+  label,
+}: {
+  item: Extract<ProductMedia, { type: "external-video" }>
+  label: string
+}) => {
+  const [playing, setPlaying] = useState(false)
+
+  if (!playing) {
+    return (
+      <button
+        type="button"
+        onClick={() => setPlaying(true)}
+        aria-label={`Play video: ${label}`}
+        className="relative block h-full w-full bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        {item.poster ? (
+          <Image
+            src={item.poster}
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-contain"
+          />
+        ) : null}
+        <span className="absolute inset-0 flex items-center justify-center">
+          <span className="inline-flex items-center gap-2 bg-background px-4 py-2 text-sm font-medium text-brand-navy">
+            <Play className="size-4" aria-hidden="true" />
+            Play video
+          </span>
+        </span>
+      </button>
+    )
+  }
+
+  return (
+    <iframe
+      src={item.url}
+      title={label}
+      className="absolute inset-0 h-full w-full"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
     />
   )
 }

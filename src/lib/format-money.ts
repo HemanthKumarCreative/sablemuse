@@ -7,6 +7,14 @@ export const formatMoney = (value: number) => {
   })
 }
 
+export const salePercent = (price: number, compareAt?: number) => {
+  if (!compareAt || compareAt <= price || price <= 0) {
+    return 0
+  }
+
+  return Math.round((1 - price / compareAt) * 100)
+}
+
 export const formatPriceLabel = (price: number, priceMax?: number) => {
   const minLabel = `$${formatMoney(price)}`
 

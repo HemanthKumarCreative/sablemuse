@@ -8,6 +8,11 @@ import {
 import { mapProductCard, mapProductDetail } from "../mappers/product"
 import { getCatalogPage } from "../catalog"
 import type { Product, ProductDetail } from "@/types/commerce"
+
+export type ProductLoadResult =
+  | { status: "ready"; product: ProductDetail }
+  | { status: "missing" }
+  | { status: "error" }
 type ProductsResponse = {
   products: {
     edges: Array<{ node: Parameters<typeof mapProductCard>[0] }>
@@ -54,7 +59,7 @@ export const getProducts = async (limit = 12): Promise<Product[]> => {
 
 export const getProduct = async (
   handle: string
-): Promise<ProductDetail | null> => {
+): Promise<ProductLoadResult> => {
   try {
     const data = await shopifyFetch<ProductResponse>({
       query: `
@@ -68,16 +73,17 @@ export const getProduct = async (
         }
       `,
       variables: { handle },
+      revalidate: 60,
     })
 
     if (!data.product) {
-      return null
+      return { status: "missing" }
     }
 
-    return mapProductDetail(data.product)
+    return { status: "ready", product: mapProductDetail(data.product) }
   } catch (error) {
     console.error("Failed to fetch product from Shopify", error)
-    return null
+    return { status: "error" }
   }
 }
 

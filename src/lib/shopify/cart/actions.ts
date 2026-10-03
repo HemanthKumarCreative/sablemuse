@@ -62,6 +62,16 @@ export const fetchCartDelivery = async (): Promise<{
   return result
 }
 
+export const buyNowAction = async (merchandiseId: string) => {
+  const cart = await createCart([{ merchandiseId, quantity: 1 }])
+
+  if (!cart.checkoutUrl) {
+    throw new Error("Checkout is unavailable right now")
+  }
+
+  return cart.checkoutUrl
+}
+
 export const addToCartAction = async (input: {
   merchandiseId: string
   quantity?: number
