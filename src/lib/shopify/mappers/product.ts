@@ -8,6 +8,7 @@ import type {
   ProductOption,
   ProductVariant,
 } from "@/types/commerce"
+import { formatDisplayTitle } from "@/lib/format-display-title"
 import { colorNameToHex, isColorOption, isSizeOption } from "./color"
 
 type MoneyNode = {
@@ -20,12 +21,25 @@ type ImageNode = {
   altText?: string | null
 }
 
+type ShopifyCardVariant = {
+  id: string
+  title?: string
+  availableForSale: boolean
+  sku?: string | null
+  selectedOptions: Array<{ name: string; value: string }>
+  price?: MoneyNode
+  compareAtPrice?: MoneyNode | null
+  image?: ImageNode | null
+}
+
 type ShopifyProductCard = {
   id: string
   title: string
   handle: string
+  vendor?: string | null
   description?: string | null
   tags?: string[]
+  availableForSale?: boolean
   featuredImage?: ImageNode | null
   priceRange: {
     minVariantPrice: MoneyNode
@@ -37,6 +51,9 @@ type ShopifyProductCard = {
   options?: Array<{ name: string; values: string[] }>
   images?: {
     edges: Array<{ node: ImageNode }>
+  }
+  variants?: {
+    edges: Array<{ node: ShopifyCardVariant }>
   }
 }
 
@@ -82,6 +99,7 @@ type ShopifyCartLine = {
     product: {
       handle: string
       title: string
+      vendor?: string | null
       featuredImage?: ImageNode | null
     }
   }
@@ -166,31 +184,73 @@ const mapMediaNode = (node: ShopifyMediaNode): ProductMedia | null => {
   return null
 }
 
+const PLUS_SIZE_PATTERN = /\b(full[\s-]?size|plus[\s-]?size|plus)\b/i
+
+const isPlusSizeProduct = (title: string, tags?: string[]) =>
+  PLUS_SIZE_PATTERN.test(title) ||
+  (tags ?? []).some((tag) => PLUS_SIZE_PATTERN.test(tag))
+
+const mapCardVariants = (product: ShopifyProductCard): ProductVariant[] => {
+  const fallbackPrice = parseAmount(product.priceRange.minVariantPrice.amount)
+  const fallbackCurrency = product.priceRange.minVariantPrice.currencyCode
+
+  return (
+    product.variants?.edges.map(({ node }) => {
+      const price = node.price ? parseAmount(node.price.amount) : fallbackPrice
+
+      return {
+        id: node.id,
+        title:
+          node.title ||
+          node.selectedOptions.map((option) => option.value).join(" / ") ||
+          "Default",
+        availableForSale: node.availableForSale,
+        price,
+        compareAtPrice: node.price
+          ? compareAtAbove(price, node.compareAtPrice)
+          : undefined,
+        currencyCode: node.price?.currencyCode ?? fallbackCurrency,
+        selectedOptions: node.selectedOptions,
+        image: node.image?.url,
+        sku: node.sku || undefined,
+      }
+    }) ?? []
+  )
+}
+
 const mapColorsFromOptions = (
-  options?: Array<{ name: string; values: string[] }>
+  options: Array<{ name: string; values: string[] }> | undefined,
+  variants: ProductVariant[]
 ) => {
   const colorOption = options?.find((option) => isColorOption(option.name))
   if (!colorOption) {
     return []
   }
 
-  return colorOption.values.map((value) => ({
-    name: value,
-    hex: colorNameToHex(value),
-  }))
+  return colorOption.values.map((value) => {
+    const match = variants.find(
+      (variant) =>
+        variant.image &&
+        variant.selectedOptions.some(
+          (option) => isColorOption(option.name) && option.value === value
+        )
+    )
+
+    return {
+      name: value,
+      hex: colorNameToHex(value),
+      image: match?.image,
+    }
+  })
 }
 
 const mapSubtitle = (product: ShopifyProductCard) => {
-  const color = mapColorsFromOptions(product.options)[0]?.name
-  if (color) {
-    return color
-  }
-
-  if (product.tags?.includes("new")) {
+  // Color belongs on swatches; avoid cryptic codes like "DK" under the title.
+  if (hasTag(product.tags, "new")) {
     return "New Arrival"
   }
 
-  return "Sable Muse"
+  return ""
 }
 
 export const mapProductCard = (
@@ -207,10 +267,14 @@ export const mapProductCard = (
   const maxPrice = product.priceRange.maxVariantPrice
     ? parseAmount(product.priceRange.maxVariantPrice.amount)
     : price
+  const variants = mapCardVariants(product)
+  const availableForSale =
+    product.availableForSale ??
+    (variants.length > 0 ? variants.some((variant) => variant.availableForSale) : true)
 
   return {
     id: product.handle,
-    name: product.title,
+    name: formatDisplayTitle(product.title, product.vendor),
     subtitle: mapSubtitle(product),
     price,
     priceMax: maxPrice > price ? maxPrice : undefined,
@@ -221,13 +285,16 @@ export const mapProductCard = (
     currencyCode: product.priceRange.minVariantPrice.currencyCode,
     image,
     secondaryImage: uniqueImages[1],
-    colors: mapColorsFromOptions(product.options),
+    colors: mapColorsFromOptions(product.options, variants),
     isNew: flags?.isNew ?? hasTag(product.tags, "new"),
     isBestSeller:
       flags?.isBestSeller ??
       (hasTag(product.tags, "best-seller") || hasTag(product.tags, "best seller")),
     isRestock: flags?.isRestock ?? hasTag(product.tags, "restock"),
+    isPlusSize: isPlusSizeProduct(product.title, product.tags),
+    availableForSale,
     shipsFromUs: hasTag(product.tags, "ship from usa"),
+    variants,
   }
 }
 
@@ -235,15 +302,22 @@ export const mapProductDetail = (
   product: ShopifyProductDetail
 ): ProductDetail => {
   const variants: ProductVariant[] = product.variants.edges.map(({ node }) => {
-    const price = parseAmount(node.price.amount)
+    const price = parseAmount(
+      node.price?.amount ?? product.priceRange.minVariantPrice.amount
+    )
 
     return {
       id: node.id,
-      title: node.title,
+      title:
+        node.title ||
+        node.selectedOptions.map((option) => option.value).join(" / ") ||
+        "Default",
       availableForSale: node.availableForSale,
       price,
       compareAtPrice: compareAtAbove(price, node.compareAtPrice),
-      currencyCode: node.price.currencyCode,
+      currencyCode:
+        node.price?.currencyCode ??
+        product.priceRange.minVariantPrice.currencyCode,
       selectedOptions: node.selectedOptions,
       image: node.image?.url,
       sku: node.sku || undefined,
@@ -267,7 +341,7 @@ export const mapProductDetail = (
   ).map((url) => ({
     type: "image" as const,
     url,
-    alt: product.title,
+    alt: card.name,
   }))
 
   return {
@@ -281,7 +355,7 @@ export const mapProductDetail = (
         ? gallery
         : imageGallery.length > 0
           ? imageGallery
-          : [{ type: "image", url: card.image, alt: product.title }],
+          : [{ type: "image", url: card.image, alt: card.name }],
     sizes,
     options,
     variants,
@@ -315,7 +389,10 @@ export const mapCart = (cart: ShopifyCart): CartSummary => {
       id: node.id,
       merchandiseId: node.merchandise.id,
       productId: node.merchandise.product.handle,
-      name: node.merchandise.product.title,
+      name: formatDisplayTitle(
+        node.merchandise.product.title,
+        node.merchandise.product.vendor
+      ),
       image:
         node.merchandise.image?.url ||
         node.merchandise.product.featuredImage?.url ||

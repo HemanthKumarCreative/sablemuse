@@ -19,8 +19,10 @@ export const PRODUCT_CARD_FRAGMENT = `
     id
     title
     handle
+    vendor
     description
     tags
+    availableForSale
     featuredImage {
       ...ImageFields
     }
@@ -48,6 +50,27 @@ export const PRODUCT_CARD_FRAGMENT = `
         }
       }
     }
+    variants(first: 100) {
+      edges {
+        node {
+          id
+          availableForSale
+          selectedOptions {
+            name
+            value
+          }
+          price {
+            ...MoneyFields
+          }
+          compareAtPrice {
+            ...MoneyFields
+          }
+          image {
+            ...ImageFields
+          }
+        }
+      }
+    }
   }
 `
 
@@ -56,8 +79,10 @@ export const PRODUCT_DETAIL_FRAGMENT = `
     id
     title
     handle
+    vendor
     description
     tags
+    availableForSale
     productType
     options {
       name

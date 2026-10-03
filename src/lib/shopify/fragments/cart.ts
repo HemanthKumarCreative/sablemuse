@@ -37,6 +37,7 @@ export const CART_FRAGMENT = `
               product {
                 handle
                 title
+                vendor
                 featuredImage {
                   url
                   altText

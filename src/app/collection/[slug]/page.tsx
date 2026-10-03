@@ -56,7 +56,7 @@ const CollectionSlugPage = async ({
         "@type": "ListItem",
         position: index + 1,
         url: `/product/${product.id}`,
-        name: `${product.name} ${product.subtitle}`,
+        name: [product.name, product.subtitle].filter(Boolean).join(" "),
       })),
     },
   }

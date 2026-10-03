@@ -1,12 +1,11 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { ProductAccordions } from "@/components/product/product-accordions"
-import { ProductCard } from "@/components/product/product-card"
+import { ProductCardRail } from "@/components/product/product-card-rail"
 import { ProductGallery } from "@/components/product/product-gallery"
 import { ProductPurchasePanel } from "@/components/product/product-purchase-panel"
 import { Breadcrumbs } from "@/components/shared/breadcrumbs"
 import { Container } from "@/components/shared/container"
-import { ScrollCarousel } from "@/components/shared/scroll-carousel"
 import { SectionHeader } from "@/components/shared/section-header"
 import {
   getProduct,
@@ -113,7 +112,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
             <div className="min-w-0">
               <ProductGallery
                 media={product.gallery}
-                alt={`${product.name} ${product.subtitle}`}
+                alt={[product.name, product.subtitle].filter(Boolean).join(" ")}
               />
               {placeAccordionsUnderGallery ? (
                 <ProductAccordions
@@ -151,34 +150,14 @@ const ProductPage = async ({ params }: ProductPageProps) => {
             className="mt-0"
             titleClassName="heading-section"
           />
-          <ScrollCarousel
-            itemCount={related.length}
+          <ProductCardRail
+            products={related}
             ariaLabel="You may also like"
-            className="md:hidden"
-            trackClassName="gap-3"
+            imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
+            gridClassName="md:grid-cols-3 md:gap-6"
+            itemClassName="w-[68%] sm:w-[55%]"
             dotsClassName="hidden"
-          >
-            {related.map((item) => (
-              <div
-                key={item.id}
-                className="w-[68%] shrink-0 snap-start sm:w-[55%]"
-              >
-                <ProductCard
-                  product={item}
-                  imageAspectClassName="aspect-[3/4]"
-                />
-              </div>
-            ))}
-          </ScrollCarousel>
-          <div className="hidden grid-cols-2 gap-4 md:grid md:grid-cols-3 md:gap-6">
-            {related.map((item) => (
-              <ProductCard
-                key={item.id}
-                product={item}
-                imageAspectClassName="aspect-[392/438]"
-              />
-            ))}
-          </div>
+          />
         </Container>
       </section>
     </>

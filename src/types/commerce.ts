@@ -1,6 +1,7 @@
 export type ProductColor = {
   name: string
   hex: string
+  image?: string
 }
 
 export type ProductMedia =
@@ -35,8 +36,11 @@ export type Product = {
   isNew?: boolean
   isRestock?: boolean
   isBestSeller?: boolean
+  isPlusSize?: boolean
+  availableForSale?: boolean
   shipsFromUs?: boolean
   currencyCode?: string
+  variants?: ProductVariant[]
 }
 
 export type ProductOption = {
