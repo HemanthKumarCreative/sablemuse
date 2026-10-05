@@ -90,11 +90,6 @@ export const SUSTAINABILITY_MEGA_MENU = {
 
 export const NAV_ITEMS: NavItem[] = [
   {
-    label: "Collection",
-    href: "/collection",
-    columns: COLLECTION_MEGA_MENU.columns,
-  },
-  {
     label: "New",
     title: "New Arrivals",
     href: "/collection/new-arrivals",

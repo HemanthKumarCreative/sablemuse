@@ -7,7 +7,7 @@ import { Search, Heart, User, X } from "lucide-react"
 import { AnnouncementBar } from "@/components/layout/announcement-bar"
 import { DesktopNav } from "@/components/layout/desktop-nav"
 import { BagSheet } from "@/components/cart/bag-sheet"
-import { MegaMenuPanel } from "@/components/navigation/mega-menu-panel"
+
 import { MobileNavMenu } from "@/components/navigation/mobile-nav-menu"
 import { SearchOverlay } from "@/components/navigation/search-overlay"
 import { Container } from "@/components/shared/container"
@@ -18,25 +18,10 @@ import { cn } from "cn"
 
 export const SiteHeader = () => {
   const pathname = usePathname()
-  const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const isWishlistActive = pathname.startsWith("/wishlist")
 
-  const activeItem = NAV_ITEMS.find((item) => item.label === activeMegaMenu)
-
-  const handleOpenMegaMenu = (label: string) => {
-    if (isSearchOpen) {
-      return
-    }
-    setActiveMegaMenu(label)
-  }
-
-  const handleCloseMegaMenu = () => {
-    setActiveMegaMenu(null)
-  }
-
   const handleOpenSearch = () => {
-    setActiveMegaMenu(null)
     setIsSearchOpen(true)
   }
 
@@ -52,18 +37,8 @@ export const SiteHeader = () => {
     handleOpenSearch()
   }
 
-  const handleHeaderMouseLeave = () => {
-    if (isSearchOpen) {
-      return
-    }
-    handleCloseMegaMenu()
-  }
-
   return (
-    <header
-      className="sticky top-0 z-50 bg-background"
-      onMouseLeave={handleHeaderMouseLeave}
-    >
+    <header className="sticky top-0 z-50 bg-background">
       <AnnouncementBar />
       <Container className="relative flex h-14 items-center justify-between gap-6 sm:h-16 md:h-18 md:gap-8">
         <div className="flex items-center gap-1 md:hidden">
@@ -94,12 +69,7 @@ export const SiteHeader = () => {
           </span>
         </Link>
 
-        <DesktopNav
-          items={NAV_ITEMS}
-          activeLabel={activeMegaMenu}
-          onOpen={handleOpenMegaMenu}
-          onClose={handleCloseMegaMenu}
-        />
+        <DesktopNav items={NAV_ITEMS} />
 
         <Link
           href="/"
@@ -182,25 +152,15 @@ export const SiteHeader = () => {
 
       <SearchOverlay open={isSearchOpen} onClose={handleCloseSearch} />
 
-      {!isSearchOpen && activeItem?.columns ? (
-        <div className="absolute inset-x-0 top-full z-50 hidden border-t border-brand-border bg-background md:block">
-          <MegaMenuPanel
-            label={activeItem.label}
-            columns={activeItem.columns}
-            onNavigate={handleCloseMegaMenu}
-          />
-        </div>
-      ) : null}
-
-      {isSearchOpen || activeMegaMenu ? (
+      {isSearchOpen ? (
         <button
           type="button"
-          aria-label={isSearchOpen ? "Close search" : "Close menu"}
+          aria-label="Close search"
           className={cn(
             "absolute inset-x-0 top-full z-40 h-dvh",
             overlayScrimClassName
           )}
-          onClick={isSearchOpen ? handleCloseSearch : handleCloseMegaMenu}
+          onClick={handleCloseSearch}
         />
       ) : null}
     </header>

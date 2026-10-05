@@ -33,7 +33,6 @@ export const fetchCart = async (): Promise<CartSummary> => {
   try {
     const cart = await getCart(cartId)
     if (!cart) {
-      await clearCartId()
       return emptyCart()
     }
 
@@ -55,7 +54,6 @@ export const fetchCartDelivery = async (): Promise<{
 
   const result = await getCartWithDelivery(cartId)
   if (!result) {
-    await clearCartId()
     return { cart: emptyCart(), deliveryGroups: [] }
   }
 
@@ -79,11 +77,20 @@ export const addToCartAction = async (input: {
   const quantity = input.quantity ?? 1
   const cartId = await getCartId()
 
-  const cart = cartId
-    ? await addCartLines(cartId, [
+  let cart
+
+  if (cartId) {
+    try {
+      cart = await addCartLines(cartId, [
         { merchandiseId: input.merchandiseId, quantity },
       ])
-    : await createCart([{ merchandiseId: input.merchandiseId, quantity }])
+    } catch (e) {
+      console.warn("Failed to add to existing cart, creating new cart", e)
+      cart = await createCart([{ merchandiseId: input.merchandiseId, quantity }])
+    }
+  } else {
+    cart = await createCart([{ merchandiseId: input.merchandiseId, quantity }])
+  }
 
   await setCartId(cart.id)
   revalidatePath("/", "layout")
