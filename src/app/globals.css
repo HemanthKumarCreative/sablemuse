@@ -25,6 +25,7 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -46,6 +47,13 @@
   --color-surface-soft: var(--surface-soft);
   --color-footer: var(--brand-dark);
   --color-olive: var(--olive);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-sale: var(--sale);
+  --color-sale-foreground: var(--sale-foreground);
 
   --color-brand-navy: var(--brand-navy);
   --color-brand-navy-muted: var(--ink-muted);
@@ -74,36 +82,51 @@
   --popover: #fdfbf7;
   --popover-foreground: #1c1a17;
 
-  --primary: #a87c7c;
-  --primary-foreground: #1c1a17;
+  /* Primary is the darker rose so cream/white text on buttons passes WCAG AA (~4.8:1) */
+  --primary: #8f6565;
+  --primary-foreground: #fdfbf7;
 
   --secondary: #f5f0ea;
   --secondary-foreground: #1c1a17;
 
   --muted: #f5f0ea;
-  --muted-foreground: #7b736b;
+  /* Darkened from #7b736b for AA contrast on cream and sand (~5.7:1 / ~5.2:1) */
+  --muted-foreground: #6b635b;
 
   --accent: #f5f0ea;
   --accent-foreground: #1c1a17;
 
-  --destructive: #9b3a3a;
+  /* Warmer brick red, clearly distinct from the dusty rose brand color */
+  --destructive: #b3412f;
+  --destructive-foreground: #ffffff;
   --border: #e1dcd6;
   --input: #e1dcd6;
-  --ring: #c4a8a8;
+  /* Focus ring darkened so it reaches ~3:1 against cream (non-text contrast) */
+  --ring: #a87c7c;
 
-  --brand: #a87c7c;
-  --brand-hover: #8f6565;
+  /* Brand: deep rose for fills and text, original soft rose kept for decoration */
+  --brand: #8f6565;
+  --brand-hover: #7a5454;
   --brand-light: #c4a8a8;
   --ink: #1c1a17;
-  --ink-muted: #7b736b;
+  --ink-muted: #6b635b;
   --surface-soft: #f5f0ea;
   --footer: #1c1a17;
   --olive: #5f6e50;
 
+  /* Semantic colors */
+  --success: #3d6b45;
+  --success-foreground: #ffffff;
+  --warning: #8a5a0c;
+  --warning-foreground: #ffffff;
+  /* Sale / urgency: deep berry, stands apart from both brand rose and error red */
+  --sale: #8c2f4a;
+  --sale-foreground: #ffffff;
+
   --brand-navy: #1c1a17;
-  --brand-slate: #7b736b;
+  --brand-slate: #6b635b;
   --brand-dark-slate: #1c1a17;
-  --brand-purple: #a87c7c;
+  --brand-purple: #8f6565;
   --brand-dark: #1c1a17;
   --brand-border: #e1dcd6;
 
@@ -111,12 +134,12 @@
 
   --sidebar: #fdfbf7;
   --sidebar-foreground: #1c1a17;
-  --sidebar-primary: #a87c7c;
-  --sidebar-primary-foreground: #1c1a17;
+  --sidebar-primary: #8f6565;
+  --sidebar-primary-foreground: #fdfbf7;
   --sidebar-accent: #f5f0ea;
   --sidebar-accent-foreground: #1c1a17;
   --sidebar-border: #e1dcd6;
-  --sidebar-ring: #c4a8a8;
+  --sidebar-ring: #a87c7c;
 }
 
 @layer base {
@@ -138,6 +161,11 @@
 
   img {
     @apply max-w-full;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 }
 
