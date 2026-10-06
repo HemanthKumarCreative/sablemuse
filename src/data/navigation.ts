@@ -90,7 +90,7 @@ export const SUSTAINABILITY_MEGA_MENU = {
 
 export const NAV_ITEMS: NavItem[] = [
   {
-    label: "New",
+    label: "New Arrivals",
     title: "New Arrivals",
     href: "/collection/new-arrivals",
   },
@@ -110,7 +110,7 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/collection/jeans-pants",
   },
   {
-    label: "Sets",
+    label: "Matching Sets",
     title: "Matching Sets",
     href: "/collection/matching-sets-lounge",
   },
