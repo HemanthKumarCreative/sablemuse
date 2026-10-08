@@ -16,7 +16,7 @@ Before changing Next.js APIs, read `node_modules/next/dist/docs/`. Before non-tr
 - `src/app` — routes. Pages are Server Components. No `middleware.ts`, `loading.tsx`, `error.tsx`, or `not-found.tsx`.
 - `src/lib/shopify` — Storefront GraphQL, mappers, cart server actions.
 - `src/lib/customer` + `src/app/api/auth` — Customer Account OAuth. Login and register both hit `/api/auth/login`.
-- `src/data` — nav, FAQ, sustainability story, filter chrome, homepage tiles. Not the product catalog. `/modiweek` and `/plus-size` redirect to `/collection/new-arrivals`.
+- `src/data` — nav, FAQ, sustainability story, filter chrome. Not the product catalog. `/modiweek` and `/plus-size` redirect to `/collection/new-arrivals`.
 - `src/types/commerce.ts` — `Product`, `ProductDetail`, `CartSummary`.
 - `src/components/ui` — primitives. App UI is the other folders under `src/components`.
 

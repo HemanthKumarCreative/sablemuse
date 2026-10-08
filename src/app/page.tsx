@@ -2,13 +2,9 @@ export const revalidate = 3600
 
 import type { Metadata } from "next"
 import { BestSellersSection } from "@/components/home/best-sellers-section"
-import { CollectionSection } from "@/components/home/collection-section"
 import { HeroSection } from "@/components/home/hero-section"
 import { WelcomeDialog } from "@/components/home/welcome-dialog"
-import { COLLECTION_TILES } from "@/data/home"
 import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
-import type { CollectionRouteKey } from "@/lib/shopify/collections"
-import type { CollectionTile } from "@/data/home"
 
 export const metadata: Metadata = {
   title: {
@@ -35,31 +31,13 @@ const jsonLd = {
 }
 
 const HomePage = async () => {
-  const [newArrivals, matchingSets, ...tileProducts] = await Promise.all([
+  const [newArrivals, dresses, tops, jeans, matchingSets] = await Promise.all([
     getCollectionProducts(COLLECTION_HANDLES["new-in"], 3),
+    getCollectionProducts(COLLECTION_HANDLES["dresses-jumpsuits"], 4),
+    getCollectionProducts(COLLECTION_HANDLES["tops-blouses"], 4),
+    getCollectionProducts(COLLECTION_HANDLES["jeans-pants"], 4),
     getCollectionProducts(COLLECTION_HANDLES["matching-sets-lounge"], 4),
-    ...COLLECTION_TILES.map((tile) =>
-      getCollectionProducts(COLLECTION_HANDLES[tile.handle as CollectionRouteKey], 1)
-    ),
   ])
-
-  const collections: CollectionTile[] = COLLECTION_TILES.flatMap((tile, index) => {
-    const image = tileProducts[index]?.[0]?.image
-
-    if (!image) {
-      return []
-    }
-
-    return [
-      {
-        id: tile.id,
-        name: tile.name,
-        href: tile.href,
-        image,
-        heightClass: tile.heightClass,
-      },
-    ]
-  })
 
   return (
     <>
@@ -70,7 +48,27 @@ const HomePage = async () => {
       <WelcomeDialog />
       <HeroSection />
       <BestSellersSection products={newArrivals} />
-      <CollectionSection collections={collections} />
+      <BestSellersSection
+        products={dresses}
+        title="Dresses & Jumpsuits"
+        href="/collection/dresses-jumpsuits"
+        headingId="dresses-heading"
+        carouselLabel="Dresses"
+      />
+      <BestSellersSection
+        products={tops}
+        title="Tops & Blouses"
+        href="/collection/tops-blouses"
+        headingId="tops-heading"
+        carouselLabel="Tops"
+      />
+      <BestSellersSection
+        products={jeans}
+        title="Jeans & Pants"
+        href="/collection/jeans-pants"
+        headingId="jeans-heading"
+        carouselLabel="Jeans"
+      />
       <BestSellersSection
         products={matchingSets}
         title="Matching Sets & Lounge"

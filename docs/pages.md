@@ -40,7 +40,7 @@ No metadata, no sections, no data fetches.
 | --- | --- |
 | **File** | `src/app/page.tsx` |
 | **Redirects** | No |
-| **Title / purpose** | Absolute title `Sable Muse \| Women's Clothing`. Marketing homepage: hero, product rails, collection tiles. |
+| **Title / purpose** | Absolute title `Sable Muse \| Women's Clothing`. Marketing homepage: hero and category product rails. |
 | **Revalidate** | `3600` |
 
 ### Sections
@@ -49,13 +49,15 @@ No metadata, no sections, no data fetches.
 2. **WelcomeDialog** — First-visit modal (`localStorage` key `sablemuse-welcome-dismissed`): “Welcome To Sable Muse”, CTA to new arrivals.
 3. **HeroSection** — Full-width `/images/hero.jpg`, headline “Elevated essentials, made to last”, CTA “Shop New Arrivals” → `/collection/new-arrivals`. Static image.
 4. **BestSellersSection (“New Arrivals”)** — Up to 3 products from Shopify collection `COLLECTION_HANDLES["new-in"]`. Grid on desktop, carousel on mobile. Link to `/collection/new-arrivals`.
-5. **CollectionSection** — “Collection” header + 2-column tiles. Tile metadata from `COLLECTION_TILES` (`src/data/home`); images from first product of each Shopify collection. Links to collection routes.
-6. **BestSellersSection (“Matching Sets & Lounge”)** — Up to 4 products from Shopify `matching-sets-lounge`. Link to `/collection/matching-sets-lounge`.
+5. **BestSellersSection (“Dresses & Jumpsuits”)** — Up to 4 products from Shopify `dresses-jumpsuits`. Link to `/collection/dresses-jumpsuits`.
+6. **BestSellersSection (“Tops & Blouses”)** — Up to 4 products from Shopify `tops-blouses`. Link to `/collection/tops-blouses`.
+7. **BestSellersSection (“Jeans & Pants”)** — Up to 4 products from Shopify `jeans-pants`. Link to `/collection/jeans-pants`.
+8. **BestSellersSection (“Matching Sets & Lounge”)** — Up to 4 products from Shopify `matching-sets-lounge`. Link to `/collection/matching-sets-lounge`.
 
 ### Key components / data
 
-- Components: `WelcomeDialog`, `HeroSection`, `BestSellersSection`, `CollectionSection`, `ProductCard`, `ScrollCarousel`
-- Data: Shopify (`getCollectionProducts`) + static `COLLECTION_TILES`
+- Components: `WelcomeDialog`, `HeroSection`, `BestSellersSection`, `ProductCard`, `ScrollCarousel`
+- Data: Shopify (`getCollectionProducts` via `COLLECTION_HANDLES`)
 
 ---
 

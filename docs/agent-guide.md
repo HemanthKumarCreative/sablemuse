@@ -8,7 +8,7 @@ A headless storefront for a women's fashion shop.
 
 - Product grids, product detail, search, cart, and the checkout steps before payment read the **Shopify Storefront API**.
 - Sign-in uses the **Shopify Customer Account API** (hosted OAuth). There is no local user database.
-- Nav, FAQ, the shop story, homepage tiles, and filter chrome are **static files** in `src/data`.
+- Nav, FAQ, the shop story, and filter chrome are **static files** in `src/data`.
 - Payment happens on **Shopify hosted checkout**. This app never sees card data.
 
 Customer-facing copy is **Sable Muse**, for the United States, with prices in US dollars. `/modiweek` and `/plus-size` redirect to `/collection/new-arrivals`. Do not reintroduce Modimal copy or another brand's material statistics. Internal cookies (`modimal_cart_id` and the customer cookies) keep their names so existing carts and sessions stay intact.
@@ -192,7 +192,7 @@ Every `page.tsx` is a server component. Client pieces are children.
 Still the source of truth:
 
 - `src/data/navigation.ts` — header, mobile nav, footer links, landing-page mega-menu images
-- `src/data/home.ts` — homepage collection tile layout. Product images come from the live collections.
+- `src/data/home.ts` — ModiWeek day strip images for legacy modiweek UI (routes redirect to new arrivals)
 - `src/data/faq.ts`, `src/data/modiweek.ts`, `src/data/sustainability.ts`
 - Filter and hero copy in `src/data/search.ts`, `shop-all.ts`, `plus-size.ts`
 
