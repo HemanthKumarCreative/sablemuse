@@ -80,10 +80,6 @@ export const WelcomeDialog = ({ className }: WelcomeDialogProps) => {
             Dresses, Tops, Jeans, And Matching Sets. Prices In US Dollars.
           </DialogDescription>
 
-          <p className="mt-6 text-sm capitalize leading-[1.6] text-brand-navy sm:mt-8 sm:text-base md:text-xl md:font-semibold">
-            Is It Your First Experience At Sable Muse?
-          </p>
-
           <Button
             render={<Link href="/collection/new-arrivals" onClick={handleDismiss} />}
             nativeButton={false}

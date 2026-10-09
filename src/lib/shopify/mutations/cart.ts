@@ -1,6 +1,6 @@
 import { shopifyFetch } from "../client"
 import { CART_FRAGMENT } from "../fragments/cart"
-import { mapCart, mapDeliveryGroups } from "../mappers/product"
+import { mapCart, mapCartContact, mapDeliveryGroups } from "../mappers/product"
 import type { CartSummary, DeliveryGroup } from "@/types/commerce"
 
 type CartResponse = {
@@ -65,7 +65,12 @@ export const getCart = async (cartId: string): Promise<CartSummary | null> => {
 
 export const getCartWithDelivery = async (
   cartId: string
-): Promise<{ cart: CartSummary; deliveryGroups: DeliveryGroup[] } | null> => {
+): Promise<{
+  cart: CartSummary
+  deliveryGroups: DeliveryGroup[]
+  contactEmail: string
+  shipToSummary: string
+} | null> => {
   const data = await shopifyFetch<CartResponse>({
     query: `
       ${CART_FRAGMENT}
@@ -86,6 +91,7 @@ export const getCartWithDelivery = async (
   return {
     cart: mapCart(data.cart),
     deliveryGroups: mapDeliveryGroups(data.cart),
+    ...mapCartContact(data.cart),
   }
 }
 

@@ -129,7 +129,7 @@ export const CatalogBrowser = ({
                     type="button"
                     onClick={() => handleRemoveFilter(input)}
                     aria-label={`Remove ${chipLabel(input, page)} filter`}
-                    className="inline-flex h-8 items-center gap-2 bg-muted px-3 text-sm capitalize text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="inline-flex h-8 cursor-pointer items-center gap-2 bg-muted px-3 text-sm capitalize text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <span>{chipLabel(input, page)}</span>
                     <X className="size-3.5" strokeWidth={1.5} aria-hidden="true" />

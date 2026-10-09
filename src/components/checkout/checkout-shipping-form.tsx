@@ -161,18 +161,32 @@ export const CheckoutShippingForm = ({
           </ul>
         </fieldset>
       ) : (
-        <p className="mt-4 text-sm text-brand-navy-muted">
-          Delivery options will appear after Shopify calculates rates for your
-          address. You can continue and choose shipping in secure checkout.
-        </p>
+        <div className="mt-4 border border-brand-border px-4 py-4 md:px-5">
+          <p className="text-sm leading-copy text-brand-navy">
+            Shopify did not return delivery rates for this address. Update the
+            address and try again.
+          </p>
+          <Button
+            render={<Link href="/checkout" />}
+            nativeButton={false}
+            variant="outline"
+            className="mt-4"
+          >
+            Edit address
+          </Button>
+        </div>
       )}
 
-      {error ? <p className="mt-4 text-sm text-destructive">{error}</p> : null}
+      {error ? (
+        <p className="mt-4 text-sm text-destructive" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row-reverse sm:items-center sm:justify-between">
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !primaryGroup?.options.length}
           size="xl"
           className="w-full sm:w-auto sm:min-w-[220px]"
         >

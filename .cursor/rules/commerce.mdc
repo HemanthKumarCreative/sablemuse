@@ -8,13 +8,13 @@ alwaysApply: false
 
 ## Cart
 
-`CartProvider` holds `CartSummary` from `fetchCart()`. Mutations call server actions in `src/lib/shopify/cart/actions.ts` and replace the whole cart. `addToCartAction` creates a cart when the cookie is missing. Quantity `<= 0` removes the line. `clearCartAction` deletes the cookie only. It does not delete the Shopify cart. UI tax is `subtotal * 0.08`, not a Shopify tax line. Do not persist lines in `localStorage`.
+`CartProvider` holds `CartSummary` from `fetchCart()`. Mutations call server actions in `src/lib/shopify/cart/actions.ts` and replace the whole cart. `addToCartAction` creates a cart when the cookie is missing. Quantity `<= 0` removes the line. `clearCartAction` deletes the cookie only. It does not delete the Shopify cart. UI tax copy is **“Calculated at checkout”** — there is no client-side tax line. Do not persist lines in `localStorage`.
 
-The purchase panel adds `{ merchandiseId, quantity: 1 }`. Size is required when `product.sizes` is non-empty. Variant matching does not block on `availableForSale`.
+The purchase panel adds `{ merchandiseId, quantity: 1 }`. Size is required when `product.sizes` is non-empty. Variant matching does not block on `availableForSale`. `buyNowAction(merchandiseId)` creates a fresh one-line cart and returns `checkoutUrl` for an immediate handoff (does not update the bag cookie).
 
 ## Checkout
 
-`/checkout` → `updateCheckoutInfoAction` (buyer identity, then delivery address) → `/checkout/shipping` → `selectDeliveryOptionAction` → `/checkout/payment`. The pay button assigns `window.location` to `checkoutUrl`. Do not add card inputs.
+`/checkout` → `updateCheckoutInfoAction` (buyer identity, then delivery address) → `/checkout/shipping` → `selectDeliveryOptionAction` → `/checkout/payment`. The pay button assigns `window.location` to `checkoutUrl`. Do not add card inputs. Country select is **US only**.
 
 `/checkout/success` calls `clearCart()` on mount and does not load an order. Info-form news and “save for next time” checkboxes are local only. Shipping contact/ship-to fallbacks show because `CheckoutShippingContent` does not pass `contactEmail` or `shipToSummary`.
 
@@ -26,4 +26,4 @@ The purchase panel adds `{ merchandiseId, quantity: 1 }`. Size is required when 
 
 On only when `SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID`, `SHOPIFY_CUSTOMER_ACCOUNT_SHOP_ID`, and `CUSTOMER_SESSION_SECRET` are set. Flow: `/api/auth/login` → discovery + PKCE cookie `modimal_customer_pkce` → callback exchanges the code → cookies `modimal_customer_access` and `modimal_customer_refresh`. Refresh tokens are stored and never used. `fetchCustomerProfile` is unused. Checkout is the only page that passes `accessToken` into the cart.
 
-Register is the same Shopify hosted login link. There is no email/password form and no `customerCreate`. Logout is `GET /api/auth/logout` and no UI links to it.
+Register is the same Shopify hosted login link. Terms → `/terms`, Privacy → `/privacy`. There is no email/password form and no `customerCreate`. Logout is `GET /api/auth/logout` and no UI links to it.

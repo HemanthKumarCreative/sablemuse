@@ -75,7 +75,10 @@ export const ProductCard = ({
     product.colors[0]?.name ?? ""
   )
   const [previewColorName, setPreviewColorName] = useState<string | null>(null)
-  const productHref = href ?? `/product/${product.id}`
+  const colorQuery = selectedColorName
+    ? `?color=${encodeURIComponent(selectedColorName)}`
+    : ""
+  const productHref = href ?? `/product/${product.id}${colorQuery}`
   const available = product.availableForSale !== false
   const activeColorName = previewColorName ?? selectedColorName
   const activeColor =
@@ -153,8 +156,8 @@ export const ProductCard = ({
                 "object-cover",
                 !available && "grayscale",
                 showSecondary
-                  ? "transition-opacity duration-500 group-hover:opacity-0"
-                  : "transition-transform duration-500 group-hover:scale-[1.03]"
+                  ? "transition-opacity duration-500 group-hover:opacity-0 motion-reduce:transition-none"
+                  : "transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none"
               )}
             />
             {showSecondary && product.secondaryImage ? (
@@ -163,13 +166,16 @@ export const ProductCard = ({
                 alt=""
                 fill
                 sizes="(max-width: 768px) 46vw, (max-width: 1200px) 33vw, 392px"
-                className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:transition-none"
               />
             ) : null}
           </div>
           {badge ? (
             <div className="absolute top-2.5 left-2.5 sm:top-3.5 sm:left-3.5">
-              <Badge className="px-2.5 py-1 text-xs capitalize sm:px-3">
+              <Badge
+                variant={available && salePercent > 0 ? "sale" : "neutral"}
+                className="px-2.5 py-1 text-xs capitalize sm:px-3"
+              >
                 {badge}
               </Badge>
             </div>
@@ -185,7 +191,7 @@ export const ProductCard = ({
               : `Add ${product.name} to wish list`
           }
           className={cn(
-            "absolute top-2.5 right-2.5 z-20 inline-flex size-8 items-center justify-center rounded-full bg-background/90 text-brand-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:top-3.5 sm:right-3.5 sm:size-9",
+            "absolute top-2.5 right-2.5 z-20 inline-flex size-8 cursor-pointer items-center justify-center rounded-full bg-background/90 text-brand-navy transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:top-3.5 sm:right-3.5 sm:size-9",
             saved && "text-ink"
           )}
           onClick={handleToggleWishlist}
@@ -253,7 +259,7 @@ export const ProductCard = ({
                       aria-label={
                         selected ? `${color.name}, selected` : color.name
                       }
-                      className="group/swatch inline-flex size-6 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className="group/swatch inline-flex size-6 cursor-pointer items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       onMouseEnter={() => handlePreviewColor(color.name)}
                       onFocus={() => handlePreviewColor(color.name)}
                       onBlur={handleClearPreview}
@@ -264,10 +270,10 @@ export const ProductCard = ({
                         className={cn(
                           "size-3.5 rounded-full border border-black/15 transition-shadow duration-150",
                           selected
-                            ? "shadow-[0_0_0_2px_#fdfbf7,0_0_0_3.5px_#1c1a17]"
+                            ? "shadow-[0_0_0_2px_var(--background),0_0_0_3.5px_var(--ink)]"
                             : previewing
-                              ? "shadow-[0_0_0_2px_#fdfbf7,0_0_0_3.5px_#cfc8bf]"
-                              : "shadow-[0_0_0_2px_transparent,0_0_0_3.5px_transparent] group-hover/swatch:shadow-[0_0_0_2px_#fdfbf7,0_0_0_3.5px_#cfc8bf]"
+                              ? "shadow-[0_0_0_2px_var(--background),0_0_0_3.5px_var(--brand-border)]"
+                              : "shadow-[0_0_0_2px_transparent,0_0_0_3.5px_transparent] group-hover/swatch:shadow-[0_0_0_2px_var(--background),0_0_0_3.5px_var(--brand-border)]"
                         )}
                         style={{ backgroundColor: color.hex }}
                       />

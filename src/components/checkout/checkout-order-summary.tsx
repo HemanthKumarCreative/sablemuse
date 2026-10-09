@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { X } from "lucide-react"
 import { QuantityStepper } from "@/components/cart/quantity-stepper"
 import { useCart } from "@/components/cart/cart-provider"
@@ -22,6 +23,7 @@ export const CheckoutOrderSummary = ({
     items,
     itemCount,
     subtotal,
+    isPending,
     decrementItem,
     incrementItem,
     removeItem,
@@ -79,6 +81,7 @@ export const CheckoutOrderSummary = ({
                   <QuantityStepper
                     quantity={item.quantity}
                     label={item.name}
+                    disabled={isPending}
                     onIncrement={() => incrementItem(item.id)}
                     onDecrement={() => decrementItem(item.id)}
                   />
@@ -120,7 +123,20 @@ export const CheckoutOrderSummary = ({
       </div>
 
       <p className="mt-4 text-sm leading-[1.7] text-brand-navy">
-        Tax is calculated at checkout from your shipping address.
+        Tax is calculated at checkout from your shipping address.{" "}
+        <Link
+          href="/shipping"
+          className="underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          Shipping
+        </Link>
+        {" · "}
+        <Link
+          href="/returns"
+          className="underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          Returns
+        </Link>
       </p>
     </aside>
   )

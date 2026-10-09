@@ -12,9 +12,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Headless Sable Muse storefront (Next.js 16, React 19, Tailwind 4, Base UI). Catalog and cart use the Shopify Storefront API. Login uses the Customer Account API. Payment is Shopify hosted checkout via `cart.checkoutUrl`.
 
-Read `docs/agent-guide.md` before non-trivial changes. Always-on constraints live in `.cursor/rules/`.
+Read `docs/agent-guide.md` before non-trivial changes. Per-route UI detail is in `docs/pages.md`. Always-on constraints live in `.cursor/rules/`.
 
 - `Product.id` is the Shopify handle. `/product/[id]` queries by handle. The GID is `ProductDetail.gid`.
 - Do not collect card data, do not call the Admin API, and do not expose store tokens with `NEXT_PUBLIC_`.
-- Search and shop filters do not change the product query.
+- Collection, shop-all, and search PLPs apply Shopify sort/filters through `getCatalogPage` and URL `sort` / `filter` params (`src/lib/catalog-params.ts`). Extend that path; do not revive the unused static filter chrome in `src/data/search.ts` / `plus-size.ts`.
 - Customer-facing copy is Sable Muse for the United States, with prices in US dollars. Do not reintroduce Modimal, ModiWeek, or another brand's sustainability claims. Internal cart and customer cookies still use the older `modimal_` names so existing sessions stay intact.

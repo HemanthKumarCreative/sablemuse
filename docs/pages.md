@@ -6,11 +6,12 @@ Inventory of every `src/app/**/page.tsx`. Shared chrome from `src/app/layout.tsx
 
 On every page:
 
-1. **SiteHeader** — announcement bar, logo, desktop mega-nav (`NAV_ITEMS` from `src/data/navigation`), search overlay, wishlist link, account link, bag sheet (cart from Shopify via `CartProvider` / `fetchCart()`).
-2. **`<main>`** — page content below.
-3. **SiteFooter** — email update form (opens `mailto:`), footer link columns (`FOOTER_LINKS`), social icons.
+1. **AnnouncementBar** — “Free Shipping On Orders Within The United States”.
+2. **SiteHeader** — logo, flat desktop nav (`NAV_ITEMS` from `src/data/navigation.ts`: New Arrivals, Dresses, Tops, Jeans, Matching Sets), mobile nav, search overlay, wishlist link, account link, bag sheet (cart from Shopify via `CartProvider` / `fetchCart()`). There is no mega menu in the header; `MegaMenuPanel` is unused.
+3. **`<main>`** — page content below.
+4. **SiteFooter** — email update form (`mailto:hello@sablemuse.shop`), footer link columns (`FOOTER_LINKS`), social icons.
 
-Providers: `WishlistProvider` (localStorage handles) → `CartProvider` (Shopify cart). Root metadata default title: `Sable Muse | Contemporary Women's Fashion`.
+Providers: `WishlistProvider` (localStorage key `modimal-wishlist`) → `CartProvider` (Shopify cart). Root metadata default title: `Sable Muse | Contemporary Women's Fashion`.
 
 ## `next.config.ts` redirects
 
@@ -30,7 +31,7 @@ These render no UI; they immediately redirect to `/collection/new-arrivals`.
 | `/plus-size/shop-all` | `src/app/plus-size/shop-all/page.tsx` | `/collection/new-arrivals` |
 | `/new-in` | `src/app/new-in/page.tsx` | `/collection/new-arrivals` |
 
-No metadata, no sections, no data fetches.
+No metadata, no sections, no data fetches. Legacy ModiWeek / plus-size components and `src/data` files may still exist on disk; they are not rendered by these routes.
 
 ---
 
@@ -40,24 +41,28 @@ No metadata, no sections, no data fetches.
 | --- | --- |
 | **File** | `src/app/page.tsx` |
 | **Redirects** | No |
-| **Title / purpose** | Absolute title `Sable Muse \| Women's Clothing`. Marketing homepage: hero and category product rails. |
+| **Title / purpose** | Absolute title `Sable Muse \| Women's Clothing`. Marketing homepage: hero and category product rails. Also sets `description` and Open Graph image `/images/hero.jpg`. |
 | **Revalidate** | `3600` |
 
 ### Sections
 
 1. **JSON-LD** — Organization schema for Sable Muse.
-2. **WelcomeDialog** — First-visit modal (`localStorage` key `sablemuse-welcome-dismissed`): “Welcome To Sable Muse”, CTA to new arrivals.
+2. **WelcomeDialog** — First-visit modal (`localStorage` key `sablemuse-welcome-dismissed`): “Welcome To Sable Muse”, CTA **“Explore New Arrivals”** → `/collection/new-arrivals`.
 3. **HeroSection** — Full-width `/images/hero.jpg`, headline “Elevated essentials, made to last”, CTA “Shop New Arrivals” → `/collection/new-arrivals`. Static image.
-4. **BestSellersSection (“New Arrivals”)** — Up to 3 products from Shopify collection `COLLECTION_HANDLES["new-in"]`. Grid on desktop, carousel on mobile. Link to `/collection/new-arrivals`.
+4. **BestSellersSection (“New Arrivals”)** — Up to 3 products from Shopify collection `COLLECTION_HANDLES["new-in"]` (`new-arrivals`). Uses `ProductCardRail` (carousel on small screens, grid on `md+`). Link to `/collection/new-arrivals`.
 5. **BestSellersSection (“Dresses & Jumpsuits”)** — Up to 4 products from Shopify `dresses-jumpsuits`. Link to `/collection/dresses-jumpsuits`.
 6. **BestSellersSection (“Tops & Blouses”)** — Up to 4 products from Shopify `tops-blouses`. Link to `/collection/tops-blouses`.
 7. **BestSellersSection (“Jeans & Pants”)** — Up to 4 products from Shopify `jeans-pants`. Link to `/collection/jeans-pants`.
 8. **BestSellersSection (“Matching Sets & Lounge”)** — Up to 4 products from Shopify `matching-sets-lounge`. Link to `/collection/matching-sets-lounge`.
 
+Empty collection rails render nothing (`BestSellersSection` returns `null`).
+
 ### Key components / data
 
-- Components: `WelcomeDialog`, `HeroSection`, `BestSellersSection`, `ProductCard`, `ScrollCarousel`
-- Data: Shopify (`getCollectionProducts` via `COLLECTION_HANDLES`)
+- Components: `WelcomeDialog`, `HeroSection`, `BestSellersSection` → `ProductCardRail` → `ProductCard` / `ScrollCarousel`
+- Data: Shopify only (`getCollectionProducts` via `COLLECTION_HANDLES`). Does **not** import `src/data/home`.
+
+Unused home components still on disk (not imported by `/`): `ModiweekSection`, `FollowUsSection`, `SustainabilitySection`, `CollectionSection`.
 
 ---
 
@@ -97,12 +102,12 @@ No metadata, no sections, no data fetches.
 1. **JSON-LD** — CollectionPage + ItemList of products.
 2. **Breadcrumbs** — Home → Collection → `{Category Name}` (mobile bar + desktop).
 3. **Page title (h1)** — Title-cased slug (e.g. `new-arrivals` → “New Arrivals”).
-4. **CatalogBrowser** — Mobile filter sheet + desktop sticky filters (`CatalogFilters`), active filter chips, product grid (`ProductCard`), optional “Load More” (Shopify pagination). Filters/sort update URL only; sidebar filters do not change the Shopify product query beyond what’s wired in catalog helpers.
+4. **CatalogBrowser** — Mobile filter sheet + desktop sticky filters (`CatalogFilters`), active filter chips, product grid (`ProductCard`), optional “Load More” via server action `loadMoreCatalog`. URL `sort` / `filter` params are parsed by `src/lib/catalog-params.ts` and passed into `getCatalogPage`, which applies Shopify `sortKey` / `ProductFilter` inputs.
 
 ### Key components / data
 
 - Components: `CatalogBrowser`, `CatalogFilters`, `ProductCard`, `Breadcrumbs`, `Container`
-- Data: Shopify via `getCatalogPage({ kind: "collection", handle })`
+- Data: Shopify via `getCatalogPage({ source: { kind: "collection", handle }, sort, filters })`
 
 ---
 
@@ -120,7 +125,7 @@ No metadata, no sections, no data fetches.
 2. **Breadcrumbs (mobile)** — Home → Shop All.
 3. **ShopAllHero** — Lookbook carousel from static `SHOP_ALL_HERO_SLIDES` (`src/data/shop-all`).
 4. **Breadcrumbs (desktop)** — Same trail under the hero.
-5. **CatalogBrowser** — Same PLP chrome as collection slug; source is all products (`kind: "products"`).
+5. **CatalogBrowser** — Same PLP chrome as collection slug; source is all products (`source: { kind: "products" }`), not the `all` collection handle.
 
 ### Key components / data
 
@@ -142,12 +147,14 @@ No metadata, no sections, no data fetches.
 1. **sr-only h1** — “Search results”.
 2. **SearchResultsBar** — Search input; submits to `/search?q=…`.
 3. **Empty prompt** — If no query: “Enter a search term…”.
-4. **CatalogBrowser** — When `q` present: Shopify search results with filters/sort/load more.
+4. **CatalogBrowser** — When `q` present: Shopify search results with filters/sort/load more via `getCatalogPage({ source: { kind: "search", query }, sort, filters })`.
 
 ### Key components / data
 
 - Components: `SearchResultsBar`, `CatalogBrowser`
-- Data: Shopify search via `getCatalogPage({ kind: "search", query })` when `q` is set
+- Data: Shopify search via `getCatalogPage` when `q` is set
+
+Legacy `src/components/search/search-filters*.tsx` and static `SEARCH_FILTERS` in `src/data/search.ts` are unused by this page; live filters come from Shopify through `CatalogFilters`.
 
 ---
 
@@ -156,23 +163,24 @@ No metadata, no sections, no data fetches.
 | | |
 | --- | --- |
 | **File** | `src/app/product/[id]/page.tsx` |
-| **Redirects** | No (calls `notFound()` if missing). `[id]` is the Shopify **handle**. |
-| **Title / purpose** | Dynamic product name. PDP with gallery, purchase controls, related products. |
+| **Redirects** | No. `[id]` is the Shopify **handle**. Missing product → `notFound()`. Catalog error → retry panel (not `notFound`). |
+| **Title / purpose** | Dynamic product name (plus meta description / Open Graph / Twitter / canonical from `productMetaDescription`). PDP with gallery, purchase controls, related products. |
 
 ### Sections
 
-1. **JSON-LD** — Product + Offer schema.
+1. **JSON-LD** — Product (or AggregateOffer) + BreadcrumbList.
 2. **Breadcrumbs** — Home → category → product name.
-3. **Main PDP grid**
+3. **ProductExperience** — Wraps gallery + purchase column:
    - **ProductGallery** — Image/video media from Shopify.
-   - **ProductPurchasePanel** — Name, price, color swatches, size select/buttons, add to cart (Shopify cart actions), wishlist toggle (localStorage), fit/size dialog; optionally embeds accordions.
-   - **ProductAccordions** — Fitting, care, and links to shipping and returns, under the purchase column.
-4. **You May Also Like** — SectionHeader + related products: Shopify recommendations by GID, else `getProducts(4)`. Mobile carousel, desktop grid of `ProductCard`s.
+   - **ProductPurchasePanel** — Name, price, color swatches, size buttons, add to cart (`addToCartAction`), buy now (`buyNowAction` → Shopify `checkoutUrl`), wishlist toggle (localStorage), fit/size dialog; embeds **ProductAccordions** (fitting, care, shipping/returns).
+4. **You May Also Like** — Only when recommendations return products: SectionHeader + `ProductCardRail`. Fetches `getProductRecommendations(product.gid, 4)`. If there is no `gid` or the list is empty, the section is omitted (no `getProducts` fallback).
+
+Supports `?color=` and `?size=` query params for initial selection (`selectionFromQuery` / `exactVariant` in `src/lib/product-selection.ts`).
 
 ### Key components / data
 
-- Components: `ProductGallery`, `ProductPurchasePanel`, `ProductAccordions`, `ProductCard`, `ScrollCarousel`, `Breadcrumbs`
-- Data: Shopify (`getProduct`, `getProductRecommendations` / `getProducts`); wishlist local
+- Components: `ProductExperience`, `ProductGallery`, `ProductPurchasePanel`, `ProductAccordions`, `ProductCardRail`, `Breadcrumbs`
+- Data: Shopify (`getProduct`, `getProductRecommendations`); wishlist local
 
 ---
 
@@ -212,8 +220,8 @@ No metadata, no sections, no data fetches.
 ### Sections
 
 1. **CheckoutStepper** — Cart / Info / Shipping / Payment (current: Info).
-2. **CheckoutInfoForm** — Contact email, newsletter checkbox, US address fields, phone, save-info checkbox; saves via Shopify cart buyer identity / address action; continues to `/checkout/shipping`. Login link → `/login`. Optional customer access token from Customer Account session.
-3. **CheckoutOrderSummary** — Line items, qty controls, subtotal/shipping/total (cart from provider). On mobile, summary appears above the form.
+2. **CheckoutInfoForm** — Contact email, newsletter checkbox (local only), US address fields, phone, country select (**United States / `US` only**), save-info checkbox (local only); saves via Shopify cart buyer identity / address action; continues to `/checkout/shipping`. Login link → `/login`. Optional customer access token from Customer Account session.
+3. **CheckoutOrderSummary** — Line items, qty controls, subtotal / shipping / tax “Calculated at checkout” / total. On mobile, summary appears above the form.
 
 ### Key components / data
 
@@ -278,7 +286,7 @@ No metadata, no sections, no data fetches.
 2. “Payment Successful” heading + thank-you / receipt copy.
 3. Contact block with `hello@sablemuse.shop`.
 
-On mount: `clearCart()` via cart provider.
+On mount: `clearCart()` via cart provider (clears cookie only).
 
 ### Key components / data
 
@@ -361,7 +369,7 @@ On mount: `clearCart()` via cart provider.
 
 1. **JSON-LD** — WebPage.
 2. **Hero image** — Same auth image layout as login.
-3. **RegisterForm** — CTA → `/api/auth/login`, link to `/login`, Terms/Privacy links.
+3. **RegisterForm** — CTA → `/api/auth/login`, link to `/login`, Terms → `/terms`, Privacy → `/privacy`.
 
 ### Key components / data
 
@@ -405,7 +413,7 @@ On mount: `clearCart()` via cart provider.
 1. **JSON-LD** — ContactPage.
 2. **Breadcrumbs** — Home → Contact Us.
 3. **h1** + intro panel — Hours and `hello@sablemuse.shop`.
-4. **ContactChannels** — Mobile: Write Us dialog, Chat/Call accordions (email CTAs). Desktop: similar channels + inline `ContactForm` / `WriteUsDialog` (mailto; not stored server-side).
+4. **ContactChannels** — Mobile: Write Us dialog, Chat/Call accordions (email CTAs). Desktop: similar channels + inline `ContactForm` / `WriteUsDialog` (`mailto:hello@sablemuse.shop`; not stored server-side).
 
 ### Key components / data
 
@@ -433,7 +441,7 @@ On mount: `clearCart()` via cart provider.
 ### Key components / data
 
 - Components: `Container`, `Button`, Next `Image`/`Link`
-- Data: static `src/data/sustainability` + `src/data/navigation` (mega menu)
+- Data: static `src/data/sustainability` + `src/data/navigation` (`SUSTAINABILITY_MEGA_MENU`)
 
 ---
 
@@ -452,7 +460,7 @@ On mount: `clearCart()` via cart provider.
 3. **Hero image** — `MISSION_HERO` with caption overlay.
 4. **h1 + intro** — `MISSION_INTRO`.
 5. **How We Work** — `MissionPillarsAccordion` from `MISSION_PILLARS`.
-6. **Image strip** — Featured + 3 supplier/lifestyle images (`MISSION_SUPPLIER_IMAGES`); “Contact Us” CTA → `/contact-us`.
+6. **Image strip** — Featured + lifestyle images (`MISSION_SUPPLIER_IMAGES`); “Contact Us” CTA → `/contact-us`. There is no `/sustainability/suppliers` page.
 7. **Closing statement** — `MISSION_STATEMENT`.
 
 ### Key components / data
@@ -488,7 +496,7 @@ On mount: `clearCart()` via cart provider.
 
 ## Policy pages (shared shell)
 
-All use `PolicyPage`: breadcrumbs (Home → title), h1, prose body. **Static inline copy** in each page file; no Shopify.
+All use `PolicyPage` from `src/components/content/policy-page.tsx`: breadcrumbs (Home → title), h1, prose body. **Static inline copy** in each page file; no Shopify.
 
 ### `/shipping` — Shipping
 
@@ -528,12 +536,12 @@ All use `PolicyPage`: breadcrumbs (Home → title), h1, prose body. **Static inl
 
 | Route | Redirect? | Primary data |
 | --- | --- | --- |
-| `/` | No | Shopify + `src/data/home` |
-| `/collection` | No | Shopify + `src/data/navigation` |
-| `/collection/[slug]` | No | Shopify catalog |
-| `/shop-all` | No | Shopify + `src/data/shop-all` |
-| `/search` | No | Shopify search |
-| `/product/[id]` | No (`notFound`) | Shopify PDP |
+| `/` | No | Shopify collections (five rails) |
+| `/collection` | No | Shopify + `COLLECTION_MEGA_MENU` |
+| `/collection/[slug]` | No | Shopify `getCatalogPage` (collection) |
+| `/shop-all` | No | Shopify `getCatalogPage` (products) + `shop-all` hero |
+| `/search` | No | Shopify `getCatalogPage` (search) |
+| `/product/[id]` | No (`notFound` / error panel) | Shopify PDP |
 | `/cart` | No | Shopify cart |
 | `/checkout` | No | Shopify cart + customer session |
 | `/checkout/shipping` | No | Shopify delivery |
@@ -548,10 +556,10 @@ All use `PolicyPage`: breadcrumbs (Home → title), h1, prose body. **Static inl
 | `/sustainability` | No | `src/data/sustainability` + navigation |
 | `/sustainability/mission` | No | `src/data/sustainability` |
 | `/sustainability/materials` | No | `src/data/sustainability` |
-| `/shipping` | No | Static |
-| `/returns` | No | Static |
-| `/privacy` | No | Static |
-| `/terms` | No | Static |
+| `/shipping` | No | Static (`PolicyPage`) |
+| `/returns` | No | Static (`PolicyPage`) |
+| `/privacy` | No | Static (`PolicyPage`) |
+| `/terms` | No | Static (`PolicyPage`) |
 | `/modiweek` | → `/collection/new-arrivals` | — |
 | `/modiweek/[day]` | → `/collection/new-arrivals` | — |
 | `/plus-size` | → `/collection/new-arrivals` | — |

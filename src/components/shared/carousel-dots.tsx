@@ -35,12 +35,17 @@ export const CarouselDots = ({
           aria-selected={activeIndex === index}
           aria-label={getLabel?.(index) ?? `Go to slide ${index + 1}`}
           tabIndex={0}
-          className={cn(
-            "size-2 rounded-full transition-colors",
-            activeIndex === index ? "bg-ink" : "bg-brand-navy-muted"
-          )}
+          className="inline-flex size-11 cursor-pointer items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           onClick={() => onSelect(index)}
-        />
+        >
+          <span
+            aria-hidden="true"
+            className={cn(
+              "size-2 rounded-full transition-colors",
+              activeIndex === index ? "bg-ink" : "bg-brand-navy-muted"
+            )}
+          />
+        </button>
       ))}
     </div>
   )

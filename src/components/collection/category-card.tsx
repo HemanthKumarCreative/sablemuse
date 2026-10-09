@@ -29,7 +29,7 @@ export const CategoryCard = ({ item, className }: CategoryCardProps) => {
             alt={alt}
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transform-none motion-reduce:transition-none"
           />
         </AspectRatio>
       ) : (

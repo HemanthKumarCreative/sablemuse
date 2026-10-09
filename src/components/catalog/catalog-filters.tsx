@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Minus, Plus, SlidersHorizontal, X } from "lucide-react"
 import {
@@ -165,7 +165,7 @@ export const CatalogFilters = ({
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="justify-self-start text-base font-normal capitalize text-brand-navy underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="cursor-pointer justify-self-start text-base font-normal capitalize text-brand-navy underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   Clear Filter
                 </button>
@@ -174,7 +174,7 @@ export const CatalogFilters = ({
                     <Button size="xl" className="w-full justify-self-end px-6" />
                   }
                 >
-                  Apply Filter
+                  Done
                 </SheetClose>
               </div>
             </div>
@@ -350,6 +350,11 @@ const PriceRange = ({
     activePrice.max != null ? String(activePrice.max) : ""
   )
 
+  useEffect(() => {
+    setMin(activePrice.min != null ? String(activePrice.min) : "")
+    setMax(activePrice.max != null ? String(activePrice.max) : "")
+  }, [activePrice.min, activePrice.max])
+
   const handleApply = () => {
     const price: { min?: number; max?: number } = {}
     if (min.trim()) {
@@ -384,7 +389,7 @@ const PriceRange = ({
           value={min}
           placeholder={bounds.min != null ? String(bounds.min) : "Min"}
           onChange={(event) => setMin(event.target.value)}
-          className="h-10 w-full border border-brand-border px-3 text-sm text-brand-navy"
+          className="h-10 w-full border border-brand-border px-3 text-sm text-brand-navy focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         />
         <label className="sr-only" htmlFor={`${group.id}-max`}>
           Maximum price
@@ -395,7 +400,7 @@ const PriceRange = ({
           value={max}
           placeholder={bounds.max != null ? String(bounds.max) : "Max"}
           onChange={(event) => setMax(event.target.value)}
-          className="h-10 w-full border border-brand-border px-3 text-sm text-brand-navy"
+          className="h-10 w-full border border-brand-border px-3 text-sm text-brand-navy focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         />
       </div>
       <Button type="button" className="mt-3" onClick={handleApply}>

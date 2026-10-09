@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { redirect } from "next/navigation"
 import { CheckoutOrderSummary } from "@/components/checkout/checkout-order-summary"
 import { CheckoutPaymentForm } from "@/components/checkout/checkout-payment-form"
 import { CheckoutStepper } from "@/components/checkout/checkout-stepper"
@@ -15,6 +16,10 @@ export const metadata: Metadata = {
 
 const CheckoutPaymentPage = async () => {
   const cart = await fetchCart()
+
+  if (cart.totalQuantity === 0) {
+    redirect("/cart")
+  }
 
   return (
     <section className="pb-16 md:pb-24">

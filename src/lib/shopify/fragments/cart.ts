@@ -48,6 +48,19 @@ export const CART_FRAGMENT = `
         }
       }
     }
+    buyerIdentity {
+      email
+    }
+    delivery {
+      addresses {
+        selected
+        address {
+          ... on CartDeliveryAddress {
+            formatted
+          }
+        }
+      }
+    }
     deliveryGroups(first: 10) {
       edges {
         node {

@@ -46,15 +46,27 @@ export const fetchCart = async (): Promise<CartSummary> => {
 export const fetchCartDelivery = async (): Promise<{
   cart: CartSummary
   deliveryGroups: DeliveryGroup[]
+  contactEmail: string
+  shipToSummary: string
 }> => {
   const cartId = await getCartId()
   if (!cartId) {
-    return { cart: emptyCart(), deliveryGroups: [] }
+    return {
+      cart: emptyCart(),
+      deliveryGroups: [],
+      contactEmail: "",
+      shipToSummary: "",
+    }
   }
 
   const result = await getCartWithDelivery(cartId)
   if (!result) {
-    return { cart: emptyCart(), deliveryGroups: [] }
+    return {
+      cart: emptyCart(),
+      deliveryGroups: [],
+      contactEmail: "",
+      shipToSummary: "",
+    }
   }
 
   return result

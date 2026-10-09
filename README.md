@@ -23,14 +23,15 @@ npm run test:e2e
 | Path | Role |
 | --- | --- |
 | `src/app` | Routes |
-| `src/components` | UI by feature |
-| `src/lib/shopify` | Storefront client, catalog, cart |
+| `src/components` | UI by feature (`catalog/` for PLPs, `content/` for policy pages) |
+| `src/lib/shopify` | Storefront client, catalog (`getCatalogPage`), cart |
 | `src/lib/customer` | Customer login |
-| `src/data` | Static nav, FAQ, ModiWeek, sustainability, filter copy |
+| `src/data` | Static nav, FAQ, sustainability, policy helpers, shop-all hero. Legacy ModiWeek / plus-size / search filter files remain but are unused by live routes |
 | `src/types/commerce.ts` | Product and cart types |
 | `public/images` | Storefront images |
 | `e2e` | Playwright |
 | `docs/agent-guide.md` | Map for day-to-day changes |
+| `docs/pages.md` | Per-route section inventory |
 | `docs/shopify-setup.md` | Store and credential setup |
 
 Copy `.env.example` into `.env.local`. Do not commit `.env.local`. `Product.id` is the Shopify handle, so product URLs are `/product/{handle}`.

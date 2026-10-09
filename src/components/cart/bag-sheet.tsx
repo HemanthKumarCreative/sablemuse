@@ -7,6 +7,7 @@ import { CartLineItem } from "@/components/cart/cart-line-item"
 import { useCart } from "@/components/cart/cart-provider"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { formatMoney } from "@/lib/format-money"
 import {
   Sheet,
   SheetClose,
@@ -19,7 +20,7 @@ import { cn } from "cn"
 
 const EMPTY_BAG_LINKS = [
   { label: "Collection", href: "/collection" },
-  { label: "New In", href: "/new-in" },
+  { label: "New In", href: "/collection/new-arrivals" },
   { label: "Best Sellers", href: "/collection/best-sellers" },
 ] as const
 
@@ -32,6 +33,8 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
   const {
     items,
     itemCount,
+    subtotal,
+    isPending,
     decrementItem,
     incrementItem,
     removeItem,
@@ -129,9 +132,11 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                   <li key={link.label}>
                     <SheetClose
                       render={
-                        <Link
-                          href={link.href}
-                          className="flex h-12 w-full items-center justify-center bg-brand px-6 text-base font-semibold uppercase tracking-eyebrow text-ink transition-colors hover:bg-brand-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        <Button
+                          nativeButton={false}
+                          size="xl"
+                          className="w-full"
+                          render={<Link href={link.href} />}
                         />
                       }
                     >
@@ -166,22 +171,60 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                       onIncrement={incrementItem}
                       onDecrement={decrementItem}
                       onRemove={removeItem}
+                      quantityDisabled={isPending}
                     />
                   </li>
                 ))}
               </ul>
 
-              <div className="p-5 sm:p-6">
-                <SheetClose
-                  render={
-                    <Link
-                      href="/cart"
-                      className="flex h-12 w-full items-center justify-center bg-brand px-6 text-base font-semibold uppercase tracking-eyebrow text-ink transition-colors hover:bg-brand-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    />
-                  }
-                >
-                  Check Out
-                </SheetClose>
+              <div className="border-t border-brand-border p-5 sm:p-6">
+                <div className="flex items-center justify-between text-base text-brand-navy">
+                  <span>Subtotal</span>
+                  <span>${formatMoney(subtotal)}</span>
+                </div>
+                <p className="mt-2 text-sm leading-copy text-brand-navy-muted">
+                  Free shipping on orders within the United States.{" "}
+                  <Link
+                    href="/shipping"
+                    className="text-brand-navy underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    Shipping
+                  </Link>
+                  {" · "}
+                  <Link
+                    href="/returns"
+                    className="text-brand-navy underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    Returns
+                  </Link>
+                </p>
+                <div className="mt-4 flex flex-col gap-3">
+                  <SheetClose
+                    render={
+                      <Button
+                        nativeButton={false}
+                        size="xl"
+                        className="w-full"
+                        render={<Link href="/checkout" />}
+                      />
+                    }
+                  >
+                    Continue to checkout
+                  </SheetClose>
+                  <SheetClose
+                    render={
+                      <Button
+                        nativeButton={false}
+                        variant="outline"
+                        size="xl"
+                        className="w-full"
+                        render={<Link href="/cart" />}
+                      />
+                    }
+                  >
+                    View cart
+                  </SheetClose>
+                </div>
               </div>
             </div>
           </>

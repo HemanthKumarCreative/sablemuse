@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
+import { redirect } from "next/navigation"
 import { CheckoutInfoForm } from "@/components/checkout/checkout-info-form"
 import { CheckoutOrderSummary } from "@/components/checkout/checkout-order-summary"
 import { CheckoutStepper } from "@/components/checkout/checkout-stepper"
 import { Container } from "@/components/shared/container"
 import { getCustomerSession } from "@/lib/customer/session"
+import { fetchCart } from "@/lib/shopify/cart/actions"
 
 export const metadata: Metadata = {
   title: "Checkout Information",
@@ -15,7 +17,10 @@ export const metadata: Metadata = {
 }
 
 const CheckoutInfoPage = async () => {
-  const session = await getCustomerSession()
+  const [session, cart] = await Promise.all([getCustomerSession(), fetchCart()])
+  if (cart.totalQuantity === 0) {
+    redirect("/cart")
+  }
 
   return (
     <section className="pb-16 md:pb-24">

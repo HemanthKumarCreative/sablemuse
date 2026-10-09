@@ -9,10 +9,14 @@ import type { DeliveryGroup } from "@/types/commerce"
 
 type CheckoutShippingContentProps = {
   deliveryGroups: DeliveryGroup[]
+  contactEmail?: string
+  shipToSummary?: string
 }
 
 export const CheckoutShippingContent = ({
   deliveryGroups,
+  contactEmail,
+  shipToSummary,
 }: CheckoutShippingContentProps) => {
   const [shippingCost, setShippingCost] = useState(
     deliveryGroups[0]?.options.find(
@@ -34,6 +38,8 @@ export const CheckoutShippingContent = ({
         <div className="mt-8 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-start lg:gap-12 xl:gap-16">
           <CheckoutShippingForm
             deliveryGroups={deliveryGroups}
+            contactEmail={contactEmail}
+            shipToSummary={shipToSummary}
             onShippingCostChange={handleShippingCostChange}
           />
           <CheckoutOrderSummary

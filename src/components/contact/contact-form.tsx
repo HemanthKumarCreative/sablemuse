@@ -40,6 +40,7 @@ export const ContactForm = ({
   const messageId = useId()
   const policyId = useId()
   const [acceptedPolicy, setAcceptedPolicy] = useState(false)
+  const [policyError, setPolicyError] = useState("")
   const [mailNote, setMailNote] = useState("")
   const isModal = variant === "modal"
 
@@ -47,8 +48,11 @@ export const ContactForm = ({
     event.preventDefault()
 
     if (!acceptedPolicy) {
+      setPolicyError("Accept the privacy policy to continue.")
       return
     }
+
+    setPolicyError("")
 
     const data = new FormData(event.currentTarget)
     const fullName = String(data.get("fullName") ?? "")
@@ -205,7 +209,13 @@ export const ContactForm = ({
         <Checkbox
           id={policyId}
           checked={acceptedPolicy}
-          onCheckedChange={(checked) => setAcceptedPolicy(checked === true)}
+          onCheckedChange={(checked) => {
+            const next = checked === true
+            setAcceptedPolicy(next)
+            if (next) {
+              setPolicyError("")
+            }
+          }}
           required
           className="mt-0.5 size-4 rounded-none border-brand-border data-checked:border-ink data-checked:bg-ink data-checked:text-background"
         />
@@ -241,6 +251,12 @@ export const ContactForm = ({
           )}
         </Label>
       </div>
+
+      {policyError ? (
+        <p className="mt-3 text-sm text-destructive" role="alert">
+          {policyError}
+        </p>
+      ) : null}
 
       {mailNote ? (
         <p className="mt-4 text-sm text-brand-navy" role="status">

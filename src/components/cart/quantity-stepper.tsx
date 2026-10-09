@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 type QuantityStepperProps = {
   quantity: number
   label: string
+  disabled?: boolean
   onIncrement: () => void
   onDecrement: () => void
 }
@@ -11,6 +12,7 @@ type QuantityStepperProps = {
 export const QuantityStepper = ({
   quantity,
   label,
+  disabled = false,
   onIncrement,
   onDecrement,
 }: QuantityStepperProps) => {
@@ -26,6 +28,7 @@ export const QuantityStepper = ({
         size="icon-xs"
         aria-label={`Decrease quantity of ${label}`}
         className="text-brand-navy"
+        disabled={disabled}
         onClick={onDecrement}
       >
         <Minus className="size-3.5" strokeWidth={2} aria-hidden="true" />
@@ -39,6 +42,7 @@ export const QuantityStepper = ({
         size="icon-xs"
         aria-label={`Increase quantity of ${label}`}
         className="text-brand-navy"
+        disabled={disabled}
         onClick={onIncrement}
       >
         <Plus className="size-3.5" strokeWidth={2} aria-hidden="true" />

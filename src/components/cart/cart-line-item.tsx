@@ -15,6 +15,7 @@ type CartLineItemProps = {
   onRemove: (id: string) => void
   className?: string
   showImageBadge?: boolean
+  quantityDisabled?: boolean
 }
 
 export const CartLineItem = ({
@@ -24,6 +25,7 @@ export const CartLineItem = ({
   onRemove,
   className,
   showImageBadge = true,
+  quantityDisabled = false,
 }: CartLineItemProps) => {
   const handleIncrement = () => {
     onIncrement(item.id)
@@ -67,6 +69,7 @@ export const CartLineItem = ({
           <QuantityStepper
             quantity={item.quantity}
             label={item.name}
+            disabled={quantityDisabled}
             onIncrement={handleIncrement}
             onDecrement={handleDecrement}
           />

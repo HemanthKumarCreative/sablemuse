@@ -263,7 +263,7 @@ export const ProductGallery = ({
                       aria-label={thumbLabel(item, index, knownColor)}
                       aria-pressed={isActive}
                       className={cn(
-                        "relative block size-16 overflow-hidden bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:h-[104px] md:w-[88px]",
+                        "relative block size-16 cursor-pointer overflow-hidden bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:h-[104px] md:w-[88px]",
                         isActive ? "ring-2 ring-brand" : "ring-1 ring-transparent"
                       )}
                     >
@@ -447,7 +447,7 @@ const MediaSlide = ({
       type="button"
       onClick={onZoom}
       aria-label={`Zoom ${label}`}
-      className="relative block h-full w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="relative block h-full w-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       {image}
     </button>
@@ -469,7 +469,7 @@ const ExternalVideo = ({
         type="button"
         onClick={() => setPlaying(true)}
         aria-label={`Play video: ${label}`}
-        className="relative block h-full w-full bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="relative block h-full w-full cursor-pointer bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         {item.poster ? (
           <Image

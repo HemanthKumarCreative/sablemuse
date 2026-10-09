@@ -81,15 +81,8 @@ const CollectionSlugPage = async ({
             />
           </div>
 
-          <h1
-            id="collection-slug-heading"
-            className="heading-page mb-6 lg:hidden"
-          >
-            {categoryName}
-          </h1>
-
           <Breadcrumbs
-            className="hidden lg:block mb-8"
+            className="mb-8 hidden lg:block"
             items={[
               { label: "Home", href: "/" },
               { label: "Collection", href: "/collection" },
@@ -98,7 +91,8 @@ const CollectionSlugPage = async ({
           />
 
           <h1
-            className="heading-page mb-10 hidden lg:block"
+            id="collection-slug-heading"
+            className="heading-page mb-6 lg:mb-10"
           >
             {categoryName}
           </h1>

@@ -14,6 +14,7 @@ type CartTableRowProps = {
   onDecrement: (id: string) => void
   onRemove: (id: string) => void
   className?: string
+  quantityDisabled?: boolean
 }
 
 export const CartTableRow = ({
@@ -22,6 +23,7 @@ export const CartTableRow = ({
   onDecrement,
   onRemove,
   className,
+  quantityDisabled = false,
 }: CartTableRowProps) => {
   const lineTotal = item.price * item.quantity
 
@@ -95,6 +97,7 @@ export const CartTableRow = ({
         <QuantityStepper
           quantity={item.quantity}
           label={item.name}
+          disabled={quantityDisabled}
           onIncrement={handleIncrement}
           onDecrement={handleDecrement}
         />

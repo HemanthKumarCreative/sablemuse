@@ -147,6 +147,17 @@ type ShopifyCart = {
   lines: {
     edges: Array<{ node: ShopifyCartLine }>
   }
+  buyerIdentity?: {
+    email?: string | null
+  } | null
+  delivery?: {
+    addresses: Array<{
+      selected?: boolean | null
+      address?: {
+        formatted?: string[] | null
+      } | null
+    }>
+  } | null
   deliveryGroups?: {
     edges: Array<{
       node: {
@@ -545,6 +556,21 @@ export const mapCart = (cart: ShopifyCart): CartSummary => {
     subtotal: parseAmount(cart.cost.subtotalAmount.amount),
     currencyCode: cart.cost.subtotalAmount.currencyCode,
     items,
+  }
+}
+
+export const mapCartContact = (cart: ShopifyCart) => {
+  const selected =
+    cart.delivery?.addresses.find((item) => item.selected) ??
+    cart.delivery?.addresses[0]
+  const shipToSummary = (selected?.address?.formatted ?? [])
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join(", ")
+
+  return {
+    contactEmail: cart.buyerIdentity?.email?.trim() ?? "",
+    shipToSummary,
   }
 }
 

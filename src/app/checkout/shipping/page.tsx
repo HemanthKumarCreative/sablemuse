@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { redirect } from "next/navigation"
 import { CheckoutShippingContent } from "@/components/checkout/checkout-shipping-content"
 import { fetchCartDelivery } from "@/lib/shopify/cart/actions"
 
@@ -11,9 +12,20 @@ export const metadata: Metadata = {
 }
 
 const CheckoutShippingPage = async () => {
-  const { deliveryGroups } = await fetchCartDelivery()
+  const { cart, deliveryGroups, contactEmail, shipToSummary } =
+    await fetchCartDelivery()
 
-  return <CheckoutShippingContent deliveryGroups={deliveryGroups} />
+  if (cart.totalQuantity === 0) {
+    redirect("/cart")
+  }
+
+  return (
+    <CheckoutShippingContent
+      deliveryGroups={deliveryGroups}
+      contactEmail={contactEmail}
+      shipToSummary={shipToSummary}
+    />
+  )
 }
 
 export default CheckoutShippingPage

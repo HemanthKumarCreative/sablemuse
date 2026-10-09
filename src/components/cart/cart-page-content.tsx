@@ -13,6 +13,7 @@ export const CartPageContent = () => {
     items,
     itemCount,
     subtotal,
+    isPending,
     decrementItem,
     incrementItem,
     removeItem,
@@ -96,6 +97,7 @@ export const CartPageContent = () => {
                 onIncrement={incrementItem}
                 onDecrement={decrementItem}
                 onRemove={removeItem}
+                quantityDisabled={isPending}
               />
             </li>
           ))}
@@ -109,6 +111,7 @@ export const CartPageContent = () => {
                 onIncrement={incrementItem}
                 onDecrement={decrementItem}
                 onRemove={removeItem}
+                quantityDisabled={isPending}
               />
             </li>
           ))}
@@ -136,16 +139,30 @@ export const CartPageContent = () => {
             </div>
 
             <p className="mt-5 text-sm leading-[1.7] text-brand-navy">
-              Tax is calculated at checkout from your shipping address.
+              Tax is calculated at checkout from your shipping address.{" "}
+              <Link
+                href="/shipping"
+                className="underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                Shipping
+              </Link>
+              {" · "}
+              <Link
+                href="/returns"
+                className="underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                Returns
+              </Link>
             </p>
 
             <div className="mt-8 flex justify-end">
               <Button
                 render={<Link href="/checkout" />}
+                nativeButton={false}
                 size="xl"
                 className="px-12"
               >
-                Next
+                Continue to checkout
               </Button>
             </div>
           </div>

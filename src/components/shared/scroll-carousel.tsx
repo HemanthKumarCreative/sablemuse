@@ -75,7 +75,13 @@ export const ScrollCarousel = ({
 
     const gap = Number.parseFloat(getComputedStyle(track).columnGap || "0") || 0
     const itemWidth = firstChild.getBoundingClientRect().width + gap
-    track.scrollTo({ left: itemWidth * index, behavior: "smooth" })
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+    track.scrollTo({
+      left: itemWidth * index,
+      behavior: reduceMotion ? "auto" : "smooth",
+    })
   }
 
   return (

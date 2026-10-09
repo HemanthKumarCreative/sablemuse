@@ -9,27 +9,27 @@ Headless fashion storefront for **Sable Muse** (`sablemuse.shop`). Customer-faci
 
 Stack: Next.js 16 App Router, React 19, Tailwind v4, shadcn style `base-nova` on **Base UI** (`@base-ui/react`), not Radix. Alias `@/*` → `src/*`.
 
-Before changing Next.js APIs, read `node_modules/next/dist/docs/`. Before non-trivial work, read `docs/agent-guide.md`.
+Before changing Next.js APIs, read `node_modules/next/dist/docs/`. Before non-trivial work, read `docs/agent-guide.md`. Per-route UI detail: `docs/pages.md`.
 
 ## Where code lives
 
 - `src/app` — routes. Pages are Server Components. No `middleware.ts`, `loading.tsx`, `error.tsx`, or `not-found.tsx`.
-- `src/lib/shopify` — Storefront GraphQL, mappers, cart server actions.
+- `src/lib/shopify` — Storefront GraphQL, catalog (`getCatalogPage`), mappers, cart server actions.
 - `src/lib/customer` + `src/app/api/auth` — Customer Account OAuth. Login and register both hit `/api/auth/login`.
-- `src/data` — nav, FAQ, sustainability story, filter chrome. Not the product catalog. `/modiweek` and `/plus-size` redirect to `/collection/new-arrivals`.
+- `src/data` — nav, FAQ, sustainability story, shipping-policy helpers, shop-all hero. Not the product catalog. Legacy ModiWeek / plus-size / search filter files may remain unused. `/modiweek`, `/plus-size`, and `/new-in` redirect to `/collection/new-arrivals`.
 - `src/types/commerce.ts` — `Product`, `ProductDetail`, `CartSummary`.
-- `src/components/ui` — primitives. App UI is the other folders under `src/components`.
+- `src/components/ui` — primitives. App UI is the other folders under `src/components` (`catalog/` for PLPs, `content/` for policy pages).
 
 Root layout awaits `fetchCart()`, then `WishlistProvider` → `CartProvider` → `SiteHeader`, `main`, `SiteFooter`.
 
 ## Invariants
 
 - `Product.id` is the Shopify **handle**. The GID is `ProductDetail.gid`. `/product/[id]` passes `id` to `getProduct`, which queries `product(handle:)`.
-- Catalog reads fail soft (`[]` or `null`). There is no mock catalog. `SHOPIFY_USE_MOCK_FALLBACK` is unused.
+- Catalog reads fail soft (`[]` or empty catalog page / `null`). There is no mock catalog. `SHOPIFY_USE_MOCK_FALLBACK` is unused.
 - This app never collects cards. Payment is a redirect to `cart.checkoutUrl`.
 - Storefront and customer tokens stay server-only. Do not add `NEXT_PUBLIC_` copies.
 - Storefront API and Customer Account API only. Do not add Admin API calls.
-- Search and collection filter sidebars do not change the Shopify query. Do not “finish” that unless asked.
+- PLP sort/filters update URL params and the Shopify query via `getCatalogPage` (`src/lib/catalog-params.ts`). Do not revive unused static filter sidebars unless asked.
 - No semicolons. Double quotes, `const` arrows, `handle*` event names, Tailwind on elements, kebab-case files. Base UI links use `render={<Link href="..." />}` and `nativeButton={false}`, not Radix `asChild`.
 
 ## Commands

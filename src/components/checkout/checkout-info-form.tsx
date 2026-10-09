@@ -15,6 +15,60 @@ const COUNTRY_CODES: Array<{ label: string; code: string }> = [
   { label: "United States", code: "US" },
 ]
 
+const US_STATES: Array<{ label: string; code: string }> = [
+  { label: "Alabama", code: "AL" },
+  { label: "Alaska", code: "AK" },
+  { label: "Arizona", code: "AZ" },
+  { label: "Arkansas", code: "AR" },
+  { label: "California", code: "CA" },
+  { label: "Colorado", code: "CO" },
+  { label: "Connecticut", code: "CT" },
+  { label: "Delaware", code: "DE" },
+  { label: "District of Columbia", code: "DC" },
+  { label: "Florida", code: "FL" },
+  { label: "Georgia", code: "GA" },
+  { label: "Hawaii", code: "HI" },
+  { label: "Idaho", code: "ID" },
+  { label: "Illinois", code: "IL" },
+  { label: "Indiana", code: "IN" },
+  { label: "Iowa", code: "IA" },
+  { label: "Kansas", code: "KS" },
+  { label: "Kentucky", code: "KY" },
+  { label: "Louisiana", code: "LA" },
+  { label: "Maine", code: "ME" },
+  { label: "Maryland", code: "MD" },
+  { label: "Massachusetts", code: "MA" },
+  { label: "Michigan", code: "MI" },
+  { label: "Minnesota", code: "MN" },
+  { label: "Mississippi", code: "MS" },
+  { label: "Missouri", code: "MO" },
+  { label: "Montana", code: "MT" },
+  { label: "Nebraska", code: "NE" },
+  { label: "Nevada", code: "NV" },
+  { label: "New Hampshire", code: "NH" },
+  { label: "New Jersey", code: "NJ" },
+  { label: "New Mexico", code: "NM" },
+  { label: "New York", code: "NY" },
+  { label: "North Carolina", code: "NC" },
+  { label: "North Dakota", code: "ND" },
+  { label: "Ohio", code: "OH" },
+  { label: "Oklahoma", code: "OK" },
+  { label: "Oregon", code: "OR" },
+  { label: "Pennsylvania", code: "PA" },
+  { label: "Rhode Island", code: "RI" },
+  { label: "South Carolina", code: "SC" },
+  { label: "South Dakota", code: "SD" },
+  { label: "Tennessee", code: "TN" },
+  { label: "Texas", code: "TX" },
+  { label: "Utah", code: "UT" },
+  { label: "Vermont", code: "VT" },
+  { label: "Virginia", code: "VA" },
+  { label: "Washington", code: "WA" },
+  { label: "West Virginia", code: "WV" },
+  { label: "Wisconsin", code: "WI" },
+  { label: "Wyoming", code: "WY" },
+]
+
 const fieldClassName =
   "h-12 rounded-none border-brand-border bg-background px-4 text-base text-brand-navy placeholder:text-brand-navy-muted"
 
@@ -38,6 +92,7 @@ export const CheckoutInfoForm = ({
   const apartmentId = useId()
   const postalId = useId()
   const cityId = useId()
+  const provinceId = useId()
   const phoneId = useId()
   const saveId = useId()
 
@@ -52,6 +107,13 @@ export const CheckoutInfoForm = ({
     setIsSubmitting(true)
 
     const form = new FormData(event.currentTarget)
+    const provinceCode = String(form.get("province") ?? "")
+
+    if (!provinceCode) {
+      setError("Select a state so we can calculate shipping.")
+      setIsSubmitting(false)
+      return
+    }
 
     try {
       await updateCheckoutInfoAction({
@@ -65,6 +127,7 @@ export const CheckoutInfoForm = ({
         address2: String(form.get("apartment") ?? "") || undefined,
         city: String(form.get("city") ?? ""),
         zip: String(form.get("postalCode") ?? ""),
+        provinceCode,
         customerAccessToken,
       })
       router.push("/checkout/shipping")
@@ -275,6 +338,34 @@ export const CheckoutInfoForm = ({
       </div>
 
       <div className="relative mt-4">
+        <Label htmlFor={provinceId} className="sr-only">
+          State
+        </Label>
+        <select
+          id={provinceId}
+          name="province"
+          required
+          defaultValue=""
+          autoComplete="address-level1"
+          aria-label="State"
+          className={cn(fieldClassName, "w-full appearance-none pr-10")}
+        >
+          <option value="" disabled>
+            State
+          </option>
+          {US_STATES.map((state) => (
+            <option key={state.code} value={state.code}>
+              {state.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown
+          className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-brand-navy"
+          aria-hidden="true"
+        />
+      </div>
+
+      <div className="relative mt-4">
         <Label htmlFor={phoneId} className="sr-only">
           Phone
         </Label>
@@ -306,7 +397,11 @@ export const CheckoutInfoForm = ({
         </Label>
       </div>
 
-      {error ? <p className="mt-4 text-sm text-destructive">{error}</p> : null}
+      {error ? (
+        <p className="mt-4 text-sm text-destructive" role="alert">
+          {error}
+        </p>
+      ) : null}
 
       <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row-reverse sm:items-center sm:justify-between">
         <Button

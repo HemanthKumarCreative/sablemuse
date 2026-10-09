@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ChevronDown, Heart } from "lucide-react"
+import { Heart } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { ColorSwatch } from "@/components/product/color-swatch"
 import { ProductAccordions } from "@/components/product/product-accordions"
 import { useCart } from "@/components/cart/cart-provider"
 import { useWishlist } from "@/components/wishlist/wishlist-provider"
@@ -213,7 +214,13 @@ export const ProductPurchasePanel = ({
   const actionsDisabled = soldOut || pending !== null || isPending
 
   return (
-    <div className={cn("flex w-full flex-col", className)}>
+    <div
+      className={cn(
+        "flex w-full flex-col",
+        stuck && "pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0",
+        className
+      )}
+    >
       <h1 id="product-heading" className="heading-page">
         {product.name}
       </h1>
@@ -226,7 +233,7 @@ export const ProductPurchasePanel = ({
           </p>
         ) : null}
         {discount > 0 ? (
-          <p className="text-sm font-medium text-brand-navy">−{discount}%</p>
+          <p className="text-sm font-medium text-sale">−{discount}%</p>
         ) : null}
       </div>
       {complete && exact?.sku ? (
@@ -263,7 +270,6 @@ export const ProductPurchasePanel = ({
                   onClick={() => setSizeGuideOpen(true)}
                 >
                   Size Guide
-                  <ChevronDown className="size-3.5" aria-hidden="true" />
                 </Button>
               ) : null}
             </div>
@@ -289,7 +295,7 @@ export const ProductPurchasePanel = ({
                         aria-label={available ? value : `${value}, sold out`}
                         aria-pressed={isSelected}
                         className={cn(
-                          "relative size-11 overflow-hidden rounded-full bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          "relative size-11 cursor-pointer overflow-hidden rounded-full bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                           isSelected && "ring-2 ring-ink ring-offset-2",
                           !available && "opacity-60"
                         )}
@@ -301,6 +307,13 @@ export const ProductPurchasePanel = ({
                             fill
                             sizes="44px"
                             className="object-cover"
+                          />
+                        ) : swatch?.hex ? (
+                          <ColorSwatch
+                            hex={swatch.hex}
+                            name={value}
+                            decorative
+                            className="size-full border-transparent sm:size-full"
                           />
                         ) : (
                           <span className="flex h-full items-center justify-center px-1 text-center text-[10px] leading-tight text-brand-navy">
@@ -349,7 +362,7 @@ export const ProductPurchasePanel = ({
       })}
 
       {error ? (
-        <p className="mt-3 text-sm text-destructive" role={stuck ? undefined : "alert"}>
+        <p className="mt-3 text-sm text-destructive" role="alert">
           {error}
         </p>
       ) : null}
@@ -360,6 +373,7 @@ export const ProductPurchasePanel = ({
           size="xl"
           onClick={() => void handleAddToBag()}
           disabled={actionsDisabled}
+          aria-busy={pending === "add"}
           className="flex-1"
         >
           {addLabel}
@@ -370,6 +384,7 @@ export const ProductPurchasePanel = ({
           size="xl"
           onClick={() => void handleBuyNow()}
           disabled={actionsDisabled}
+          aria-busy={pending === "buy"}
           className="flex-1"
         >
           {buyLabel}
@@ -501,7 +516,7 @@ export const ProductPurchasePanel = ({
             <span className="text-brand-navy-muted"> · {priceLabel}</span>
           </p>
           {error ? (
-            <p className="mt-1 text-sm text-destructive" role="alert">
+            <p className="mt-1 text-sm text-destructive" aria-hidden="true">
               {error}
             </p>
           ) : null}
@@ -510,9 +525,10 @@ export const ProductPurchasePanel = ({
             size="xl"
             onClick={() => void handleAddToBag()}
             disabled={actionsDisabled}
+            aria-busy={pending === "add"}
             className="mt-2 w-full"
           >
-            {selectedSize ? addLabel : soldOut ? "Sold Out" : addLabel}
+            {addLabel}
           </Button>
         </div>
       ) : null}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { ProductCardRail } from "@/components/product/product-card-rail"
+import { Button } from "@/components/ui/button"
 import { ProductExperience } from "@/components/product/product-experience"
 import { Breadcrumbs } from "@/components/shared/breadcrumbs"
 import { Container } from "@/components/shared/container"
@@ -162,12 +163,14 @@ const ProductUnavailable = ({ handle }: { handle: string }) => (
       <p className="mt-4 max-w-xl text-sm leading-copy text-brand-navy">
         The product catalog did not respond. This is not a missing product. Please try again.
       </p>
-      <a
-        href={`/product/${handle}`}
-        className="mt-6 inline-flex h-12 items-center justify-center bg-brand px-6 text-base font-semibold tracking-eyebrow text-ink uppercase"
+      <Button
+        render={<a href={`/product/${handle}`} />}
+        nativeButton={false}
+        size="xl"
+        className="mt-6"
       >
         Try again
-      </a>
+      </Button>
     </Container>
   </section>
 )
@@ -238,7 +241,6 @@ const ProductPage = async ({ params, searchParams }: ProductPageProps) => {
               imageAspectClassName="aspect-[3/4] md:aspect-[392/438]"
               gridClassName="md:grid-cols-3 md:gap-6"
               itemClassName="w-[68%] sm:w-[55%]"
-              dotsClassName="hidden"
             />
           </Container>
         </section>

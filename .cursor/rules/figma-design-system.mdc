@@ -1,0 +1,335 @@
+---
+description: Design system map for Figma MCP — tokens, components, assets, icons, styling. Use when implementing or syncing Figma designs.
+globs: src/components/**/*.tsx,src/app/**/*.tsx,src/app/globals.css,components.json
+alwaysApply: false
+---
+
+# Figma ↔ shop-ui design system
+
+Headless **Sable Muse** storefront. When translating Figma via MCP (`get_design_context`, Code Connect, `generate_figma_design`, `use_figma`), map to the tokens and components below. Do not invent a parallel design system. Prefer adapting Figma output to existing primitives and brand tokens.
+
+Customer-facing brand is **Sable Muse** (US, USD). Do not reintroduce Modimal / ModiWeek copy. Internal cookie names may still say `modimal_`.
+
+---
+
+## 1. Token definitions
+
+**Source of truth:** `src/app/globals.css`
+
+No Style Dictionary, Tokens Studio export, or separate JSON/YAML token pipeline. Tokens are CSS custom properties on `:root`, wired into Tailwind v4 via `@theme inline`.
+
+### Format
+
+```css
+/* Semantic values */
+:root {
+  --background: #fdfbf7;
+  --brand: #8f6565;
+  /* ... */
+}
+
+/* Tailwind color/font/radius bridges */
+@theme inline {
+  --color-brand: var(--brand);
+  --font-sans: var(--font-sans-var);
+  --radius-sm: 0px;
+  --container-modimal: 1240px;
+}
+```
+
+Use Tailwind utilities (`bg-brand`, `text-ink`, `max-w-modimal`), not raw hex in new UI, unless matching an existing one-off (e.g. hero backdrop `bg-[#c9b59c]`).
+
+### Color map (Figma → code)
+
+| Role | Hex | CSS / Tailwind |
+| --- | --- | --- |
+| Paper / page bg | `#FDFBF7` | `--background` → `bg-background` |
+| Sable ink | `#1C1A17` | `--ink`, `--brand-navy` → `text-ink`, `text-brand-navy` |
+| Muted ink | `#6B635B` | `--ink-muted`, `--muted-foreground`, `--brand-slate` |
+| Rosewood CTA | `#8F6565` | `--brand`, `--primary` → `bg-brand`, `text-brand` |
+| Brand hover | `#7A5454` | `--brand-hover` → `bg-brand-hover` |
+| Soft rose (decorative) | `#C4A8A8` | `--brand-light` |
+| Focus ring | `#A87C7C` | `--ring` → `ring-ring` |
+| Taupe border | `#E1DCD6` | `--border`, `--brand-border` |
+| Sand / muted surface | `#F5F0EA` | `--muted`, `--secondary`, `--surface-soft` |
+| Olive (sustainability chips only) | `#5F6E50` | `--olive` → `text-olive` / `bg-olive` |
+| Destructive | `#B3412F` | `--destructive` |
+| Success | `#3D6B45` | `--success` |
+| Warning | `#8A5A0C` | `--warning` |
+| Sale / urgency | `#8C2F4A` | `--sale` |
+
+**Rules:** Rosewood is for **fills** (buttons, accents), not body links. Links stay sable (`text-brand-navy`, `hover:text-brand-navy`). Radius tokens are **0** everywhere except color swatches and carousel dots (`rounded-full`).
+
+### Typography
+
+Loaded in `src/app/layout.tsx` via `next/font/google`:
+
+| Role | Family | CSS var | Tailwind |
+| --- | --- | --- | --- |
+| UI / body | Source Sans 3 (400/500/600) | `--font-sans-var` | `font-sans` |
+| Display / headings / wordmark | Cormorant Garamond (500/600, italic) | `--font-serif-var` | `font-serif`, `font-heading`, `font-display` |
+
+Utility classes in `globals.css`:
+
+- `.heading-page` — page titles (serif, responsive 2rem → 3rem)
+- `.heading-section` — section titles (serif, responsive)
+- `tracking-eyebrow` — `0.08em` (buttons, labels)
+- `tracking-wordmark` — `0.14em` (logo lockup)
+- `leading-copy` — `1.8` body leading
+
+### Spacing / layout tokens
+
+- Content width: `--container-modimal: 1240px` → `max-w-modimal` via `Container`
+- Horizontal padding: `px-4 sm:px-5 md:px-8 lg:px-10` (inside `Container`)
+- No separate spacing scale file; use Tailwind spacing scale
+
+### Transformation
+
+None. shadcn CSS variables + Tailwind v4 `@theme inline` only. `components.json` points `tailwind.css` at `src/app/globals.css`.
+
+---
+
+## 2. Component library
+
+### Primitives (shadcn `base-nova` on Base UI)
+
+**Path:** `src/components/ui/`
+
+| File | Role |
+| --- | --- |
+| `button.tsx` | CVA variants + `@base-ui/react/button` |
+| `input.tsx` | Text inputs (`default` / `xl` sizes) |
+| `label.tsx` | Form labels |
+| `checkbox.tsx` | Checkbox |
+| `badge.tsx` | `neutral` / `inverse` / `outline` |
+| `accordion.tsx` | FAQ / PDP / mission |
+| `dialog.tsx` | Modals |
+| `sheet.tsx` | Drawers (bag, mobile nav patterns) |
+| `aspect-ratio.tsx` | Media framing |
+| `overlay-scrim.ts` | Shared backdrop class |
+
+Config: `components.json` — style `base-nova`, `rsc: true`, `iconLibrary: lucide`, aliases `@/components`, `@/components/ui`.
+
+**No Storybook.** No Code Connect files (`.figma.ts`) yet. Document behavior in `docs/pages.md` / this rule.
+
+### Feature components (by domain)
+
+```
+src/components/
+  ui/           primitives
+  layout/       SiteHeader, SiteFooter, AnnouncementBar, DesktopNav
+  navigation/   mobile nav, search overlay, mega-menu (collection page)
+  home/         hero, collections, best sellers, follow-us, etc.
+  product/      ProductCard, ProductExperience, gallery, purchase panel
+  catalog/      CatalogBrowser, CatalogFilters
+  cart/         bag sheet, cart page, quantity stepper, providers
+  checkout/     stepper, forms, order summary
+  search/       filters, chips, results bar
+  content/      PolicyPage
+  shared/       Container, SectionHeader, carousels, breadcrumbs
+  icons/        custom social SVGs
+  ...
+```
+
+### Architecture patterns
+
+- **Server Components by default.** `"use client"` only for state, events, or context.
+- **CVA** (`class-variance-authority`) for variant APIs on primitives.
+- **`cn`** from the `cn` package (re-exported in `src/lib/utils.ts`). Prefer `import { cn } from "cn"` to match existing files.
+- **Base UI, not Radix.** Links-as-buttons:
+
+```tsx
+<Button
+  render={<Link href="/collection/new-arrivals" />}
+  nativeButton={false}
+  size="xl"
+>
+  Shop New Arrivals
+</Button>
+```
+
+- **Button variants:** `default` | `outline` | `secondary` | `ghost` | `destructive` | `link`
+- **Storefront CTAs:** prefer `size="xl"` (`h-12`)
+- **ProductCard** → `/product/${product.id}` (`id` = Shopify handle)
+- **PLPs:** `CatalogBrowser` / `CatalogFilters`
+- **PDP:** `ProductExperience`
+- **Policies:** `PolicyPage`
+
+### Figma MCP mapping
+
+1. Run / search design system against these names before generating new components.
+2. Map Figma buttons → `Button` + variant/size, not custom `<button>` stacks.
+3. Map frames to feature folders (`home/`, `product/`, …), not new top-level UI kits.
+4. If adding Code Connect later, point templates at `@/components/ui/*` and domain components above.
+
+---
+
+## 3. Frameworks and libraries
+
+| Layer | Choice |
+| --- | --- |
+| Framework | Next.js 16 App Router (`src/app`) |
+| UI | React 19 |
+| Styling | Tailwind CSS v4 (`@import "tailwindcss"`), `tw-animate-css`, `shadcn/tailwind.css` |
+| Primitives | `@base-ui/react` + shadcn `base-nova` |
+| Icons | `lucide-react` |
+| Variants | `class-variance-authority` |
+| Class merge | `cn` package |
+| Build | Next.js bundler (Turbopack/webpack via `next dev` / `next build`) |
+| PostCSS | `@tailwindcss/postcss` only (`postcss.config.mjs`) |
+| Path alias | `@/*` → `./src/*` |
+| Tests | Playwright (`e2e/`), not component Storybook |
+| Commerce | Shopify Storefront API + Customer Account API |
+
+Do **not** add Radix, styled-components, CSS Modules, or a second component kit for Figma handoff.
+
+---
+
+## 4. Asset management
+
+### Static assets
+
+- **Root:** `public/`
+- **Images:** `public/images/**` served as `/images/...`
+- **Fonts folder:** `public/fonts` exists; live UI fonts come from `next/font/google` (Source Sans 3, Cormorant Garamond)
+
+Notable paths:
+
+- `/images/hero.jpg`, `/images/logo.png`, `/images/logo-mobile.png`
+- `/images/sustainability*.png`, `/images/shop-all/`, `/images/auth/`, `/images/followus/`, `/images/collection/`, etc.
+- Legacy/static marketing folders may still exist under `modiweek/`, `plus-size/`, `new-in/`, `products/` — prefer Shopify CDN for live catalog imagery
+
+### Product / remote images
+
+- Use `next/image`
+- Allowed remotes in `next.config.ts`: `cdn.shopify.com/**`, `images.unsplash.com/**`
+- Formats: AVIF + WebP (`images.formats`)
+- Catalog photos typically come from Shopify URLs on `Product` / cart line types, not `public/`
+
+### Pattern
+
+```tsx
+import Image from "next/image"
+
+<Image
+  src="/images/hero.jpg"
+  alt="…"
+  width={2880}
+  height={1200}
+  priority
+  sizes="100vw"
+  className="h-auto w-full"
+/>
+```
+
+No separate CDN config beyond Shopify/Unsplash remote patterns. No image CMS.
+
+---
+
+## 5. Icon system
+
+### Primary: Lucide
+
+- Package: `lucide-react`
+- Declared in `components.json` as `"iconLibrary": "lucide"`
+- Import named icons PascalCase matching Lucide names:
+
+```tsx
+import { Search, Heart, User, X, ChevronLeft, ShoppingBag } from "lucide-react"
+```
+
+Common usage: header actions, quantity steppers, gallery controls, dialog/sheet close (`XIcon`), search chips.
+
+Default button styles size nested SVG to `size-4` unless overridden.
+
+### Custom brand / social SVGs
+
+**Path:** `src/components/icons/social-icons.tsx`
+
+- `InstagramIcon`, `FacebookIcon`, `PinterestIcon`, `TwitterIcon`
+- Inline React SVG, `currentColor`, `aria-hidden` by default
+- Naming: `{Network}Icon` PascalCase
+
+Do not add an icon font. Prefer Lucide for UI chrome; use `social-icons` only for social marks.
+
+---
+
+## 6. Styling approach
+
+### Methodology
+
+- **Utility-first Tailwind** on elements (project convention: no new CSS modules / styled-components)
+- **Global tokens + base** in `src/app/globals.css`
+- **Component variants** via CVA + `cn`
+- shadcn / Base UI `data-slot` attributes on primitives
+
+### Global styles
+
+`@layer base`: border/outline defaults, `body` background/foreground, `html` `font-sans scroll-smooth`, link `text-inherit`, `img max-w-full`, `:focus-visible` ring using `--ring`.
+
+`@layer utilities`: `.scrollbar-none`, `.heading-page`, `.heading-section`.
+
+Dark variant exists (`@custom-variant dark`) but the storefront ships a **light** paper theme; do not introduce a dark marketing theme unless explicitly requested.
+
+### Responsive design
+
+- Breakpoints: standard Tailwind (`sm`, `md`, `lg`, …)
+- Mobile-first class stacks on components (see `HeroSection`, `Container`, headings)
+- Touch targets and bag/sheet patterns are mobile-aware; desktop nav is separate from `MobileNavMenu`
+
+### Motion
+
+- `tw-animate-css` imported globally
+- Prefer short opacity/transform transitions already used on overlays (`data-starting-style` / `data-ending-style` on Base UI)
+- For new motion work, follow the Motion skill / existing overlay patterns — avoid decorative noise
+
+### Code style (UI)
+
+- No semicolons; double quotes; `const` arrows; `handle*` event handlers
+- Kebab-case filenames
+- Accessibility: labels, `aria-*`, focus rings; E2E prefers roles/accessible names over `data-testid`
+
+---
+
+## 7. Project structure
+
+```
+src/app/                 App Router pages (Server Components) + auth API routes
+src/components/          UI by domain + ui/ primitives
+src/data/                Static nav, FAQ, sustainability, shipping, heroes (not live catalog)
+src/lib/shopify/         Storefront GraphQL, catalog, cart actions, mappers
+src/lib/customer/        Customer Account OAuth/session
+src/lib/catalog-params.ts  PLP sort/filter URL ↔ Shopify query
+src/types/commerce.ts    Product, ProductDetail, CartSummary
+public/images/           Static marketing assets
+docs/agent-guide.md      Operational map
+docs/pages.md            Per-route UI detail
+components.json          shadcn config
+```
+
+### Patterns
+
+- **Route → page (RSC) → feature components** with data fetched in the page or via server actions
+- **Providers** in root layout: `WishlistProvider` → `CartProvider` → header / main / footer
+- **No** `middleware.ts`, `loading.tsx`, `error.tsx`, or `not-found.tsx`
+- Feature organization is **domain folders** under `components/`, not atomic design layers (`atoms/molecules`)
+
+### Invariants that affect design implementation
+
+- Payment is redirect to `cart.checkoutUrl` — never design card-capture UI for real charges
+- `Product.id` is the handle; PDP route is `/product/[id]`
+- PLP filters/sort are URL-driven Shopify queries — do not revive unused static filter chrome from `src/data/search.ts` / `plus-size.ts` unless asked
+
+---
+
+## Figma MCP workflow checklist
+
+1. **Tokens first** — map Figma color/type styles to `globals.css` names; extend `:root` + `@theme inline` if a true brand token is missing (avoid one-off hex sprawl).
+2. **Reuse primitives** — Button, Input, Badge, Sheet, Dialog, Accordion before new primitives.
+3. **Place UI in the right domain folder** — e.g. PDP chrome under `product/`, chrome under `layout/`.
+4. **Base UI link buttons** — `render={<Link />}` + `nativeButton={false}`.
+5. **Images** — static → `public/images/...` + `next/image`; catalog → Shopify URLs already on product types.
+6. **Icons** — Lucide names; social → `social-icons.tsx`.
+7. **Brand test** — Sable Muse paper/rosewood/serif headings; radius 0; no purple-gradient or generic shadcn look drifting from tokens.
+8. **Read** `docs/pages.md` for the target route before large layout changes.
+)

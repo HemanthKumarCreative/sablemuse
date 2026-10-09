@@ -10,6 +10,7 @@ const badgeVariants = cva(
         neutral: "bg-background text-brand-navy",
         inverse: "bg-ink text-background",
         outline: "border border-brand-border bg-background text-brand-navy",
+        sale: "bg-sale text-sale-foreground",
       },
     },
     defaultVariants: {
