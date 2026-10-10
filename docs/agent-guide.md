@@ -189,7 +189,7 @@ Every `page.tsx` is a server component. Client pieces are children. Full section
 | `/wishlist` | `getProducts(50)` filtered by `modimal-wishlist` handles |
 | `/checkout`, `/checkout/shipping`, `/checkout/payment`, `/checkout/success`, `/checkout/error` | Cart API, then hosted checkout |
 | `/login`, `/register` | Link to `/api/auth/login` |
-| `/contact-us` | Static. Forms open `mailto:hello@sablemuse.shop` |
+| `/contact-us` | Static. Forms open `mailto:support@sablemuse.shop` |
 | `/faq` | `FAQ_ITEMS` in `src/data/faq.ts` |
 | `/sustainability`, `/sustainability/materials`, `/sustainability/mission` | Sable Muse shop story in `src/data/sustainability.ts` |
 | `/shipping`, `/returns`, `/privacy`, `/terms` | Static policy pages via `PolicyPage` |

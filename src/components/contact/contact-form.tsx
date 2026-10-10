@@ -70,9 +70,9 @@ export const ContactForm = ({
       .filter((line) => line !== "")
       .join("\n")
 
-    window.location.href = `mailto:hello@sablemuse.shop?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = `mailto:support@sablemuse.shop?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     setMailNote(
-      "Your email app should open with this message. If it does not, write to hello@sablemuse.shop."
+      "Your email app should open with this message. If it does not, write to support@sablemuse.shop."
     )
     onSubmitted?.()
   }

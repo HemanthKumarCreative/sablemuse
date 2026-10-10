@@ -1,238 +1,233 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  PinterestIcon,
-  TwitterIcon } from
-"@/components/icons/social-icons";
-import { Container } from "@/components/shared/container";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { FOOTER_LINKS } from "@/data/navigation";
+import Link from "next/link"
+import { useState } from "react"
+import { ArrowRight, LoaderCircle } from "lucide-react"
+import { Container } from "@/components/shared/container"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { FOOTER_COLUMNS, FOOTER_LEGAL_LINKS } from "@/data/navigation"
+import { subscribeEmailAction } from "@/lib/shopify/admin/actions"
+
+const TRUST_LINKS = [
+  {
+    href: "/shipping",
+    label: "Free US shipping",
+    external: false,
+  },
+  {
+    href: "/returns",
+    label: "Returns within 7 days",
+    external: false,
+  },
+  {
+    href: "mailto:support@sablemuse.shop",
+    label: "support@sablemuse.shop",
+    external: true,
+  },
+] as const
+
+const linkClassName =
+  "text-sm text-background/75 transition-colors hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/40"
+
+const trustLinkClassName =
+  "underline-offset-4 transition-colors hover:text-background hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/40"
 
 export const SiteFooter = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = String(data.get("email") ?? "").trim();
+  const [pending, setPending] = useState(false)
+  const [message, setMessage] = useState<{
+    type: "success" | "error"
+    text: string
+  } | null>(null)
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const form = event.currentTarget
+    const data = new FormData(form)
+    const email = String(data.get("email") ?? "").trim()
+
     if (!email) {
-      return;
+      setMessage({ type: "error", text: "Enter a valid email address." })
+      return
     }
-    const href = `mailto:hello@sablemuse.shop?subject=${encodeURIComponent("Sable Muse updates")}&body=${encodeURIComponent(`Please send Sable Muse updates to ${email}.`)}`;
-    window.location.href = href;
-  };
+
+    setPending(true)
+    setMessage(null)
+
+    try {
+      const result = await subscribeEmailAction(email)
+      if (!result.ok) {
+        setMessage({ type: "error", text: result.error })
+        return
+      }
+
+      setMessage({
+        type: "success",
+        text: result.alreadySubscribed
+          ? "You are already subscribed."
+          : "Thanks — you are on the list.",
+      })
+      form.reset()
+    } catch (error) {
+      const detail =
+        error instanceof Error && error.message
+          ? error.message
+          : "We could not save that email. Please try again."
+      setMessage({ type: "error", text: detail })
+    } finally {
+      setPending(false)
+    }
+  }
 
   return (
     <footer className="bg-footer text-background">
-      <Container className="py-10 md:py-16">
-        <div className="grid gap-10 md:grid-cols-12 md:gap-8">
-          <div className="flex flex-col justify-between gap-8 md:col-span-6 md:gap-10">
-            <div className="space-y-5">
-              <h2 className="max-w-md text-lg font-semibold sm:text-xl md:text-2xl">
-                Get new arrivals and US shipping updates
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="relative">
-                  <label htmlFor="newsletter-email" className="sr-only">
-                    Email address
-                  </label>
-                  <Input
-                    id="newsletter-email"
-                    type="email"
-                    name="email"
-                    required
-                    placeholder="Enter your email"
-                    size="xl"
-                    className="border-background bg-transparent pr-12 text-background placeholder:text-background/60 focus-visible:border-background focus-visible:ring-background/30" />
-                  
-                  <Button
-                    type="submit"
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Email hello@sablemuse.shop"
-                    className="absolute top-1/2 right-1 size-10 -translate-y-1/2 rounded-none text-background hover:bg-background/10 hover:text-background">
-                    
-                    <ArrowRight className="size-5" strokeWidth={1.5} />
-                  </Button>
-                </div>
-                <label className="flex items-start gap-3 text-sm font-semibold leading-relaxed text-background/90">
-                  <Checkbox
-                    className="mt-0.5 rounded-none border-background data-checked:border-background data-checked:bg-background data-checked:text-footer"
-                    aria-label="Open an email to hello@sablemuse.shop" />
-                  
-                  <span>
-                    Submitting opens your email app with a note to
-                    hello@sablemuse.shop. This site does not store the address.
-                  </span>
-                </label>
-              </form>
-            </div>
+      <Container className="py-10 md:py-14">
+        <ul
+          className="grid gap-3 border-b border-background/15 pb-8 text-sm text-background/75 sm:grid-cols-3 md:pb-10"
+          aria-label="Shopping details"
+        >
+          {TRUST_LINKS.map((item, index) => {
+            const alignment =
+              index === 1
+                ? "sm:text-center"
+                : index === 2
+                  ? "sm:text-right"
+                  : undefined
 
-            <div className="hidden space-y-6 md:block">
-              <ul className="flex items-center gap-4" aria-label="Social media">
-                <li>
-                  <Link
-                    href="https://instagram.com"
-                    aria-label="Instagram"
-                    className="inline-flex transition-opacity hover:opacity-80"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    
-                    <InstagramIcon className="size-7" />
+            return (
+              <li key={item.label} className={alignment}>
+                {item.external ? (
+                  <a href={item.href} className={trustLinkClassName}>
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link href={item.href} className={trustLinkClassName}>
+                    {item.label}
                   </Link>
-                </li>
-                <li>
-                  <Link
-                    href="https://facebook.com"
-                    aria-label="Facebook"
-                    className="inline-flex transition-opacity hover:opacity-80"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    
-                    <FacebookIcon className="size-7" />
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="https://pinterest.com"
-                    aria-label="Pinterest"
-                    className="inline-flex transition-opacity hover:opacity-80"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    
-                    <PinterestIcon className="size-7" />
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="https://twitter.com"
-                    aria-label="Twitter"
-                    className="inline-flex transition-opacity hover:opacity-80"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    
-                    <TwitterIcon className="size-7" />
-                  </Link>
-                </li>
-              </ul>
-              <p className="text-sm text-background/90">
-                © {new Date().getFullYear()} Sable Muse. All Rights Reserved.
-              </p>
-            </div>
-          </div>
-
-          <div className="md:col-span-2">
-            <h3 className="mb-4 text-base font-semibold md:text-lg">
-              About Sable Muse
-            </h3>
-            <ul className="space-y-3.5">
-              {FOOTER_LINKS.about.map((link) =>
-              <li key={link.label}>
-                  <Link
-                  href={link.href}
-                  className="text-sm text-background/90 transition-colors hover:text-background">
-                  
-                    {link.label}
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </div>
-
-          <div className="md:col-span-2">
-            <h3 className="mb-4 text-base font-semibold md:text-lg">
-              Help & Support
-            </h3>
-            <ul className="space-y-3.5">
-              {FOOTER_LINKS.help.map((link) =>
-              <li key={link.label}>
-                  <Link
-                  href={link.href}
-                  className="text-sm text-background/90 transition-colors hover:text-background">
-                  
-                    {link.label}
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </div>
-
-          <div className="md:col-span-2">
-            <h3 className="mb-4 text-base font-semibold md:text-lg">
-              The Shop
-            </h3>
-            <ul className="space-y-3.5">
-              {FOOTER_LINKS.club.map((link) =>
-              <li key={link.label}>
-                  <Link
-                  href={link.href}
-                  className="text-sm text-background/90 transition-colors hover:text-background">
-                  
-                    {link.label}
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </div>
-
-          <div className="space-y-6 border-t border-background/20 pt-8 md:hidden">
-            <ul className="flex items-center gap-4" aria-label="Social media">
-              <li>
-                <Link
-                  href="https://instagram.com"
-                  aria-label="Instagram"
-                  className="inline-flex transition-opacity hover:opacity-80"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  
-                  <InstagramIcon className="size-7" />
-                </Link>
+                )}
               </li>
-              <li>
-                <Link
-                  href="https://facebook.com"
-                  aria-label="Facebook"
-                  className="inline-flex transition-opacity hover:opacity-80"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  
-                  <FacebookIcon className="size-7" />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://pinterest.com"
-                  aria-label="Pinterest"
-                  className="inline-flex transition-opacity hover:opacity-80"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  
-                  <PinterestIcon className="size-7" />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://twitter.com"
-                  aria-label="Twitter"
-                  className="inline-flex transition-opacity hover:opacity-80"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  
-                  <TwitterIcon className="size-7" />
-                </Link>
-              </li>
-            </ul>
-            <p className="text-sm text-background/90">
-              © {new Date().getFullYear()} Sable Muse. All Rights Reserved.
+            )
+          })}
+        </ul>
+
+        <div className="grid gap-10 pt-8 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:items-start md:gap-x-16 md:gap-y-10 md:pt-10 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-x-20">
+          <div>
+            <h2 className="font-serif text-2xl font-medium tracking-[0.01em] text-background sm:text-[1.75rem]">
+              Get new arrivals and shipping updates
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-background/65">
+              Join the list for drops and shipping notes. Unsubscribe anytime.
             </p>
+            <form
+              onSubmit={(event) => void handleSubmit(event)}
+              className="mt-5"
+            >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+                <label htmlFor="newsletter-email" className="sr-only">
+                  Email address
+                </label>
+                <Input
+                  id="newsletter-email"
+                  type="email"
+                  name="email"
+                  required
+                  autoComplete="email"
+                  inputMode="email"
+                  placeholder="Your email address"
+                  size="xl"
+                  disabled={pending}
+                  aria-invalid={message?.type === "error" || undefined}
+                  aria-describedby="newsletter-status"
+                  className="border-background/40 bg-transparent text-background placeholder:text-background/45 focus-visible:border-background focus-visible:ring-background/30 sm:min-w-0 sm:flex-1"
+                />
+                <Button
+                  type="submit"
+                  variant="default"
+                  size="xl"
+                  disabled={pending}
+                  aria-busy={pending}
+                  className="h-12 shrink-0 px-6 sm:min-w-[8.5rem]"
+                >
+                  {pending ? (
+                    <>
+                      <LoaderCircle
+                        className="size-4 animate-spin"
+                        aria-hidden="true"
+                      />
+                      Joining
+                    </>
+                  ) : (
+                    <>
+                      Join
+                      <ArrowRight className="size-4" strokeWidth={1.75} />
+                    </>
+                  )}
+                </Button>
+              </div>
+              <div
+                id="newsletter-status"
+                className="mt-3 min-h-5"
+                aria-live="polite"
+              >
+                {message ? (
+                  <p
+                    className={
+                      message.type === "success"
+                        ? "text-sm font-medium text-background"
+                        : "text-sm font-medium text-amber-200"
+                    }
+                    role={message.type === "error" ? "alert" : "status"}
+                  >
+                    {message.text}
+                  </p>
+                ) : (
+                  <p className="text-sm leading-relaxed text-background/50">
+                    We only use this for Sable Muse updates.
+                  </p>
+                )}
+              </div>
+            </form>
           </div>
+
+          <nav
+            aria-label="Footer"
+            className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6 md:gap-8"
+          >
+            {FOOTER_COLUMNS.map((column) => (
+              <div key={column.title}>
+                <h3 className="mb-4 text-sm font-semibold tracking-eyebrow text-background uppercase">
+                  {column.title}
+                </h3>
+                <ul className="space-y-3">
+                  {column.links.map((link) => (
+                    <li key={link.label}>
+                      <Link href={link.href} className={linkClassName}>
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-3 border-t border-background/15 pt-6 text-sm text-background/55 sm:flex-row sm:items-center sm:justify-between md:mt-12">
+          <p>© {new Date().getFullYear()} Sable Muse. All rights reserved.</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {FOOTER_LEGAL_LINKS.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  className="transition-colors hover:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/40"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </Container>
     </footer>
   )
-
-};
+}

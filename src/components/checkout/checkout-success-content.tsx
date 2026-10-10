@@ -45,10 +45,10 @@ export const CheckoutSuccessContent = () => {
             </p>
             <p>
               <a
-                href="mailto:hello@sablemuse.shop"
+                href="mailto:support@sablemuse.shop"
                 className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                hello@sablemuse.shop
+                support@sablemuse.shop
               </a>
             </p>
           </div>

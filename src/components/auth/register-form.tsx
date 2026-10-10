@@ -43,7 +43,7 @@ export const RegisterForm = ({ className }: RegisterFormProps) => {
           href="/terms"
           className="text-brand-navy underline underline-offset-2 transition-colors hover:text-brand-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          Terms
+          Terms of Service
         </Link>{" "}
         and{" "}
         <Link

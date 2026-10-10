@@ -73,6 +73,13 @@ const NOT_BRAND_WORDS = new Set([
   "tee",
   "shirt",
   "make",
+  "smocked",
+  "sleeveless",
+  "color",
+  "texture",
+  "pocketed",
+  "striped",
+  "surplice",
 ])
 
 // Words that usually start the real product description after a vendor prefix.
@@ -141,6 +148,22 @@ const normalizeTitle = (value: string) =>
 
 const normalizeToken = (value: string) =>
   value.toLowerCase().replace(/[^\w-]/g, "")
+
+const KNOWN_VENDOR_PREFIXES = ["double take"] as const
+
+const stripKnownVendorPrefix = (title: string) => {
+  let result = title
+
+  for (const prefix of KNOWN_VENDOR_PREFIXES) {
+    const pattern = new RegExp(
+      `^${escapeRegExp(prefix)}(?:\\s*[-–—:,|/]\\s*|\\s+)`,
+      "i"
+    )
+    result = result.replace(pattern, "")
+  }
+
+  return result
+}
 
 const stripVendorPrefix = (title: string, vendor?: string | null) => {
   const vendorName = vendor?.trim()
@@ -213,6 +236,7 @@ export const formatDisplayTitle = (
 
   let result = stripVendorPrefix(original, vendor)
   result = stripPhrases(result, NOISE_PHRASES)
+  result = stripKnownVendorPrefix(result)
 
   // Drop trailing parenthetical size notes: "(S-3XL)", "(1XL-3XL)"
   result = result.replace(

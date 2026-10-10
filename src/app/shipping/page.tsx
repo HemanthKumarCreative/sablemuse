@@ -27,7 +27,7 @@ const ShippingPage = () => {
       </p>
       <p>
         If an order has not shipped and you need to change it, email
-        hello@sablemuse.shop with your order number as soon as you can.
+        support@sablemuse.shop with your order number as soon as you can.
       </p>
     </PolicyPage>
   )

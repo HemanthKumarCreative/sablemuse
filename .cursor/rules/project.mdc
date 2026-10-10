@@ -27,8 +27,8 @@ Root layout awaits `fetchCart()`, then `WishlistProvider` → `CartProvider` →
 - `Product.id` is the Shopify **handle**. The GID is `ProductDetail.gid`. `/product/[id]` passes `id` to `getProduct`, which queries `product(handle:)`.
 - Catalog reads fail soft (`[]` or empty catalog page / `null`). There is no mock catalog. `SHOPIFY_USE_MOCK_FALLBACK` is unused.
 - This app never collects cards. Payment is a redirect to `cart.checkoutUrl`.
-- Storefront and customer tokens stay server-only. Do not add `NEXT_PUBLIC_` copies.
-- Storefront API and Customer Account API only. Do not add Admin API calls.
+- Storefront, customer, and Admin tokens stay server-only. Do not add `NEXT_PUBLIC_` copies.
+- Catalog, cart, and login stay on Storefront + Customer Account APIs. Admin API is allowed only for footer email marketing signup (`src/lib/shopify/admin`), with `read_customers` / `write_customers`.
 - PLP sort/filters update URL params and the Shopify query via `getCatalogPage` (`src/lib/catalog-params.ts`). Do not revive unused static filter sidebars unless asked.
 - No semicolons. Double quotes, `const` arrows, `handle*` event names, Tailwind on elements, kebab-case files. Base UI links use `render={<Link href="..." />}` and `nativeButton={false}`, not Radix `asChild`.
 

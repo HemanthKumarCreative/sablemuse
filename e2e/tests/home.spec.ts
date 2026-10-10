@@ -4,8 +4,6 @@ import {
   footer,
   gotoPath,
   isMobileViewport,
-  pageHeading,
-  visibleSearchButton,
 } from "../helpers/shop"
 
 test.describe("Home", () => {
@@ -16,10 +14,17 @@ test.describe("Home", () => {
     await expect(page.getByRole("heading", { name: /Everyday women's clothing/i })).toBeVisible()
     await expect(page.getByRole("button", { name: "Shop New Arrivals", exact: true })).toBeVisible()
     await expect(page.getByRole("heading", { name: "New Arrivals" })).toBeVisible()
-    await expect(page.getByRole("heading", { name: "Collection" })).toBeVisible()
+    await expect(page.getByRole("heading", { name: "Dresses & Jumpsuits" })).toBeVisible()
+    await expect(page.getByRole("heading", { name: "Tops & Blouses" })).toBeVisible()
+    await expect(page.getByRole("heading", { name: "Jeans & Pants" })).toBeVisible()
     await expect(page.getByRole("heading", { name: "Matching Sets & Lounge" })).toBeVisible()
-    await expect(visibleSearchButton(page)).toBeVisible()
-    await expect(footer(page).getByRole("heading", { name: /Join our club/i })).toBeVisible()
+    await expect(footer(page).getByRole("link", { name: "Free US shipping" })).toBeVisible()
+    await expect(footer(page).getByRole("link", { name: "Returns within 7 days" })).toBeVisible()
+    await expect(footer(page).getByRole("link", { name: "support@sablemuse.shop", exact: true })).toBeVisible()
+    await expect(footer(page).getByRole("heading", { name: /Get new arrivals and shipping updates/i })).toBeVisible()
+    await expect(footer(page).getByText(/Saved to Sable Muse in Shopify/i)).toBeVisible()
+    await expect(footer(page).getByRole("link", { name: "Privacy Policy" })).toBeVisible()
+    await expect(footer(page).getByRole("link", { name: "Terms of Service" })).toBeVisible()
   })
 
   test("hero CTA opens new arrivals", async ({ page }) => {
@@ -29,12 +34,12 @@ test.describe("Home", () => {
     await expect(page.getByRole("heading", { name: "New Arrivals" })).toBeVisible()
   })
 
-  test("best seller card opens a product page", async ({ page }) => {
+  test("product card opens a product page", async ({ page }) => {
     await gotoPath(page, "/")
-    const card = page.getByRole("link", { name: /View Tailored Shirt/i }).first()
+    const card = page.getByRole("link", { name: /^View /i }).first()
     await expect(card).toBeVisible()
     await card.click()
-    await expect(page).toHaveURL(/\/product\/1$/)
+    await expect(page).toHaveURL(/\/product\/[^/]+$/)
   })
 
   test("newsletter form can be filled from the footer", async ({ page }) => {
@@ -42,7 +47,7 @@ test.describe("Home", () => {
     const email = footer(page).getByLabel("Email address")
     await email.scrollIntoViewIfNeeded()
     await email.fill("ada@sablemuse.test")
-    await footer(page).getByRole("button", { name: "Subscribe to newsletter" }).click()
+    await footer(page).getByRole("button", { name: "Email support@sablemuse.shop" }).click()
     await expect(page).toHaveURL(/\/$/)
     await expect(email).toHaveValue("ada@sablemuse.test")
   })
@@ -62,31 +67,5 @@ test.describe("Home", () => {
     test.skip(!isMobileViewport(page), "carousel is mobile-only")
     await gotoPath(page, "/")
     await expect(page.getByRole("region", { name: "New arrivals", exact: true })).toBeVisible()
-  })
-})
-
-test.describe("Welcome dialog", () => {
-  test.use({ dismissWelcome: false })
-
-  test("shows on a first visit and can be dismissed", async ({ page }) => {
-    await page.goto("/")
-    const dialog = page.getByRole("dialog")
-    await expect(dialog).toBeVisible()
-    await expect(dialog.getByRole("heading", { name: "Welcome To Sable Muse" })).toBeVisible()
-    await dialog.getByRole("button", { name: "Close welcome" }).click()
-    await expect(dialog).toBeHidden()
-    await expect(page.getByRole("heading", { name: /Everyday women's clothing/i })).toBeVisible()
-  })
-
-  test("create-your-style CTA goes to collection and stays dismissed", async ({
-    page,
-  }) => {
-    await page.goto("/")
-    const dialog = page.getByRole("dialog")
-    await expect(dialog.getByRole("heading", { name: "Welcome To Sable Muse" })).toBeVisible()
-    await dialog.getByRole("button", { name: "Explore New Arrivals" }).click()
-    await expect(page).toHaveURL(/\/collection\/new-arrivals$/)
-    await expect(pageHeading(page, "New Arrivals")).toBeVisible()
-    await expect(page.getByRole("dialog")).toHaveCount(0)
   })
 })

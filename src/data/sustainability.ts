@@ -23,7 +23,7 @@ export const MATERIALS_INTRO =
   "Sable Muse sells women's dresses, tops, jeans, and matching sets for customers in the United States. Prices are in US dollars. Shipping is free on orders within the United States. Care notes below are general guidance for everyday clothes. Check the product page when a piece needs something more specific."
 
 export const MATERIALS_CLOSING = [
-  "If a wash, a size, or a delivery question is not covered here, email hello@sablemuse.shop. We reply Monday through Friday, 9 am to 5 pm Eastern Time.",
+  "If a wash, a size, or a delivery question is not covered here, email support@sablemuse.shop. We reply Monday through Friday, 9 am to 5 pm Eastern Time.",
 ] as const
 
 export const MATERIALS_REPORT_PREFIX =
@@ -55,8 +55,8 @@ export const SUSTAINABILITY_MATERIAL_DETAILS: SustainabilityMaterialDetail[] = [
   {
     id: "returns",
     title: "Returns",
-    preview: "Returns are accepted within 30 days...",
-    body: "Returns are accepted within 30 days of delivery for unworn items in their original condition. Email hello@sablemuse.shop with your order number to start a return.",
+    preview: "Returns are accepted within 7 days...",
+    body: "Returns are accepted within 7 days of delivery for unworn items in their original condition. Email support@sablemuse.shop with your order number to start a return.",
     image: "/images/products/shirt-black.webp",
     secondaryImage: "/images/followus/3.jpg",
     imageAlt: "A Sable Muse top",
@@ -77,7 +77,7 @@ export const SUSTAINABILITY_MATERIAL_DETAILS: SustainabilityMaterialDetail[] = [
     id: "sizing",
     title: "Sizing",
     preview: "Use the size options on the product...",
-    body: "Choose a size from the options on the product page. Compare it with a piece you already own. If you want help before you order, email hello@sablemuse.shop.",
+    body: "Choose a size from the options on the product page. Compare it with a piece you already own. If you want help before you order, email support@sablemuse.shop.",
     image: "/images/followus/5.webp",
     secondaryImage: "/images/products/dress-offwhite.webp",
     imageAlt: "A Sable Muse dress on a product page",
@@ -138,7 +138,7 @@ export const MISSION_HERO = {
 } as const
 
 export const MISSION_STATEMENT =
-  "Shop the collections in the header, pay in US dollars, and reach hello@sablemuse.shop if you need help with an order."
+  "Shop the collections in the header, pay in US dollars, and reach support@sablemuse.shop if you need help with an order."
 
 export const MISSION_PILLARS: MissionPillar[] = [
   {
@@ -169,7 +169,7 @@ export const MISSION_PILLARS: MissionPillar[] = [
   {
     id: "care-team",
     title: "Customer Care",
-    body: "Email hello@sablemuse.shop Monday through Friday, 9 am to 5 pm Eastern Time. We aim to reply within one business day.",
+    body: "Email support@sablemuse.shop Monday through Friday, 9 am to 5 pm Eastern Time. We aim to reply within one business day.",
   },
 ]
 

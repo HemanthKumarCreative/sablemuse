@@ -34,7 +34,32 @@ export const SearchOverlay = ({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose()
+        return
       }
+
+      if (event.key !== "Tab") {
+        return
+      }
+
+      const field = inputRef.current
+      const close = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-search-close]")
+      ).find((node) => node.getClientRects().length > 0)
+
+      if (!field || !close) {
+        return
+      }
+
+      const stops = [field, close]
+      const current = stops.indexOf(document.activeElement as HTMLElement)
+      const nextIndex = event.shiftKey
+        ? current <= 0
+          ? stops.length - 1
+          : current - 1
+        : (current + 1) % stops.length
+
+      event.preventDefault()
+      stops[nextIndex]?.focus()
     }
 
     window.addEventListener("keydown", handleKeyDown)
@@ -94,7 +119,7 @@ export const SearchOverlay = ({
             placeholder="Search"
             autoComplete="off"
             defaultValue=""
-            className="h-11 rounded-none border-0 bg-transparent py-0 pr-2 pl-9 text-lg capitalize leading-copy text-brand-navy shadow-none placeholder:text-brand-navy-muted focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ring md:h-14 md:pl-10 md:text-xl"
+            className="h-11 rounded-none border-0 bg-transparent py-0 pr-2 pl-9 text-lg leading-copy text-brand-navy shadow-none placeholder:text-brand-navy-muted focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ring md:h-14 md:pl-10 md:text-xl"
           />
         </form>
       </Container>

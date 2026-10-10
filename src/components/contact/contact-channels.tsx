@@ -75,10 +75,10 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
               <AccordionContent className="bg-muted px-4 pb-6">
                 <div className="flex flex-col items-center gap-4 py-2 text-center">
                   <p className="text-sm capitalize text-brand-navy">
-                    Email hello@sablemuse.shop and we will reply
+                    Email support@sablemuse.shop and we will reply
                   </p>
                   <Button
-                    render={<Link href="mailto:hello@sablemuse.shop" />}
+                    render={<Link href="mailto:support@sablemuse.shop" />}
                     nativeButton={false}
                     variant="outline"
                     className="h-11 w-full max-w-xs rounded-none border-ink/40 bg-background text-base font-medium capitalize text-brand-navy-muted hover:bg-background hover:text-brand-navy"
@@ -117,12 +117,12 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                     Monday Through Friday, 9 Am To 5 Pm Eastern Time
                   </p>
                   <Button
-                    render={<Link href="mailto:hello@sablemuse.shop" />}
+                    render={<Link href="mailto:support@sablemuse.shop" />}
                     nativeButton={false}
                     variant="outline"
                     className="h-11 w-full max-w-xs rounded-none border-ink/40 bg-background text-base font-medium text-brand-navy hover:bg-background"
                   >
-                    hello@sablemuse.shop
+                    support@sablemuse.shop
                   </Button>
                 </div>
               </AccordionContent>
@@ -151,7 +151,7 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                     We Are Here And Ready To Help
                   </p>
                   <Button
-                    render={<Link href="mailto:hello@sablemuse.shop" />}
+                    render={<Link href="mailto:support@sablemuse.shop" />}
                     nativeButton={false}
                     variant="outline"
                     className="h-11 w-full max-w-xs rounded-none border-ink/40 bg-background text-base font-medium capitalize text-brand-navy hover:bg-background"
@@ -186,10 +186,10 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
               />
               <h2 className="mt-4 text-lg font-semibold text-brand-navy">Email Us</h2>
               <p className="mt-2 text-sm text-brand-navy-muted">
-                Write to hello@sablemuse.shop
+                Write to support@sablemuse.shop
               </p>
               <Button
-                render={<Link href="mailto:hello@sablemuse.shop" />}
+                render={<Link href="mailto:support@sablemuse.shop" />}
                 nativeButton={false}
                 variant="outline"
                 className="mt-6 h-11 w-full rounded-none border-brand-border text-base font-medium capitalize text-brand-navy hover:bg-brand hover:text-primary-foreground"
@@ -211,12 +211,12 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
                 Monday through Friday, 9 am to 5 pm Eastern Time
               </p>
               <Button
-                render={<Link href="mailto:hello@sablemuse.shop" />}
+                render={<Link href="mailto:support@sablemuse.shop" />}
                 nativeButton={false}
                 variant="outline"
                 className="mt-6 h-11 w-full rounded-none border-brand-border text-base font-medium text-brand-navy hover:bg-brand hover:text-primary-foreground"
               >
-                hello@sablemuse.shop
+                support@sablemuse.shop
               </Button>
             </article>
           </li>
@@ -229,10 +229,10 @@ export const ContactChannels = ({ className }: ContactChannelsProps) => {
               />
               <h2 className="mt-4 text-lg font-semibold text-brand-navy">Email Us</h2>
               <p className="mt-2 text-sm text-brand-navy-muted">
-                Write to hello@sablemuse.shop
+                Write to support@sablemuse.shop
               </p>
               <Button
-                render={<Link href="mailto:hello@sablemuse.shop" />}
+                render={<Link href="mailto:support@sablemuse.shop" />}
                 nativeButton={false}
                 variant="outline"
                 className="mt-6 h-11 w-full rounded-none border-brand-border text-base font-medium capitalize text-brand-navy hover:bg-brand hover:text-primary-foreground"

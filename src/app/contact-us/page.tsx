@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact Us | Sable Muse",
     description:
-      "Reach Sable Muse at hello@sablemuse.shop. We aim to respond within one business day.",
+      "Reach Sable Muse at support@sablemuse.shop. We aim to respond within one business day.",
   },
   alternates: {
     canonical: "/contact-us",
@@ -57,10 +57,10 @@ const ContactUsPage = () => {
               Questions about a product, a size, or an order can come to us by
               email. Write to{" "}
               <a
-                href="mailto:hello@sablemuse.shop"
+                href="mailto:support@sablemuse.shop"
                 className="text-brand-navy underline-offset-2 hover:text-brand-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:normal-case"
               >
-                hello@sablemuse.shop
+                support@sablemuse.shop
               </a>
               . We are available Monday through Friday, 9 am to 5 pm Eastern
               Time, and we aim to reply within one business day.

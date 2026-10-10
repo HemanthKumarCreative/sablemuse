@@ -6,7 +6,7 @@ Do **not** add a second client at `lib/shopify.ts` or expose Storefront / Custom
 
 # Integrating Headless Shopify with Next.js
 
-This project uses the Storefront API + Customer Account API. Copy `.env.example` to `.env.local` and fill in credentials from the Headless sales channel.
+This project uses the Storefront API + Customer Account API, plus a narrow Admin API path for footer email signup. Copy `.env.example` to `.env.local` and fill in credentials from the Headless sales channel.
 
 ## Code layout
 
@@ -41,6 +41,10 @@ Collection handles for routes live in `src/lib/shopify/collections.ts` — updat
 SHOPIFY_STORE_DOMAIN="your-store-name.myshopify.com"
 SHOPIFY_STOREFRONT_ACCESS_TOKEN="your_storefront_access_token"
 SHOPIFY_STOREFRONT_API_VERSION="2025-10"
+SHOPIFY_ADMIN_CLIENT_ID=""
+SHOPIFY_ADMIN_CLIENT_SECRET=""
+SHOPIFY_ADMIN_ACCESS_TOKEN=""
+SHOPIFY_ADMIN_API_VERSION="2025-10"
 SHOPIFY_USE_MOCK_FALLBACK="false"
 SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID=""
 SHOPIFY_CUSTOMER_ACCOUNT_SHOP_ID=""
@@ -50,6 +54,25 @@ NEXT_PUBLIC_SITE_URL="http://localhost:3000"
 ```
 
 `SHOPIFY_USE_MOCK_FALLBACK` is unused. Customer login is disabled unless `SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID`, `SHOPIFY_CUSTOMER_ACCOUNT_SHOP_ID`, and `CUSTOMER_SESSION_SECRET` are all set.
+
+### Footer email signup (Admin API)
+
+The footer form saves the address in Shopify as a customer with email marketing consent (`SUBSCRIBED`). This is the only Admin API usage in the app.
+
+Shopify no longer creates new admin “custom apps” with a permanent `shpat_` token. Use the **Dev Dashboard** instead:
+
+1. Shopify Admin → **Settings → Apps → Develop apps** → **Build apps in Dev Dashboard** (or open [dev.shopify.com](https://dev.shopify.com)).
+2. **Create app** → Start from Dev Dashboard. Name it (e.g. `Sable Muse Newsletter`).
+3. Create a **version** with scopes **`read_customers`** and **`write_customers`**, then **Release**.
+4. **Install** the app on your Sable Muse store and approve the scopes.
+5. App **Settings**: copy **Client ID** and **Client secret** into `.env.local`:
+   - `SHOPIFY_ADMIN_CLIENT_ID`
+   - `SHOPIFY_ADMIN_CLIENT_SECRET`
+6. Restart `npm run dev`.
+
+The app exchanges those credentials for a short-lived Admin access token (client credentials grant). You will not paste a permanent Admin API token.
+
+Optional: if you still have a legacy admin-created custom app token, `SHOPIFY_ADMIN_ACCESS_TOKEN` still works as a fallback.
 
 ## Checkout
 

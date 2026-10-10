@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { PolicyPage } from "@/components/content/policy-page"
 
 export const metadata: Metadata = {
-  title: "Privacy",
+  title: "Privacy Policy",
   description:
     "How Sable Muse handles a shopping bag cookie, a customer session, and a wishlist stored in your browser.",
   alternates: { canonical: "/privacy" },
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const PrivacyPage = () => {
   return (
-    <PolicyPage title="Privacy">
+    <PolicyPage title="Privacy Policy">
       <p>
         Sable Muse uses a small amount of information to run the shop. This
         page describes what this website stores. It is the shop&apos;s operating
@@ -25,9 +25,10 @@ const PrivacyPage = () => {
         It is not sent to a Sable Muse account.
       </p>
       <p>
-        The contact form and the footer email field open your email app. They
-        do not save the message on this site. Checkout, including payment and
-        the shipping address, is handled by Shopify.
+        The contact form opens your email app and does not save the message on
+        this site. The footer email field sends your address to Shopify so we
+        can send Sable Muse updates when you opt in. Checkout, including payment
+        and the shipping address, is handled by Shopify.
       </p>
       <p>
         We do not sell personal information. We do not use the information
@@ -37,7 +38,7 @@ const PrivacyPage = () => {
       <p>
         If you live in California, you can ask what personal information this
         site keeps about you and ask us to delete it. Email
-        hello@sablemuse.shop with the subject “California privacy request.”
+        support@sablemuse.shop with the subject “California privacy request.”
         We will respond within 45 days. We do not sell or share personal
         information as those terms are used in the California Consumer Privacy
         Act.

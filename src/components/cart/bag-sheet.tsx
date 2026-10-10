@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react"
 import { ShoppingBag, X } from "lucide-react"
 import { CartLineItem } from "@/components/cart/cart-line-item"
 import { useCart } from "@/components/cart/cart-provider"
-import { Badge } from "@/components/ui/badge"
+import { IconCountBadge } from "@/components/shared/icon-count-badge"
 import { Button } from "@/components/ui/button"
 import { formatMoney } from "@/lib/format-money"
 import {
@@ -20,7 +20,7 @@ import { cn } from "cn"
 
 const EMPTY_BAG_LINKS = [
   { label: "Collection", href: "/collection" },
-  { label: "New In", href: "/collection/new-arrivals" },
+  { label: "New Arrivals", href: "/collection/new-arrivals" },
   { label: "Best Sellers", href: "/collection/best-sellers" },
 ] as const
 
@@ -64,7 +64,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
   }
 
   return (
-    <div ref={rootRef}>
+    <div ref={rootRef} className="relative overflow-visible">
     <Sheet open={bagOpen && visible} onOpenChange={handleOpenChange}>
       <SheetTrigger
         render={
@@ -76,19 +76,15 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                 ? `Shopping bag, ${itemCount} items`
                 : "Shopping bag"
             }
-            className={cn("relative rounded-none text-brand-navy", triggerClassName)}
+            className={cn(
+              "relative overflow-visible rounded-none text-brand-navy",
+              triggerClassName
+            )}
           />
         }
       >
         <ShoppingBag className="size-5" strokeWidth={1.5} />
-        {itemCount > 0 ? (
-          <Badge
-            variant="inverse"
-            className="absolute top-1.5 right-1.5 size-4 p-0 text-xs font-semibold leading-none"
-          >
-            {itemCount > 9 ? "9+" : itemCount}
-          </Badge>
-        ) : null}
+        <IconCountBadge count={itemCount} />
       </SheetTrigger>
       <SheetContent
         side="right"
@@ -131,6 +127,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                 {EMPTY_BAG_LINKS.map((link) => (
                   <li key={link.label}>
                     <SheetClose
+                      nativeButton={false}
                       render={
                         <Button
                           nativeButton={false}
@@ -200,6 +197,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                 </p>
                 <div className="mt-4 flex flex-col gap-3">
                   <SheetClose
+                    nativeButton={false}
                     render={
                       <Button
                         nativeButton={false}
@@ -212,6 +210,7 @@ export const BagSheet = ({ className, triggerClassName }: BagSheetProps) => {
                     Continue to checkout
                   </SheetClose>
                   <SheetClose
+                    nativeButton={false}
                     render={
                       <Button
                         nativeButton={false}

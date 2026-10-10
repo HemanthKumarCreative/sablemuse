@@ -157,7 +157,7 @@ Size Guide tells the customer to look in the description for inches, but the mea
 
 ### Current Behavior
 
-The dialog is static copy plus `hello@sablemuse.shop`. `sizeSelector`, fitting copy, and the guide are not per product.
+The dialog is static copy plus `support@sablemuse.shop`. `sizeSelector`, fitting copy, and the guide are not per product.
 
 ### Expected Behavior
 

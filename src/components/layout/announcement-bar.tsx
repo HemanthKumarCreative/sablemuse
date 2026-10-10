@@ -8,7 +8,7 @@ export const AnnouncementBar = () => {
     >
       <Link
         href="/shipping"
-        className="underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         Free Shipping On Orders Within The United States
       </Link>

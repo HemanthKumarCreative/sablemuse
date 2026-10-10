@@ -40,19 +40,79 @@ const COLOR_HEX: Record<string, string> = {
   rust: "#B7410E",
   ivory: "#F7F3EA",
   charcoal: "#3A3A3A",
+  "sky blue": "#A8C5D4",
+  "french blue": "#6E8CA0",
+  "royal blue": "#2E4A9B",
+  "peacock blue": "#1F6F78",
+  strawberry: "#C73E54",
+  "gum leaf": "#7D9B76",
+  ochre: "#C48A2A",
+  chartreuse: "#B5C44A",
+  tangerine: "#F28500",
+  "dusty pink": "#D4A0A8",
+}
+
+const UNKNOWN_COLOR = "#E1DCD6"
+
+const colorKey = (name: string) => name.trim().toLowerCase().replace(/\s+/g, " ")
+
+const colorWords = (key: string) => key.split(/[\s/]+/).filter(Boolean)
+
+export const formatColorName = (name: string) => {
+  const collapsed = name.trim().replace(/\s+/g, " ")
+
+  return collapsed
+    .split(" ")
+    .map((word) => {
+      if (word.includes("/") || /\d/.test(word)) {
+        return word
+      }
+
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    })
+    .join(" ")
+}
+
+const JUNK_COLOR_NAMES = new Set([
+  "multicolor",
+  "multi-color",
+  "multi colour",
+  "multi-colour",
+  "default title",
+  "default",
+  "n/a",
+  "na",
+  "none",
+])
+
+export const isMeaningfulColorName = (name: string) => {
+  const key = colorKey(name)
+  if (!key) {
+    return false
+  }
+
+  return !JUNK_COLOR_NAMES.has(key)
 }
 
 export const colorNameToHex = (name: string) => {
-  const key = name.trim().toLowerCase()
+  const key = colorKey(name)
   if (COLOR_HEX[key]) {
     return COLOR_HEX[key]
   }
 
+  const words = colorWords(key)
   const match = Object.keys(COLOR_HEX)
     .sort((left, right) => right.length - left.length)
-    .find((color) => key.includes(color))
+    .find((color) => {
+      const parts = colorWords(color)
+      if (parts.length === 1) {
+        return words.includes(parts[0])
+      }
 
-  return match ? COLOR_HEX[match] : "#0C0C0C"
+      return key.split(" ").join(" ").includes(color)
+    })
+
+  return match ? COLOR_HEX[match] : UNKNOWN_COLOR
 }
 
 export const isColorOption = (name: string) => {

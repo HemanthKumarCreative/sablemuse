@@ -9,7 +9,7 @@ On every page:
 1. **AnnouncementBar** — “Free Shipping On Orders Within The United States”.
 2. **SiteHeader** — logo, flat desktop nav (`NAV_ITEMS` from `src/data/navigation.ts`: New Arrivals, Dresses, Tops, Jeans, Matching Sets), mobile nav, search overlay, wishlist link, account link, bag sheet (cart from Shopify via `CartProvider` / `fetchCart()`). There is no mega menu in the header; `MegaMenuPanel` is unused.
 3. **`<main>`** — page content below.
-4. **SiteFooter** — email update form (`mailto:hello@sablemuse.shop`), footer link columns (`FOOTER_LINKS`), social icons.
+4. **SiteFooter** — email update form (`mailto:support@sablemuse.shop`), footer link columns (`FOOTER_LINKS`), social icons.
 
 Providers: `WishlistProvider` (localStorage key `modimal-wishlist`) → `CartProvider` (Shopify cart). Root metadata default title: `Sable Muse | Contemporary Women's Fashion`.
 
@@ -61,6 +61,7 @@ Empty collection rails render nothing (`BestSellersSection` returns `null`).
 
 - Components: `WelcomeDialog`, `HeroSection`, `BestSellersSection` → `ProductCardRail` → `ProductCard` / `ScrollCarousel`
 - Data: Shopify only (`getCollectionProducts` via `COLLECTION_HANDLES`). Does **not** import `src/data/home`.
+- `ProductCard` is browse-first: image, title, price (+ sale compare-at), color swatches, wishlist. Desktop: hover shows a single **Quick add** bar on the image; click reveals sizes + Add (overlay, no layout shift). Touch: **Quick add** opens a bottom sheet with sizes + Add. **Buy Now** is PDP-only.
 
 Unused home components still on disk (not imported by `/`): `ModiweekSection`, `FollowUsSection`, `SustainabilitySection`, `CollectionSection`.
 
@@ -102,7 +103,7 @@ Unused home components still on disk (not imported by `/`): `ModiweekSection`, `
 1. **JSON-LD** — CollectionPage + ItemList of products.
 2. **Breadcrumbs** — Home → Collection → `{Category Name}` (mobile bar + desktop).
 3. **Page title (h1)** — Title-cased slug (e.g. `new-arrivals` → “New Arrivals”).
-4. **CatalogBrowser** — Mobile filter sheet + desktop sticky filters (`CatalogFilters`), active filter chips, product grid (`ProductCard`), optional “Load More” via server action `loadMoreCatalog`. URL `sort` / `filter` params are parsed by `src/lib/catalog-params.ts` and passed into `getCatalogPage`, which applies Shopify `sortKey` / `ProductFilter` inputs.
+4. **CatalogBrowser** — Mobile filter sheet + desktop sticky filters (`CatalogFilters`), active filter chips, product grid (`ProductCard` browse + quick-add), optional “Load More” via server action `loadMoreCatalog`. URL `sort` / `filter` params are parsed by `src/lib/catalog-params.ts` and passed into `getCatalogPage`, which applies Shopify `sortKey` / `ProductFilter` inputs.
 
 ### Key components / data
 
@@ -173,13 +174,13 @@ Legacy `src/components/search/search-filters*.tsx` and static `SEARCH_FILTERS` i
 3. **ProductExperience** — Wraps gallery + purchase column:
    - **ProductGallery** — Image/video media from Shopify.
    - **ProductPurchasePanel** — Name, price, color swatches, size buttons, add to cart (`addToCartAction`), buy now (`buyNowAction` → Shopify `checkoutUrl`), wishlist toggle (localStorage), fit/size dialog; embeds **ProductAccordions** (fitting, care, shipping/returns).
-4. **You May Also Like** — Only when recommendations return products: SectionHeader + `ProductCardRail`. Fetches `getProductRecommendations(product.gid, 4)`. If there is no `gid` or the list is empty, the section is omitted (no `getProducts` fallback).
+4. **You May Also Like** — Only when recommendations return products: SectionHeader + `ProductCardRail` (same browse + quick-add cards as home/PLP). Fetches `getProductRecommendations(product.gid, 4)`. If there is no `gid` or the list is empty, the section is omitted (no `getProducts` fallback).
 
 Supports `?color=` and `?size=` query params for initial selection (`selectionFromQuery` / `exactVariant` in `src/lib/product-selection.ts`).
 
 ### Key components / data
 
-- Components: `ProductExperience`, `ProductGallery`, `ProductPurchasePanel`, `ProductAccordions`, `ProductCardRail`, `Breadcrumbs`
+- Components: `ProductExperience`, `ProductGallery`, `ProductPurchasePanel` (Add to bag + Buy Now), `ProductAccordions`, `ProductCardRail`, `Breadcrumbs`
 - Data: Shopify (`getProduct`, `getProductRecommendations`); wishlist local
 
 ---
@@ -284,7 +285,7 @@ Supports `?color=` and `?size=` query params for initial selection (`selectionFr
 
 1. Success check icon.
 2. “Payment Successful” heading + thank-you / receipt copy.
-3. Contact block with `hello@sablemuse.shop`.
+3. Contact block with `support@sablemuse.shop`.
 
 On mount: `clearCart()` via cart provider (clears cookie only).
 
@@ -327,7 +328,7 @@ On mount: `clearCart()` via cart provider (clears cookie only).
 ### Sections (`WishlistPageContent`)
 
 1. Centered title “My Wish List” + item count (or Loading… / empty message).
-2. Product grid of wishlisted `ProductCard`s (favorited), or empty-state copy.
+2. Product grid of wishlisted `ProductCard`s (favorited; browse + quick-add), or empty-state copy.
 
 ### Key components / data
 
@@ -412,8 +413,8 @@ On mount: `clearCart()` via cart provider (clears cookie only).
 
 1. **JSON-LD** — ContactPage.
 2. **Breadcrumbs** — Home → Contact Us.
-3. **h1** + intro panel — Hours and `hello@sablemuse.shop`.
-4. **ContactChannels** — Mobile: Write Us dialog, Chat/Call accordions (email CTAs). Desktop: similar channels + inline `ContactForm` / `WriteUsDialog` (`mailto:hello@sablemuse.shop`; not stored server-side).
+3. **h1** + intro panel — Hours and `support@sablemuse.shop`.
+4. **ContactChannels** — Mobile: Write Us dialog, Chat/Call accordions (email CTAs). Desktop: similar channels + inline `ContactForm` / `WriteUsDialog` (`mailto:support@sablemuse.shop`; not stored server-side).
 
 ### Key components / data
 

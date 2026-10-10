@@ -24,17 +24,14 @@ export const CarouselDots = ({
   return (
     <div
       className={cn("mt-3 flex justify-center gap-2", className)}
-      role="tablist"
       aria-label={ariaLabel}
     >
       {Array.from({ length: count }).map((_, index) => (
         <button
           key={index}
           type="button"
-          role="tab"
-          aria-selected={activeIndex === index}
+          aria-current={activeIndex === index ? "true" : undefined}
           aria-label={getLabel?.(index) ?? `Go to slide ${index + 1}`}
-          tabIndex={0}
           className="inline-flex size-11 cursor-pointer items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           onClick={() => onSelect(index)}
         >

@@ -10,7 +10,7 @@ type DesktopNavProps = {
 
 export const DesktopNav = ({ items }: DesktopNavProps) => {
   return (
-    <nav className="hidden md:block" aria-label="Primary">
+    <nav className="hidden lg:block" aria-label="Primary">
       <ul className="flex items-center gap-4 lg:gap-7">
         {items.map((item) => (
           <li key={item.label}>

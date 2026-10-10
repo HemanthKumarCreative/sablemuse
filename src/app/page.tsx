@@ -3,8 +3,10 @@ export const revalidate = 3600
 import type { Metadata } from "next"
 import { BestSellersSection } from "@/components/home/best-sellers-section"
 import { HeroSection } from "@/components/home/hero-section"
-import { WelcomeDialog } from "@/components/home/welcome-dialog"
 import { COLLECTION_HANDLES, getCollectionProducts } from "@/lib/shopify"
+import type { Product } from "@/types/commerce"
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
 
 export const metadata: Metadata = {
   title: {
@@ -24,20 +26,55 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Sable Muse",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sablemuse.shop",
-  logo: "/images/logo.png",
+  url: siteUrl,
+  logo: new URL("/images/logo.png", siteUrl).href,
   description:
     "Sable Muse is a women's clothing shop for the United States. Prices are in US dollars.",
 }
 
+const RAIL_MISMATCH: Record<string, RegExp> = {
+  dresses: /\b(capris?|pants|shorts)\b/i,
+  tops: /\b(capris?|pants|shorts|overalls?|jeans|jumpsuits?|rompers?)\b/i,
+  jeans: /\b(dress|blouse|jumpsuit|romper|overall)\b/i,
+}
+
+const forRail = (products: Product[], rail: keyof typeof RAIL_MISMATCH) =>
+  products.filter((product) => !RAIL_MISMATCH[rail].test(product.name))
+
+const takeUnique = (products: Product[], seen: Set<string>, limit: number) => {
+  const next: Product[] = []
+
+  for (const product of products) {
+    if (seen.has(product.id)) {
+      continue
+    }
+
+    seen.add(product.id)
+    next.push(product)
+
+    if (next.length >= limit) {
+      break
+    }
+  }
+
+  return next
+}
+
 const HomePage = async () => {
-  const [newArrivals, dresses, tops, jeans, matchingSets] = await Promise.all([
-    getCollectionProducts(COLLECTION_HANDLES["new-in"], 3),
-    getCollectionProducts(COLLECTION_HANDLES["dresses-jumpsuits"], 4),
-    getCollectionProducts(COLLECTION_HANDLES["tops-blouses"], 4),
-    getCollectionProducts(COLLECTION_HANDLES["jeans-pants"], 4),
-    getCollectionProducts(COLLECTION_HANDLES["matching-sets-lounge"], 4),
-  ])
+  const [newArrivalsRaw, dressesRaw, topsRaw, jeansRaw, matchingSetsRaw] =
+    await Promise.all([
+      getCollectionProducts(COLLECTION_HANDLES["new-in"], 12),
+      getCollectionProducts(COLLECTION_HANDLES["dresses-jumpsuits"], 24),
+      getCollectionProducts(COLLECTION_HANDLES["tops-blouses"], 24),
+      getCollectionProducts(COLLECTION_HANDLES["jeans-pants"], 24),
+      getCollectionProducts(COLLECTION_HANDLES["matching-sets-lounge"], 12),
+    ])
+  const seen = new Set<string>()
+  const newArrivals = takeUnique(newArrivalsRaw, seen, 4)
+  const dresses = takeUnique(forRail(dressesRaw, "dresses"), seen, 4)
+  const tops = takeUnique(forRail(topsRaw, "tops"), seen, 4)
+  const jeans = takeUnique(forRail(jeansRaw, "jeans"), seen, 4)
+  const matchingSets = takeUnique(matchingSetsRaw, seen, 4)
 
   return (
     <>
@@ -45,7 +82,6 @@ const HomePage = async () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <WelcomeDialog />
       <HeroSection />
       <BestSellersSection products={newArrivals} />
       <BestSellersSection

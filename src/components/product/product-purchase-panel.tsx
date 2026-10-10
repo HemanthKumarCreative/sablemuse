@@ -486,10 +486,10 @@ export const ProductPurchasePanel = ({
               Compare a piece you already own with the size options on this page.
               Email{" "}
               <a
-                href="mailto:hello@sablemuse.shop"
+                href="mailto:support@sablemuse.shop"
                 className="underline underline-offset-2"
               >
-                hello@sablemuse.shop
+                support@sablemuse.shop
               </a>{" "}
               if you want help before you order.
             </p>
@@ -498,10 +498,10 @@ export const ProductPurchasePanel = ({
             <p className="text-sm leading-copy text-brand-navy">
               Email{" "}
               <a
-                href="mailto:hello@sablemuse.shop"
+                href="mailto:support@sablemuse.shop"
                 className="underline underline-offset-2"
               >
-                hello@sablemuse.shop
+                support@sablemuse.shop
               </a>{" "}
               if you want help before you order.
             </p>

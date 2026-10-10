@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { PolicyPage } from "@/components/content/policy-page"
 
 export const metadata: Metadata = {
-  title: "Terms",
+  title: "Terms of Service",
   description:
     "Sable Muse terms for shopping women's clothing in the United States, with prices in US dollars.",
   alternates: { canonical: "/terms" },
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const TermsPage = () => {
   return (
-    <PolicyPage title="Terms">
+    <PolicyPage title="Terms of Service">
       <p>
         Sable Muse sells women&apos;s clothing to customers in the United States.
         Prices on this site are in US dollars. These terms describe how the shop
@@ -31,7 +31,7 @@ const TermsPage = () => {
       </p>
       <p>
         Shipping and returns are described on the Shipping and Returns pages.
-        Questions can go to hello@sablemuse.shop, Monday through Friday, 9 am
+        Questions can go to support@sablemuse.shop, Monday through Friday, 9 am
         to 5 pm Eastern Time.
       </p>
     </PolicyPage>

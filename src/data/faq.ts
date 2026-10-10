@@ -9,7 +9,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "contact",
     question: "How Do I Contact Your Customer Service?",
     answer:
-      "Sable Muse customer care is available Monday through Friday, 9 am to 5 pm Eastern Time, excluding holidays. Email hello@sablemuse.shop and we will reply within one business day.",
+      "Sable Muse customer care is available Monday through Friday, 9 am to 5 pm Eastern Time, excluding holidays. Email support@sablemuse.shop and we will reply within one business day.",
   },
   {
     id: "ship-when",
@@ -21,7 +21,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "cancel",
     question: "Can I Cancel Or Modify My Order?",
     answer:
-      "If your order has not shipped yet, email hello@sablemuse.shop with your order number as soon as you can. We will try to cancel or update it before it leaves.",
+      "If your order has not shipped yet, email support@sablemuse.shop with your order number as soon as you can. We will try to cancel or update it before it leaves.",
   },
   {
     id: "shipping-options",
@@ -39,7 +39,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "size",
     question: "Which Size Will Fit Me Best?",
     answer:
-      "Use the size options on the product page and compare them with a piece you already own. Open the Size Guide on the product when it is available, and email hello@sablemuse.shop if you want help before you order.",
+      "Use the size options on the product page and compare them with a piece you already own. Open the Size Guide on the product when it is available, and email support@sablemuse.shop if you want help before you order.",
   },
   {
     id: "care",
@@ -57,6 +57,6 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "returns",
     question: "Can I Return An Order?",
     answer:
-      "Returns are accepted within 30 days of delivery for unworn items in their original condition. Email hello@sablemuse.shop with your order number to start a return.",
+      "Returns are accepted within 7 days of delivery for unworn items in their original condition. Email support@sablemuse.shop with your order number to start a return.",
   },
 ]

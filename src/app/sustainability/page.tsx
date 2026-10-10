@@ -153,8 +153,8 @@ const SustainabilityPage = () => {
                 within one to two business days, with tracking sent by email.
               </p>
               <p className="mt-4 text-sm leading-copy text-brand-navy-muted md:text-base">
-                Returns are accepted within 30 days. Questions about an order
-                can go to hello@sablemuse.shop.
+                Returns are accepted within 7 days. Questions about an order
+                can go to support@sablemuse.shop.
               </p>
               <Button
                 render={<Link href="/sustainability/mission" />}

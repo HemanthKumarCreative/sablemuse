@@ -19,7 +19,7 @@ export const ProductCardRail = ({
   ariaLabel,
   imageAspectClassName,
   gridClassName = "md:grid-cols-3",
-  itemClassName = "w-[46vw] max-w-[200px]",
+  itemClassName = "w-[46vw] max-w-[220px]",
   dotsClassName,
 }: ProductCardRailProps) => {
   if (products.length === 0) {
@@ -40,12 +40,13 @@ export const ProductCardRail = ({
         <div
           key={product.id}
           className={cn(
-            "shrink-0 snap-start md:w-full md:max-w-none md:shrink",
+            "flex h-full shrink-0 snap-start md:w-full md:max-w-none md:shrink",
             itemClassName
           )}
         >
           <ProductCard
             product={product}
+            className="w-full"
             imageAspectClassName={imageAspectClassName}
           />
         </div>

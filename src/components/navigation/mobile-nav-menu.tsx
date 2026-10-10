@@ -2,12 +2,13 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { ChevronDown, Heart, Search, ShoppingBag, User, X } from "lucide-react"
 import { AnnouncementBar } from "@/components/layout/announcement-bar"
 import { useCart } from "@/components/cart/cart-provider"
-import { Badge } from "@/components/ui/badge"
+import { IconCountBadge } from "@/components/shared/icon-count-badge"
 import { Button } from "@/components/ui/button"
+import { useWishlist } from "@/components/wishlist/wishlist-provider"
 import {
   Sheet,
   SheetClose,
@@ -32,10 +33,13 @@ const getFlattenedLinks = (item: NavItem) => {
 
 export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
   const pathname = usePathname()
+  const closeRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
   const { itemCount } = useCart()
+  const { handles, isHydrated } = useWishlist()
   const isWishlistActive = pathname.startsWith("/wishlist")
+  const wishlistCount = isHydrated ? handles.length : 0
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpen(nextOpen)
@@ -81,6 +85,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
       <SheetContent
         side="left"
         showCloseButton={false}
+        initialFocus={closeRef}
         className="inset-0 h-dvh max-w-none gap-0 overflow-y-auto rounded-none border-0 p-0 data-[side=left]:w-screen data-[side=left]:max-w-none sm:max-w-none"
       >
         <SheetTitle className="sr-only">Mobile navigation</SheetTitle>
@@ -92,6 +97,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
             <SheetClose
               render={
                 <Button
+                  ref={closeRef}
                   variant="ghost"
                   size="icon"
                   aria-label="Close menu"
@@ -127,10 +133,14 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
             <Button
               variant="ghost"
               size="icon"
-              aria-label="Wishlist"
+              aria-label={
+                wishlistCount > 0
+                  ? `Wishlist, ${wishlistCount} items`
+                  : "Wishlist"
+              }
               aria-current={isWishlistActive ? "page" : undefined}
               className={cn(
-                "rounded-none",
+                "relative overflow-visible rounded-none",
                 isWishlistActive ? "text-ink" : "text-brand-navy"
               )}
               render={<Link href="/wishlist" onClick={handleNavigate} />}
@@ -141,6 +151,7 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                 strokeWidth={1.5}
                 fill={isWishlistActive ? "currentColor" : "none"}
               />
+              <IconCountBadge count={wishlistCount} />
             </Button>
             <Button
               variant="ghost"
@@ -150,19 +161,12 @@ export const MobileNavMenu = ({ onOpenSearch }: MobileNavMenuProps) => {
                   ? `Shopping bag, ${itemCount} items`
                   : "Shopping bag"
               }
-              className="relative rounded-none text-brand-navy"
+              className="relative overflow-visible rounded-none text-brand-navy"
               render={<Link href="/cart" onClick={handleNavigate} />}
               nativeButton={false}
             >
               <ShoppingBag className="size-5" strokeWidth={1.5} />
-              {itemCount > 0 ? (
-                <Badge
-                  variant="inverse"
-                  className="absolute top-1.5 right-1.5 size-4 p-0 text-xs font-semibold leading-none"
-                >
-                  {itemCount > 9 ? "9+" : itemCount}
-                </Badge>
-              ) : null}
+              <IconCountBadge count={itemCount} />
             </Button>
           </div>
         </div>

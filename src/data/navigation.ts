@@ -90,6 +90,11 @@ export const SUSTAINABILITY_MEGA_MENU = {
 
 export const NAV_ITEMS: NavItem[] = [
   {
+    label: "Shop All",
+    title: "Shop All",
+    href: "/shop-all",
+  },
+  {
     label: "New Arrivals",
     title: "New Arrivals",
     href: "/collection/new-arrivals",
@@ -116,22 +121,35 @@ export const NAV_ITEMS: NavItem[] = [
   },
 ]
 
-export const FOOTER_LINKS = {
-  about: [
-    { label: "Collection", href: "/collection" },
-    { label: "New Arrivals", href: "/collection/new-arrivals" },
-    { label: "Our Story", href: "/sustainability" },
-  ],
-  help: [
-    { label: "Shipping", href: "/shipping" },
-    { label: "Returns", href: "/returns" },
-    { label: "FAQs", href: "/faq" },
-    { label: "Contact Us", href: "/contact-us" },
-  ],
-  club: [
-    { label: "Our Mission", href: "/sustainability/mission" },
-    { label: "Care", href: "/sustainability/materials" },
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
-  ],
-}
+export const FOOTER_COLUMNS = [
+  {
+    title: "Shop",
+    links: [
+      { label: "Shop All", href: "/shop-all" },
+      { label: "New Arrivals", href: "/collection/new-arrivals" },
+      { label: "Collections", href: "/collection" },
+    ],
+  },
+  {
+    title: "Help",
+    links: [
+      { label: "Shipping", href: "/shipping" },
+      { label: "Returns", href: "/returns" },
+      { label: "FAQs", href: "/faq" },
+      { label: "Contact Us", href: "/contact-us" },
+    ],
+  },
+  {
+    title: "About",
+    links: [
+      { label: "Our Story", href: "/sustainability" },
+      { label: "Mission", href: "/sustainability/mission" },
+      { label: "Care & Shipping", href: "/sustainability/materials" },
+    ],
+  },
+] as const
+
+export const FOOTER_LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+] as const
